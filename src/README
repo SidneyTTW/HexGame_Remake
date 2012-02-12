@@ -1,0 +1,3 @@
+Source files of the project, needs JDK 1.6 or later version.
+
+The image path and width and height in TestWidget.java should be changed when you are trying to run the project.
