@@ -49,7 +49,7 @@ public abstract class AbstractStandardConnectionCalculator implements
         while (currentIndex != -1
             && balls[currentIndex] != null
             && firstBall.sameColor(balls[currentIndex])
-            && ((!onlyStableBalls) && ((balls[currentIndex].getState() == Ball.State.Stable) || (balls[currentIndex]
+            && ((!onlyStableBalls) || ((balls[currentIndex].getState() == Ball.State.Stable) || (balls[currentIndex]
                 .getState() == Ball.State.AlmostStable)))) {
           currentConnection.add(currentIndex);
           currentIndex = gameBoard.nearbyIndex(currentIndex, j);
@@ -64,8 +64,8 @@ public abstract class AbstractStandardConnectionCalculator implements
         boolean chainCanBeEliminated = true;
         Vector<Integer> chain = gameBoard.chainAroundIndex(i);
         if (chain.size() == 6) {
-          if (balls[chain.elementAt(i)] != null) {
-            firstBall = balls[chain.elementAt(i)];
+          if (balls[chain.elementAt(0)] != null) {
+            firstBall = balls[chain.elementAt(0)];
             for (int j = 0; j < 6; ++j) {
               // A complex condition to judge whether the
               // ball can be in a connection and whether the

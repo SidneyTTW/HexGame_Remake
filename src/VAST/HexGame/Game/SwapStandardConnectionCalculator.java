@@ -38,7 +38,7 @@ public class SwapStandardConnectionCalculator extends
     // Try the balls one by one according to a random order
     for (int i = 0;i < totalBallCount;++i)
     {
-      int randIndex = r.nextInt() % (totalBallCount - i);
+      int randIndex = Math.abs(r.nextInt()) % (totalBallCount - i);
       int p = -1;
       for (int j = 0;j < randIndex + 1;++j)
       {

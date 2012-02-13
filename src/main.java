@@ -1,5 +1,6 @@
 import javax.swing.JFrame;
 
+import VAST.HexGame.GameWidget.TestGameWidget;
 import VAST.HexGame.Widgets.MainWidget;
 import VAST.HexGame.Widgets.TestWidget;
 
@@ -18,12 +19,12 @@ public class main {
    */
   public static void main(String[] args) {
     MainWidget mainWidget = new MainWidget();
-    TestWidget test = new TestWidget(mainWidget);
+//    TestWidget test = new TestWidget(mainWidget);
+    TestGameWidget test = new TestGameWidget();
     mainWidget.changeControl(test, false);
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(mainWidget);
     frame.setVisible(true);
   }
-
 }

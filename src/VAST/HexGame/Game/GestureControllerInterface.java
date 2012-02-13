@@ -51,4 +51,9 @@ public interface GestureControllerInterface {
    * Interrupt the gesture.
    */
   public void interrupt();
+  
+  /**
+   * Advance the gesture, mainly used to clear the cd.
+   */
+  public void advance();
 }

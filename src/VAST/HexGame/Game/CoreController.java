@@ -94,25 +94,26 @@ public class CoreController implements CoreControllerInterface {
         result = true;
       }
 
-    // If the rule doesn't need to eliminate at all
-    if (rule.getConnectionCalculator() == null)
+    // If the rule needs to eliminate
+    if (rule.getConnectionCalculator() != null) {
+
+      // If need to test stable eliminate
+      if (needTestStableEliminate && testStableEliminate()) {
+          // Will not need to test again in next few steps unless new balls have
+          // been added
+          needTestStableEliminate = fill();
+
+          // There is something changed
+          result = true;
+        } else {
+          // Will not need to test again in next few steps unless new balls have
+          // been added
+          needTestStableEliminate = fill();
+        }
+    } else {
+      System.out.print(1);
       return needTestStableEliminate;
-
-    // If need to test stable eliminate
-    if (needTestStableEliminate)
-      // And eliminated some ball
-      if (testStableEliminate()) {
-        // Will not need to test again in next few steps unless new balls have
-        // been added
-        needTestStableEliminate = fill();
-
-        // There is something changed
-        result = true;
-      } else {
-        // Will not need to test again in next few steps unless new balls have
-        // been added
-        needTestStableEliminate = fill();
-      }
+    }
 
     return result;
   }
@@ -220,8 +221,7 @@ public class CoreController implements CoreControllerInterface {
         case AlmostStable:
           // A ball moved by the system
         case SystemMoving:
-          if (needRotateCount == 0)
-            break;
+          if (needRotateCount != 0)
           {
             // Current ball index
             int current = originalChain.elementAt(j);
@@ -245,6 +245,7 @@ public class CoreController implements CoreControllerInterface {
           // Rotate the ball to the target position
           rotateABallTo(ball, gameBoard.ballLogicalPositionOfIndex(target),
               gameBoard.centerPosition(), 10, true, i);
+          ball.setState(Ball.State.SystemMoving);
         }
         }
       }
@@ -279,8 +280,6 @@ public class CoreController implements CoreControllerInterface {
     Vector<Point> stopPositions = new Vector<Point>();
     ball.setState(Ball.State.SystemMoving);
     Point fromPos = ball.getPosition();
-    if (!ball.getStopPositions().isEmpty())
-      fromPos = ball.getStopPositions().elementAt(0);
     double currentA = MathAid.angle(fromPos, centerPos);
     double finalA = MathAid.angle(toPos, centerPos);
 
@@ -309,13 +308,14 @@ public class CoreController implements CoreControllerInterface {
           * MathAid.distanceFromTheCenterWithTheAngle(tmpA, maxR);
       stopPositions.add(MathAid.calculatePosition(tmpA, tmpR, centerPos));
     }
+    ball.setStopPositions(stopPositions);
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see VAST.HexGame.Game.CoreControllerInterface#translateABallTo(Ball, Point,
-   * int, boolean)
+   * @see VAST.HexGame.Game.CoreControllerInterface#translateABallTo(Ball,
+   * Point, int, boolean)
    */
   @Override
   public void translateABallTo(Ball ball, Point toPos, int steps, boolean plain) {
@@ -343,9 +343,6 @@ public class CoreController implements CoreControllerInterface {
           (int) ((fromY * i + toY * (steps - i)) / steps - dy)));
     }
 
-    for (int i = 0; i < ball.getStopPositions().size(); ++i)
-      stopPositions.add(ball.getStopPositions().elementAt(i));
     ball.setStopPositions(stopPositions);
   }
-
 }

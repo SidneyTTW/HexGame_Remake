@@ -86,12 +86,12 @@ public class StandardBallFiller implements BallFillerInterface {
         int index = itr.next();
         // Set the color of the ball and whether it's locked
         if (balls[index] == null)
-          balls[index] = new Ball(r.nextInt() % Ball.MAX_VALID_NUMBER_COUNT);
+          balls[index] = new Ball(Math.abs(r.nextInt()) % Ball.MAX_VALID_NUMBER_COUNT);
         else
-          balls[index].setColor(r.nextInt() % Ball.MAX_VALID_NUMBER_COUNT);
+          balls[index].setColor(Math.abs(r.nextInt()) % Ball.MAX_VALID_NUMBER_COUNT);
         if (thisLockCount < thisMaxLockNumber)
         {
-          boolean setToLock = (r.nextInt() % 100) < lockRate * 100;
+          boolean setToLock = (Math.abs(r.nextInt()) % 100) < lockRate * 100;
           balls[index].setLocked(setToLock);
           if (setToLock)
             ++thisLockCount;

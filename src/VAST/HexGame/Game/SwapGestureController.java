@@ -128,11 +128,6 @@ public class SwapGestureController implements GestureControllerInterface {
           lastIndex = index;
           if (effectPainter != null)
             effectPainter.selectAt(gameBoard, index);
-        } else {
-          // Clear
-          lastIndex = -1;
-          if (effectPainter != null)
-            effectPainter.clearSelectionHints();
         }
       }
     }
@@ -147,6 +142,9 @@ public class SwapGestureController implements GestureControllerInterface {
   public void interrupt() {
     lastIndex = -1;
     gestureState = GestureState.NoGesture;
+    GameEffectAdapter effectPainter = rule.getEffectPainter();
+    if (effectPainter != null)
+      effectPainter.clearSelectionHints();
   }
 
   private void testGesture(int index1, int index2) {
@@ -169,6 +167,7 @@ public class SwapGestureController implements GestureControllerInterface {
       lastIndex = -1;
       if (effectPainter != null)
         effectPainter.clearSelectionHints();
+      gestureState = GestureState.NoGesture;
 
       // If the swap is valid
       if (isNextTo) {
@@ -187,9 +186,9 @@ public class SwapGestureController implements GestureControllerInterface {
         balls[index1] = balls[index2];
         balls[index2] = tmp;
 
-        // Set the state of the 2 balls
-        balls[index1].setState(Ball.State.UserReleased);
-        balls[index2].setState(Ball.State.UserReleased);
+        // Set the state of the ball
+        balls[index1].setState(Ball.State.SystemMoving);
+        balls[index2].setState(Ball.State.SystemMoving);
 
         // Test whether the swap is successful
         boolean swapSuccessful = rule.getConnectionCalculator() == null;
@@ -204,12 +203,9 @@ public class SwapGestureController implements GestureControllerInterface {
         if (swapSuccessful) {
           // Move 2 balls to the new position
           coreController.translateABallTo(balls[index1],
-              gameBoard.ballLogicalPositionOfIndex(index1), 3, true);
-          coreController.translateABallTo(balls[index1],
-              gameBoard.ballLogicalPositionOfIndex(index2), 3, true);
-          // Set the state of the ball
-          balls[index2].setState(Ball.State.SystemMoving);
-          balls[index1].setState(Ball.State.SystemMoving);
+              gameBoard.ballLogicalPositionOfIndex(index1), 7, true);
+          coreController.translateABallTo(balls[index2],
+              gameBoard.ballLogicalPositionOfIndex(index2), 7, true);
           // A good move
           if (game != null)
             game.goodMove();
@@ -251,7 +247,6 @@ public class SwapGestureController implements GestureControllerInterface {
             balls[index2].getStopPositions().add(
                 balls[index2].getStopPositions().elementAt(halfSteps - i));
           }
-
           // Set the CD
           gestureCoolDown = halfSteps * 2;
           // A bad move
@@ -259,9 +254,20 @@ public class SwapGestureController implements GestureControllerInterface {
             game.badMove();
         }
         gestureState = GestureState.NoGesture;
-        return;
       }
 
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see VAST.HexGame.Game.GestureControllerInterface#advance()
+   */
+  @Override
+  public void advance() {
+    if (gestureCoolDown > 0) {
+      --gestureCoolDown;
     }
   }
 }
