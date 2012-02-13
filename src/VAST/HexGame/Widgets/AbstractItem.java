@@ -128,10 +128,7 @@ public abstract class AbstractItem implements ItemInterface {
     }
     if (image == null)
       return;
-    g.drawImage(image,
-                (int)(getLogicalPosition().getX() - dx()),
-                (int)(getLogicalPosition().getY() - dy()),
-                null);
+    ImageAid.drawImageAt(g, image, 1.0, 1.0, getLogicalPosition(), false, true);
   }
 
   /* (non-Javadoc)
@@ -167,14 +164,4 @@ public abstract class AbstractItem implements ItemInterface {
   public void setPressedImageSeries(String dir, String file) {
     pressedImages = ImageAid.loadFromFile(dir, file);
   }
-
-  /**
-   * @return The distance from the center to the left edge.
-   */
-  public abstract int dx();
-
-  /**
-   * @return The distance from the center to the top edge.
-   */
-  public abstract int dy();
 }

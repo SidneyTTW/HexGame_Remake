@@ -16,7 +16,7 @@ import java.util.Vector;
 public abstract class AbstractSimpleWidget implements WidgetInterface {
   public static final int SIMPLE_WIDGET_WIDTH = 1024;
   public static final int SIMPLE_WIDGET_HEIGHT = 600;
-  public static final int SIMPLE_WIDGET_INTERVAL = 30;
+  public static final int SIMPLE_WIDGET_INTERVAL = 60;
   public static enum ItemType{SimpleItem, ButtonItem}
   
   /**
@@ -37,7 +37,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
   /**
    * Count of the frame.
    */
-  private int frame = 0;
+  protected int frame = 0;
 
   /**
    * The last item.
@@ -56,6 +56,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
     for (int i = 0;i < buttons.size();++i)
       if (buttons.elementAt(i).isVisible())
         buttons.elementAt(i).paint(g, frame);
+    ++frame;
   }
 
   /* (non-Javadoc)

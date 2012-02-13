@@ -32,21 +32,4 @@ public class RoundItem extends AbstractItem {
   public boolean isIn(Point logicalPosition) {
     return getLogicalPosition().distance(logicalPosition) <= radius;
   }
-
-  /* (non-Javadoc)
-   * @see VAST.HexGame.Widgets.AbstractItem#dx()
-   */
-  @Override
-  public int dx() {
-    return radius / 2;
-  }
-
-  /* (non-Javadoc)
-   * @see VAST.HexGame.Widgets.AbstractItem#dy()
-   */
-  @Override
-  public int dy() {
-    return radius / 2;
-  }
-
 }

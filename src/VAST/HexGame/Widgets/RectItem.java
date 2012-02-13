@@ -49,21 +49,4 @@ public class RectItem extends AbstractItem {
            (logicalPosition.getY() >= center.getY() - height / 2) &&
            (logicalPosition.getY() <= center.getY() + height / 2);
   }
-
-  /* (non-Javadoc)
-   * @see VAST.HexGame.Widgets.AbstractItem#dx()
-   */
-  @Override
-  public int dx() {
-    return width / 2;
-  }
-
-  /* (non-Javadoc)
-   * @see VAST.HexGame.Widgets.AbstractItem#dy()
-   */
-  @Override
-  public int dy() {
-    return height / 2;
-  }
-
 }
