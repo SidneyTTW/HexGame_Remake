@@ -12,15 +12,14 @@ import java.awt.Graphics;
  * 
  */
 public abstract class AbstractEffect {
-  public static final int IdSelection = 0;
-  public static final int IdElimination = 1;
+  public static final int IdBorder = 0;
+  public static final int IdFill = 1;
   public static final int IdExplosion = 2;
   public static final int IdLightning = 3;
-  public static final int IdHighlight = 4;
-  public static final int IdHint = 5;
-  public static final int IdWords = 6;
-  public static final int IdFlash = 7;
-  public static final int TOTAL_EFFECT_COUNT = 8;
+  public static final int IdHint = 4;
+  public static final int IdWords = 5;
+  public static final int IdFlash = 6;
+  public static final int TOTAL_EFFECT_COUNT = 7;
   
   /**
    * Private information of the effect.
@@ -43,14 +42,18 @@ public abstract class AbstractEffect {
   /**
    * @return Whether only one should exist at a time.
    */
-  public abstract boolean oneAtATime();
+  public boolean oneAtATime() {
+    return false;
+  }
   
   /**
    * Advance the effect.
    * 
    * @return Whether it should last for more steps.
    */
-  public abstract boolean advance();
+  public boolean advance() {
+    return true;
+  }
 
   /**
    * Abstract class of information of an effect.

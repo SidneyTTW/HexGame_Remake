@@ -30,12 +30,12 @@ public abstract class AbstractTimingEffect extends AbstractEffect {
     /**
      * The age of effect.
      */
-    protected int age;
+    private int age = 0;
 
     /**
      * The limit age of effect.
      */
-    protected int ageLimit;
+    private int ageLimit;
 
     /**
      * Get the age of effect.

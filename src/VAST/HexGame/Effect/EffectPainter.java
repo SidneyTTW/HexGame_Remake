@@ -4,8 +4,9 @@
 package VAST.HexGame.Effect;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * Class to realize EffectPainterInterface.
@@ -15,12 +16,12 @@ import java.util.List;
  */
 public class EffectPainter implements EffectPainterInterface {
   
-  ArrayList<AbstractEffect> [] effects;
+  LinkedList<AbstractEffect> [] effects;
   
   public EffectPainter() {
-    effects = new ArrayList[AbstractEffect.TOTAL_EFFECT_COUNT];
+    effects = new LinkedList[AbstractEffect.TOTAL_EFFECT_COUNT];
     for (int i = 0;i < AbstractEffect.TOTAL_EFFECT_COUNT;++i) {
-      effects[i] = new ArrayList<AbstractEffect>();
+      effects[i] = new LinkedList<AbstractEffect>();
     }
   }
 
@@ -56,8 +57,11 @@ public class EffectPainter implements EffectPainterInterface {
    */
   @Override
   public void paint(Graphics graphics) {
-    // TODO Auto-generated method stub
-
+    for (int i = 0;i < AbstractEffect.TOTAL_EFFECT_COUNT;++i) {
+      for(AbstractEffect effect : effects[i]){
+        effect.paint(graphics);
+      }
+    }
   }
 
   /* (non-Javadoc)
@@ -65,8 +69,14 @@ public class EffectPainter implements EffectPainterInterface {
    */
   @Override
   public void advance() {
-    // TODO Auto-generated method stub
-
+    for (int i = 0;i < AbstractEffect.TOTAL_EFFECT_COUNT;++i) {
+      for (Iterator<AbstractEffect> itr = effects[i].iterator();itr.hasNext();) {
+    AbstractEffect effect = itr.next();
+        if (!effect.advance()) {
+          itr.remove();
+        }
+      }
+    }
   }
 
 }

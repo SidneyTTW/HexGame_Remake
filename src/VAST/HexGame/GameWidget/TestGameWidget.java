@@ -5,7 +5,9 @@ package VAST.HexGame.GameWidget;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.Vector;
 
+import VAST.HexGame.Effect.EffectPainter;
 import VAST.HexGame.Game.Ball;
 import VAST.HexGame.Game.BallFillerInterface;
 import VAST.HexGame.Game.BasicPainter;
@@ -38,6 +40,7 @@ public class TestGameWidget extends AbstractSimpleWidget implements
   GameBoardInterface gameBoard;
   GestureControllerInterface gestureController;
   CoreControllerInterface coreController;
+  GameEffectAdapter gameEffectAdapter;
   
   public TestGameWidget() {
     balls = new Ball[37];
@@ -56,7 +59,7 @@ public class TestGameWidget extends AbstractSimpleWidget implements
 
     gestureController = new SwapGestureController(this, rule);
 
-    GameEffectAdapter gameEffectAdapter = new GameEffectAdapter(null);
+    gameEffectAdapter = new GameEffectAdapter(new EffectPainter());
 
     boolean rollBack = true;
 
@@ -83,7 +86,11 @@ public class TestGameWidget extends AbstractSimpleWidget implements
    * @see VAST.HexGame.Game.GameInterface#stableConnectionTested(VAST.HexGame.Game.ConnectionInterface)
    */
   @Override
-  public void stableConnectionTested(ConnectionInterface connections) {}
+  public void stableConnectionTested(ConnectionInterface connections) {
+    for (int i = 0;i < gameBoard.totalBallCount();++i)
+      if (connections.isInAChain(i))
+        gameEffectAdapter.highlightAt(gameBoard, i);
+  }
 
   /* (non-Javadoc)
    * @see VAST.HexGame.Game.GameInterface#userMovingConnectionTested(VAST.HexGame.Game.ConnectionInterface)
@@ -133,13 +140,20 @@ public class TestGameWidget extends AbstractSimpleWidget implements
     super.mouseReleased(logicalPos, button, mouseId);
     gestureController.releaseAt(logicalPos, button, mouseId);
   }
+
+//  @Override
+//  public int refreshInterval() {
+//    return 300;
+//  }
   
   @Override
   public void paint(Graphics g) {
     gestureController.advance();
+    rule.getEffectPainter().advance();
     BasicPainter.paintBackGround(BasicPainter.Game37, g, width(), height(), 0);
     super.paint(g);
     BasicPainter.paintBasicBalls(rule.getGameBoard(), balls, g, frame);
+    rule.getEffectPainter().paint(g);
     coreController.advance();
   }
 }

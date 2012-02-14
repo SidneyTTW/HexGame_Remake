@@ -161,11 +161,11 @@ public class Ball {
       // Currently not used, may be used later to speed up
       // if (stopPositions.size() < 2)
       // state = State.AlmostStable;
-
-      // Change the state
-      if (stopPositions.size() == 0)
-        state = State.Stable;
     }
+
+    // Change the state
+    if (stopPositions.size() == 0)
+      state = State.Stable;
 
     return state != lastState;
   }
