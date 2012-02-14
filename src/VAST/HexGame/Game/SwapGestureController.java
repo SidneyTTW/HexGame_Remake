@@ -67,7 +67,7 @@ public class SwapGestureController implements GestureControllerInterface {
       effectPainter.clearSelectionHints();
 
     // Record the press
-    gestureState = GestureState.ChooseGesture;
+    gestureState = GestureState.LocateGesture;
     GameBoardInterface gameBoard = rule.getGameBoard();
     CoreControllerInterface coreController = rule.getCoreController();
     int index = gameBoard.ballIndexAtLogicalPosition(logicalPos);
@@ -117,7 +117,7 @@ public class SwapGestureController implements GestureControllerInterface {
     GameBoardInterface gameBoard = rule.getGameBoard();
     CoreControllerInterface coreController = rule.getCoreController();
     // Record the move
-    if (gestureState == GestureState.ChooseGesture) {
+    if (gestureState == GestureState.LocateGesture) {
       int index = gameBoard.ballIndexAtLogicalPosition(logicalPos);
       if (index >= 0) {
         if (lastIndex >= 0 && lastIndex != index) {

@@ -23,6 +23,7 @@ public class main {
     TestGameWidget test = new TestGameWidget();
     mainWidget.changeControl(test, false);
     JFrame frame = new JFrame();
+    frame.setSize(1024/2, 600/2);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(mainWidget);
     frame.setVisible(true);

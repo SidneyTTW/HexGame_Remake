@@ -61,7 +61,7 @@ public interface WidgetInterface {
    * @param logicalPos The logical position of the event.
    * @param button The button of the mouse.
    * @param mouseId The id of the mouse.
-   *  In a simple application, it should only be 0, but on a tablet, it may be some bigger number.
+   *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
   public void mousePressed(Point logicalPos, int button, int mouseId);
   
@@ -71,7 +71,7 @@ public interface WidgetInterface {
    * @param logicalPos The logical position of the event.
    * @param button The button of the mouse.
    * @param mouseId The id of the mouse.
-   *  In a simple application, it should only be 0, but on a tablet, it may be some bigger number.
+   *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
   public void mouseReleased(Point logicalPos, int button, int mouseId);
   
@@ -81,7 +81,7 @@ public interface WidgetInterface {
    * @param logicalPos The logical position of the event.
    * @param button The button of the mouse.
    * @param mouseId The id of the mouse.
-   *  In a simple application, it should only be 0, but on a tablet, it may be some bigger number.
+   *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
   public void mouseDragged(Point logicalPos, int button, int mouseId);
   
@@ -91,7 +91,7 @@ public interface WidgetInterface {
    * @param logicalPos The logical position of the event.
    * @param button The button of the mouse.
    * @param mouseId The id of the mouse.
-   *  In a simple application, it should only be 0, but on a tablet, it may be some bigger number.
+   *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
   public void mouseMoved(Point logicalPos, int button, int mouseId);
   
@@ -101,7 +101,7 @@ public interface WidgetInterface {
    * @param logicalPos The logical position of the event.
    * @param button The button of the mouse.
    * @param mouseId The id of the mouse.
-   *  In a simple application, it should only be 0, but on a tablet, it may be some bigger number.
+   *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
   public void mouseClicked(Point logicalPos, int button, int mouseId);
 

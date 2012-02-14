@@ -78,8 +78,7 @@ public class MathAid {
   public static Point calculatePosition(double a, double r, Point origin) {
     double dx = Math.cos(a) * r;
     double dy = -Math.sin(a) * r;
-    if ((PI - a < 0.02 && PI - a > -0.02))
-    {
+    if ((PI - a < 0.02 && PI - a > -0.02)) {
       if (dx < 0)
         dx = -r;
       else
@@ -88,20 +87,20 @@ public class MathAid {
     }
     double x = dx + origin.getX();
     double y = dy + origin.getY();
-    return new Point((int)x, (int)y);
+    return new Point((int) x, (int) y);
   }
 
   /**
-   * Returns the scale in Y direction in a curve.
-   * When the translate path is ^, suppose that the distance between begin
-   * position and end position is 1, inputs the x position, returns the y
-   * position(I should draw a picture to show how it works-.-)
+   * Returns the scale in Y direction in a curve. When the translate path is ^,
+   * suppose that the distance between begin position and end position is 1,
+   * inputs the x position, returns the y position(I should draw a picture to
+   * show how it works-.-)
    * 
-   *@param bridgeX The position in X direction.
-   *@return The position in Y direction.
+   * @param bridgeX
+   *          The position in X direction.
+   * @return The position in Y direction.
    */
-  public static double bridgeY(double bridgeX)
-  {
+  public static double bridgeY(double bridgeX) {
     if (bridgeX <= 0 || bridgeX >= 1)
       return 0;
     double dx = Math.abs(0.5 - bridgeX);

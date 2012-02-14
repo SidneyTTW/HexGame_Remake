@@ -19,6 +19,8 @@ import VAST.HexGame.Game.GameBoardInterface;
 import VAST.HexGame.Game.GameEffectAdapter;
 import VAST.HexGame.Game.GameInterface;
 import VAST.HexGame.Game.GestureControllerInterface;
+import VAST.HexGame.Game.RotateGestureController;
+import VAST.HexGame.Game.RotateStandardConnectionCalculator;
 import VAST.HexGame.Game.StandardBallFiller;
 import VAST.HexGame.Game.StandardGameRule;
 import VAST.HexGame.Game.SwapGestureController;
@@ -49,7 +51,8 @@ public class TestGameWidget extends AbstractSimpleWidget implements
     
     rule = new StandardGameRule();
     
-    ConnectionCalculatorInterface connectionCalculator = new SwapStandardConnectionCalculator();
+    //ConnectionCalculatorInterface connectionCalculator = new SwapStandardConnectionCalculator();
+    ConnectionCalculatorInterface connectionCalculator = new RotateStandardConnectionCalculator();
 
     coreController = new CoreController(this, rule, balls);
 
@@ -57,7 +60,8 @@ public class TestGameWidget extends AbstractSimpleWidget implements
 
     gameBoard = new ThirtySevenGameBoard();
 
-    gestureController = new SwapGestureController(this, rule);
+    //gestureController = new SwapGestureController(this, rule);
+    gestureController = new RotateGestureController(this, rule);
 
     gameEffectAdapter = new GameEffectAdapter(new EffectPainter());
 
@@ -127,6 +131,10 @@ public class TestGameWidget extends AbstractSimpleWidget implements
   public void mousePressed(Point logicalPos, int button, int mouseId) {
     super.mousePressed(logicalPos, button, mouseId);
     gestureController.pressAt(logicalPos, button, mouseId);
+    if (button > 1) {
+      int index = rule.getGameBoard().ballIndexAtLogicalPosition(logicalPos);
+      System.out.print(rule.getCoreController().getBalls()[index].getState());
+    }
   }
   
   @Override

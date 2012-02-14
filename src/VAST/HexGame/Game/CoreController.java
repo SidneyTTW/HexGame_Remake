@@ -111,7 +111,6 @@ public class CoreController implements CoreControllerInterface {
           needTestStableEliminate = fill();
         }
     } else {
-      System.out.print(1);
       return needTestStableEliminate;
     }
 
@@ -267,8 +266,10 @@ public class CoreController implements CoreControllerInterface {
     Point lastPos = ball.getPosition();
     if (!ball.getStopPositions().isEmpty())
       lastPos = ball.getStopPositions().elementAt(0);
-    if (lastPos.distance(toPos) < 1)
+    if (lastPos.distance(toPos) < 1 && ball.getStopPositions().isEmpty()) {
+      ball.setState(Ball.State.Stable);
       return;
+    }
 
     // Some complex calculation to calculate the positions
     // the ball should be at
