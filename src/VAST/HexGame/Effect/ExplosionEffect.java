@@ -46,6 +46,8 @@ public class ExplosionEffect extends AbstractTimingEffect {
     Graphics2D g2d = (Graphics2D) graphics;
     ExplosionEffectPrivateInfo myInfo = (ExplosionEffectPrivateInfo) info;
     int r = myInfo.radios * myInfo.getAge() / myInfo.getLimit();
+    if (r <= 0)
+      r = 1;
     RadialGradientPaint gradient = new RadialGradientPaint(myInfo.center, r,
         myInfo.dist, myInfo.colors, CycleMethod.NO_CYCLE);
     g2d.setPaint(gradient);

@@ -177,11 +177,13 @@ public class CoreController implements CoreControllerInterface {
     if (rule.getBallFiller() == null)
       return false;
     boolean result = false;
-    autoRotate();
+    if (rule.autoRotate())
+      autoRotate();
     BallFillerInterface filler = rule.getBallFiller();
     if (filler != null)
       result = filler.fillBalls(balls);
-    autoRotate();
+    if (rule.autoRotate())
+      autoRotate();
     return result;
   }
 
@@ -266,7 +268,8 @@ public class CoreController implements CoreControllerInterface {
     Point lastPos = ball.getPosition();
     if (!ball.getStopPositions().isEmpty())
       lastPos = ball.getStopPositions().elementAt(0);
-    if (lastPos.distance(toPos) < 1 && ball.getStopPositions().isEmpty()) {
+    if (lastPos.distance(toPos) < 20 && ball.getStopPositions().isEmpty()) {
+      ball.setPosition(toPos);
       ball.setState(Ball.State.Stable);
       return;
     }

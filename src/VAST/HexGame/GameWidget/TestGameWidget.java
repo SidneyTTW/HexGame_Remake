@@ -37,8 +37,10 @@ import VAST.HexGame.Widgets.AbstractSimpleWidget;
 public class TestGameWidget extends AbstractSimpleWidget implements
     GameInterface {
 
-  StandardGameRule rule;
   Ball [] balls;
+  StandardGameRule rule;
+  ConnectionCalculatorInterface connectionCalculator;
+  BallFillerInterface ballFiller;
   GameBoardInterface gameBoard;
   GestureControllerInterface gestureController;
   CoreControllerInterface coreController;
@@ -52,11 +54,11 @@ public class TestGameWidget extends AbstractSimpleWidget implements
     rule = new StandardGameRule();
     
     //ConnectionCalculatorInterface connectionCalculator = new SwapStandardConnectionCalculator();
-    ConnectionCalculatorInterface connectionCalculator = new RotateStandardConnectionCalculator();
+    connectionCalculator = new RotateStandardConnectionCalculator();
 
     coreController = new CoreController(this, rule, balls);
 
-    BallFillerInterface ballFiller = new StandardBallFiller(rule, 0);
+    ballFiller = new StandardBallFiller(rule, 0);
 
     gameBoard = new ThirtySevenGameBoard();
 

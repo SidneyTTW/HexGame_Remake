@@ -31,10 +31,13 @@ public class BasicPainter {
 
   private static Vector<Vector<Image>> ballsImages = new Vector<Vector<Image>>();
   private static Vector<Integer> ballsFrameCounts = new Vector<Integer>();
+  private static Vector<Image> lockImages = new Vector<Image>();
 
   private static Vector<Image> backgroundImages = new Vector<Image>();
 
   private static final String ballFolder = "j:/tmp/images/balls";
+
+  private static final String lockFile = "lock0*.png";
 
   private static final String[] ballFiles = { "red0*.png", "blue0*.png",
       "green0*.png", "yellow0*.png", "purple0*.png", "white0*.png" };
@@ -49,6 +52,10 @@ public class BasicPainter {
 
   private static void initBallsImages() {
     ImageAid.loadFromFile(ballFolder, ballFiles, ballsImages, ballsFrameCounts);
+  }
+
+  private static void initLockImages() {
+    lockImages = ImageAid.loadFromFile(ballFolder, lockFile);
   }
 
   private static void initBackgroundImages() {
@@ -83,17 +90,9 @@ public class BasicPainter {
     if (ballsImages.isEmpty())
       initBallsImages();
 
-    // TODO
     // Initialize lock if necessary
-    // if (ballsLockPixmaps.isEmpty())
-    // {
-    // // A value which won't be used
-    // int tmp;
-    // initPixmaps(":/images/balls/lock*.png",
-    // ballsLockPixmaps,
-    // tmp);
-    //
-    // }
+    if (lockImages.isEmpty())
+      initLockImages();
 
     // For each ball
 
@@ -112,30 +111,20 @@ public class BasicPainter {
               frame % ballsFrameCounts.elementAt(colorIndex));
           // Get the position of the ball
           Point pos = balls[index].getPosition();
-          
+
           if (image == null)
             continue;
-          
+
           // Draw the image
           ImageAid.drawImageAt(graphics, image, 1.0, 1.0, pos, true, true);
 
-          // TODO
-          // // If the ball is locked
-          // if (balls[i].isLocked())
-          // {
-          // // Get the image
-          // const QPixmap& p2 = ballsLockPixmaps
-          // [frame % ballsLockPixmaps.size()];
-          //
-          // // Draw the image
-          // drawPixmapAt(painter,
-          // p2,
-          // size / p2.width() * xRate * 0.75,
-          // size / p2.height() * yRate * 0.75,
-          // pos,
-          // true,
-          // true);
-          // }
+          // If the ball is locked
+          // If the first statement is missed, may cause a null pointer error
+          // which may be caused by the multithreading
+          if (balls[index] != null && balls[index].isLocked()) {
+            image = lockImages.elementAt(frame % lockImages.size());
+            ImageAid.drawImageAt(graphics, image, 1.0, 1.0, pos, true, true);
+          }
         }
       }
     }
@@ -166,7 +155,7 @@ public class BasicPainter {
 
     // Get the image
     Image image = backgroundImages.elementAt(id);
-    
+
     if (image == null)
       return;
 

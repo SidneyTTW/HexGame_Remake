@@ -165,7 +165,7 @@ public class Ball {
       // Change the state
       if (stopPositions.size() == 0)
         state = State.Stable;
-    } else if (state == State.SystemMoving)
+    } else if (state != State.UserMoving)
       state = State.Stable;
 
     return state != lastState;

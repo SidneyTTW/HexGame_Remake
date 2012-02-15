@@ -58,7 +58,8 @@ public class EffectPainter implements EffectPainterInterface {
   @Override
   public void paint(Graphics graphics) {
     for (int i = 0;i < AbstractEffect.TOTAL_EFFECT_COUNT;++i) {
-      for(AbstractEffect effect : effects[i]){
+      for (Iterator<AbstractEffect> itr = effects[i].iterator();itr.hasNext();) {
+        AbstractEffect effect = itr.next();
         effect.paint(graphics);
       }
     }
