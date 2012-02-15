@@ -136,14 +136,13 @@ public class GameEffectAdapter {
    */
   public void explodeAt(GameBoardInterface gameBoard, int index) {
     Point center = gameBoard.ballLogicalPositionOfIndex(index);
-    int radios = gameBoard.getBallRadius()
-        + gameBoard.intervalBetweenTwoLayers();
+    int radios = 2 * (gameBoard.getBallRadius() + gameBoard
+        .intervalBetweenTwoLayers());
     float[] dist = { 0.0f, 1.0f };
     Color[] colors = { new Color(255, 255, 255, 200),
         new Color(255, 255, 255, 50) };
-    int limit = 10;
     ExplosionEffect effect = new ExplosionEffect(center, radios, dist, colors,
-        limit);
+        5);
     effectPainter.addEffect(effect);
   }
 
@@ -165,18 +164,14 @@ public class GameEffectAdapter {
     int interval = 6 * gameBoard.intervalBetweenTwoLayers();
     Point[] gradientOffsets = new Point[3];
     Point[] lineOffsets = new Point[3];
-    gradientOffsets[0] = new Point(center.x + r / 2,
-        (int) (center.y - r / 2 * 1.732));
-    gradientOffsets[1] = new Point(center.x - r / 2,
-        (int) (center.y - r / 2 * 1.732));
-    gradientOffsets[0] = new Point(center.x, (int) (center.y - r / 2));
-    lineOffsets[0] = new Point((int) (center.x + interval / 2 * 1.732),
-        center.y + interval / 2);
-    lineOffsets[1] = new Point((int) (center.x - interval / 2 * 1.732),
-        center.y + interval / 2);
-    lineOffsets[2] = new Point(center.x - interval, center.y);
+    gradientOffsets[0] = new Point((int) (-r / 2 * 1.732), r / 2);
+    gradientOffsets[1] = new Point((int) (r / 2 * 1.732), r / 2);
+    gradientOffsets[2] = new Point(0, (int) (r));
+    lineOffsets[0] = new Point(interval / 2, (int) (interval / 2 * 1.732));
+    lineOffsets[1] = new Point(interval / 2, (int) (-interval / 2 * 1.732));
+    lineOffsets[2] = new Point(-interval, 0);
     LightningEffect effect = new LightningEffect(center, gradientOffsets,
-        lineOffsets, dist, colors, 5);
+        lineOffsets, dist, colors, 4);
     effectPainter.addEffect(effect);
   }
 

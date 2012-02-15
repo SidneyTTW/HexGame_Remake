@@ -103,9 +103,13 @@ public class RotateGestureController implements GestureControllerInterface {
    */
   @Override
   public void releaseAt(Point logicalPos, int button, int mouseId) {
+    GameEffectAdapter effectPainter = rule.getEffectPainter();
+    if (effectPainter != null) {
+      effectPainter.clearUserMovingEliminationHints();
+      effectPainter.clearSelectionHints();
+    }
     if (gestureState != GestureState.LocateGesture)
       return;
-    GameEffectAdapter effectPainter = rule.getEffectPainter();
     GameBoardInterface gameBoard = rule.getGameBoard();
     CoreControllerInterface coreController = rule.getCoreController();
     Ball[] balls = coreController.getBalls();
@@ -278,6 +282,28 @@ public class RotateGestureController implements GestureControllerInterface {
     for (offset = 0; offset < 6; ++offset)
       if ((offset + 1) * MathAid.PI / 3 > dAngle)
         break;
+    Ball[] copy = new Ball[balls.length];
+    for (int i = 0; i < balls.length; ++i) {
+      copy[i] = balls[i];
+    }
+    ConnectionCalculatorInterface connectionCalculator = rule
+        .getConnectionCalculator();
+    if (connectionCalculator == null)
+      return;
+    int n = indexes.size();
+    Ball[] currentBalls = new Ball[n];
+    for (int i = 0; i < n; ++i) {
+      int currentIndex = indexes.elementAt((i + offset) % n);
+      currentBalls[i] = balls[currentIndex];
+    }
+    for (int i = 0; i < n; ++i) {
+      int index = indexes.elementAt(i);
+      copy[index] = currentBalls[i];
+    }
+    ConnectionInterface connections = connectionCalculator.calculateConnection(
+        copy, rule.getGameBoard(), false);
+    if (game != null)
+      game.userMovingConnectionTested(connections);
   }
 
   /*
@@ -287,8 +313,20 @@ public class RotateGestureController implements GestureControllerInterface {
    */
   @Override
   public void interrupt() {
-    // TODO Auto-generated method stub
-
+    GameEffectAdapter effectPainter = rule.getEffectPainter();
+    if (effectPainter != null) {
+      effectPainter.clearUserMovingEliminationHints();
+      effectPainter.clearSelectionHints();
+    }
+    GameBoardInterface gameBoard = rule.getGameBoard();
+    CoreControllerInterface coreController = rule.getCoreController();
+    Ball[] balls = coreController.getBalls();
+    int n = indexes.size();
+    for (int i = 0; i < n; ++i) {
+      int index = indexes.elementAt(i);
+      balls[index].setPosition(gameBoard.ballLogicalPositionOfIndex(index));
+      balls[index].setState(Ball.State.Stable);
+    }
   }
 
   /*

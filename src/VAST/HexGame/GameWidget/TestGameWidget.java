@@ -100,7 +100,12 @@ public class TestGameWidget extends AbstractSimpleWidget implements
    * @see VAST.HexGame.Game.GameInterface#userMovingConnectionTested(VAST.HexGame.Game.ConnectionInterface)
    */
   @Override
-  public void userMovingConnectionTested(ConnectionInterface connections) {}
+  public void userMovingConnectionTested(ConnectionInterface connections) {
+    gameEffectAdapter.clearUserMovingEliminationHints();
+    for (int i = 0;i < gameBoard.totalBallCount();++i)
+      if (connections.isInAChain(i))
+        gameEffectAdapter.userMovingEliminationHintAt(gameBoard, i);
+  }
 
   /* (non-Javadoc)
    * @see VAST.HexGame.Game.GameInterface#eliminated(int)
@@ -131,10 +136,6 @@ public class TestGameWidget extends AbstractSimpleWidget implements
   public void mousePressed(Point logicalPos, int button, int mouseId) {
     super.mousePressed(logicalPos, button, mouseId);
     gestureController.pressAt(logicalPos, button, mouseId);
-    if (button > 1) {
-      int index = rule.getGameBoard().ballIndexAtLogicalPosition(logicalPos);
-      System.out.print(rule.getCoreController().getBalls()[index].getState());
-    }
   }
   
   @Override

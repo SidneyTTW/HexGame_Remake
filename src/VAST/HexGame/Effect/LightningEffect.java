@@ -7,6 +7,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MultipleGradientPaint;
 import java.awt.Point;
 import java.awt.LinearGradientPaint;
 import java.awt.Stroke;
@@ -39,16 +40,14 @@ public class LightningEffect extends AbstractTimingEffect {
   public void paint(Graphics graphics) {
     Graphics2D g2d = (Graphics2D) graphics;
     LightningEffectPrivateInfo myInfo = (LightningEffectPrivateInfo) info;
-    // private Point[] gradientOffsets;
-    // private Point[] lineOffsets;
     Stroke oldStroke = g2d.getStroke();
     for (int i = 0; i < myInfo.gradientOffsets.length; ++i) {
       Point to = (Point) myInfo.center.clone();
       to.translate(myInfo.gradientOffsets[i].x, myInfo.gradientOffsets[i].y);
       LinearGradientPaint gradient = new LinearGradientPaint(myInfo.center, to,
-          myInfo.dist, myInfo.colors);
-
-      g2d.setStroke(new BasicStroke(10, BasicStroke.CAP_SQUARE,
+          myInfo.dist, myInfo.colors, MultipleGradientPaint.CycleMethod.REFLECT);
+      int width = 2 * (int) (new Point(0, 0)).distance(myInfo.gradientOffsets[i]);
+      g2d.setStroke(new BasicStroke(width, BasicStroke.CAP_SQUARE,
           BasicStroke.JOIN_ROUND));
       g2d.setPaint(gradient);
       Point linePoint1 = (Point) myInfo.center.clone();
@@ -59,9 +58,7 @@ public class LightningEffect extends AbstractTimingEffect {
       linePoint2.translate(
           -myInfo.lineOffsets[i].x * myInfo.getAge() / myInfo.getLimit(),
           -myInfo.lineOffsets[i].y * myInfo.getAge() / myInfo.getLimit());
-      g2d.drawLine(myInfo.center.x + myInfo.lineOffsets[i].x, myInfo.center.y
-          + myInfo.lineOffsets[i].y, myInfo.center.x - myInfo.lineOffsets[i].x,
-          myInfo.center.y - myInfo.lineOffsets[i].y);
+      g2d.drawLine(linePoint1.x, linePoint1.y, linePoint2.x, linePoint2.y);
     }
     g2d.setStroke(oldStroke);
   }
