@@ -106,4 +106,19 @@ public class MathAid {
     double dx = Math.abs(0.5 - bridgeX);
     return Math.sqrt(1 - Math.pow(dx, 2.0)) - 0.8660;
   }
+
+  /**
+   * @param from
+   *          The start position.
+   * @param to
+   *          The destination position.
+   * @param percentage
+   *          The percentage of the progress.
+   * @return The middle Position of the two points.
+   */
+  public static Point midPosition(Point from, Point to, double percentage) {
+    double midX = from.x * (1 - percentage) + to.x * percentage;
+    double midY = from.y * (1 - percentage) + to.y * percentage;
+    return new Point((int) midX, (int) midY);
+  }
 }
