@@ -94,13 +94,17 @@ public class BasicPainter {
 
         // If the ball exists
         if (balls[index] != null) {
+          // Get the position of the ball
+          Point pos = balls[index].getPosition();
+          
+          if (pos.x == 0 && pos.y == 0)
+            return;
+          
           // Get the color
           int colorIndex = balls[index].getColor();
           // Get the image
           Image image = ballsImages.elementAt(colorIndex).elementAt(
               frame % ballsFrameCounts.elementAt(colorIndex));
-          // Get the position of the ball
-          Point pos = balls[index].getPosition();
 
           if (image == null)
             continue;

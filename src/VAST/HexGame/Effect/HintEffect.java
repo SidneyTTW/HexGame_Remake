@@ -6,6 +6,7 @@ package VAST.HexGame.Effect;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import AidPackage.ImageAid;
 import AidPackage.ImageMapper;
 
 /**
@@ -31,8 +32,9 @@ public class HintEffect extends AbstractTimingEffect {
   public void paint(Graphics graphics) {
     HintEffectPrivateInfo myInfo = (HintEffectPrivateInfo) info;
     Point position = myInfo.imageMapper.getPosition(myInfo.getAge());
-    graphics.drawImage(myInfo.imageMapper.getImage(myInfo.getAge()),
-        position.x, position.y, null);
+    ImageAid.drawImageAt(graphics,
+        myInfo.imageMapper.getImage(myInfo.getAge()), 1.0, 1.0, position,
+        false, true);
   }
 
   /*
@@ -48,13 +50,12 @@ public class HintEffect extends AbstractTimingEffect {
   /**
    * Class of information of hint effect.
    */
-  public class HintEffectPrivateInfo extends
-      AbstractTimingEffectPrivateInfo {
+  public class HintEffectPrivateInfo extends AbstractTimingEffectPrivateInfo {
     /**
      * The image mapper.
      */
     private ImageMapper imageMapper;
-    
+
     public HintEffectPrivateInfo(ImageMapper imageMapper, int limit) {
       this.imageMapper = imageMapper;
       setLimit(limit);

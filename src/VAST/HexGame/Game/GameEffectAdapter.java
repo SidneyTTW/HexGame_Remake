@@ -106,7 +106,7 @@ public class GameEffectAdapter {
   public void userMovingEliminationHintAt(GameBoardInterface gameBoard,
       int index) {
     Point center = gameBoard.ballLogicalPositionOfIndex(index);
-    int interval = gameBoard.intervalBetweenTwoLayers() / 2;
+    int interval = gameBoard.intervalBetweenTwoLayers() / 2 + 1;
     Polygon border = new Polygon();
     Color color = new Color(255, 255, 255, 150);
     double dy = 0.577 * interval;
@@ -224,7 +224,7 @@ public class GameEffectAdapter {
       indexMapper[i] = 0;
     }
     ImageMapper imageMapper = new ImageMapper(image, positions, indexMapper);
-    HintEffect effect = new HintEffect(imageMapper, 20);
+    HintEffect effect = new HintEffect(imageMapper, 19);
     effectPainter.addEffect(effect);
   }
 
