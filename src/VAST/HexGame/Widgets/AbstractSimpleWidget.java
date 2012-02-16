@@ -49,11 +49,11 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    */
   @Override
   public void paint(Graphics g) {
-    for (int i = 0;i < items.size();++i)
+    for (int i = items.size() - 1;i >= 0;--i)
       if (items.elementAt(i).isVisible())
         items.elementAt(i).paint(g, frame);
-    
-    for (int i = 0;i < buttons.size();++i)
+
+    for (int i = buttons.size() - 1;i >= 0;--i)
       if (buttons.elementAt(i).isVisible())
         buttons.elementAt(i).paint(g, frame);
     ++frame;

@@ -38,6 +38,20 @@ public class RectItem extends AbstractItem {
     this.height = height;
   }
   
+  /**
+   * @return the width
+   */
+  public int getWidth() {
+    return width;
+  }
+
+  /**
+   * @return the height
+   */
+  public int getHeight() {
+    return height;
+  }
+
   /* (non-Javadoc)
    * @see VAST.HexGame.Widgets.ItemInterface#isIn(java.awt.Point)
    */

@@ -111,7 +111,7 @@ public abstract class AbstractItem implements ItemInterface {
    */
   @Override
   public void paint(Graphics g, int frame) {
-    if (!isVisible())
+    if (position.x == 0 && position.y == 0)
       return;
     Image image = null;
     switch (state) {

@@ -4,6 +4,7 @@
 package VAST.HexGame.Widgets;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -20,12 +21,17 @@ public class RoundButtonItem extends RoundItem {
   /**
    * The text to show.
    */
-  String text = "";
+  protected String text = "";
 
   /**
    * The color of the text.
    */
-  Color color = Color.black;
+  protected Color color = Color.black;
+
+  /**
+   * The color of the text.
+   */
+  protected Font font = new Font("Default",Font.BOLD, 15);
 
   /**
    * @param text The new text.
@@ -41,6 +47,20 @@ public class RoundButtonItem extends RoundItem {
     this.color = color;
   }
   
+  /**
+   * @return the font
+   */
+  public Font getFont() {
+    return font;
+  }
+
+  /**
+   * @param font the font to set
+   */
+  public void setFont(Font font) {
+    this.font = font;
+  }
+  
   /* (non-Javadoc)
    * @see VAST.HexGame.Widgets.AbstractItem#paint(java.awt.Graphics, int)
    */
@@ -48,9 +68,12 @@ public class RoundButtonItem extends RoundItem {
   public void paint(Graphics g, int frame) {
     super.paint(g, frame);
     Point center = (Point) getLogicalPosition().clone();
+    Font lastFont = g.getFont();
+    g.setFont(font);
     g.setColor(color);
     if (isPressed())
       center.setLocation(center.getX() + 2, center.getY() + 2);
     ImageAid.drawText((Graphics2D) g, center, text);
+    g.setFont(lastFont);
   }
 }
