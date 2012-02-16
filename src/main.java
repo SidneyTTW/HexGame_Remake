@@ -21,7 +21,7 @@ public class main {
    */
   public static void main(String[] args) {
     MainWidget mainWidget = new MainWidget();
-//    TestWidget test = new TestWidget(mainWidget);
+    //TestWidget test = new TestWidget(mainWidget);
     ClassicGameWidget test = new ClassicGameWidget(AbstractStandardGameWidget.StandardGesture.Swap);
     mainWidget.changeControl(test, false);
     JFrame frame = new JFrame();
