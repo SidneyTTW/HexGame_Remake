@@ -99,17 +99,17 @@ public class CoreController implements CoreControllerInterface {
 
       // If need to test stable eliminate
       if (needTestStableEliminate && testStableEliminate()) {
-          // Will not need to test again in next few steps unless new balls have
-          // been added
-          needTestStableEliminate = fill();
+        // Will not need to test again in next few steps unless new balls have
+        // been added
+        needTestStableEliminate = fill();
 
-          // There is something changed
-          result = true;
-        } else {
-          // Will not need to test again in next few steps unless new balls have
-          // been added
-          needTestStableEliminate = fill();
-        }
+        // There is something changed
+        result = true;
+      } else {
+        // Will not need to test again in next few steps unless new balls have
+        // been added
+        needTestStableEliminate = fill();
+      }
     } else {
       return needTestStableEliminate;
     }
@@ -179,12 +179,25 @@ public class CoreController implements CoreControllerInterface {
     boolean result = false;
     if (rule.autoRotate())
       autoRotate();
+    else
+      moveToStable();
     BallFillerInterface filler = rule.getBallFiller();
     if (filler != null)
       result = filler.fillBalls(balls);
     if (rule.autoRotate())
       autoRotate();
+    else
+      moveToStable();
     return result;
+  }
+
+  private void moveToStable() {
+    GameBoardInterface gameBoard = rule.getGameBoard();
+    for (int i = 0; i < gameBoard.totalBallCount(); ++i)
+      if (balls[i] != null && balls[i].getState() != Ball.State.UserMoving) {
+        balls[i].setState(Ball.State.Stable);
+        balls[i].setPosition(gameBoard.ballLogicalPositionOfIndex(i));
+      }
   }
 
   /**
@@ -222,8 +235,7 @@ public class CoreController implements CoreControllerInterface {
         case AlmostStable:
           // A ball moved by the system
         case SystemMoving:
-          if (needRotateCount != 0)
-          {
+          if (needRotateCount != 0) {
             // Current ball index
             int current = originalChain.elementAt(j);
             // Target position index
