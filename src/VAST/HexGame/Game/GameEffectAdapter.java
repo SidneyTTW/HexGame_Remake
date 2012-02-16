@@ -10,7 +10,9 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
+import AidPackage.ImageAid;
 import AidPackage.ImageMapper;
+import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Effect.AbstractEffect;
 import VAST.HexGame.Effect.BorderEffect;
 import VAST.HexGame.Effect.EffectPainterInterface;
@@ -213,14 +215,15 @@ public class GameEffectAdapter {
    */
   public void hintAt(Point pos, int hintType) {
     Point centerPosition = (Point) pos.clone();
-    Image[] images = new Image[1];
+    Image[] image = new Image[1];
+    image[0] = ImageAid.loadFromFile(SourceManagement.HintFolder, SourceManagement.HintFile[hintType]).elementAt(0);
     Point[] positions = new Point[20];
     int[] indexMapper = new int[20];
     for (int i = 0; i < 20; ++i) {
       positions[i] = new Point(centerPosition.x, centerPosition.y + dys[i]);
       indexMapper[i] = 0;
     }
-    ImageMapper imageMapper = new ImageMapper(images, positions, indexMapper);
+    ImageMapper imageMapper = new ImageMapper(image, positions, indexMapper);
     HintEffect effect = new HintEffect(imageMapper, 20);
     effectPainter.addEffect(effect);
   }

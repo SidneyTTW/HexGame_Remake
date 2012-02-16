@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Vector;
 
+import VAST.HexGame.Aid.SourceManagement;
+
 import AidPackage.ImageAid;
 
 /**
@@ -35,31 +37,19 @@ public class BasicPainter {
 
   private static Vector<Image> backgroundImages = new Vector<Image>();
 
-  private static final String ballFolder = "j:/tmp/images/balls";
-
-  private static final String lockFile = "lock0*.png";
-
-  private static final String[] ballFiles = { "red0*.png", "blue0*.png",
-      "green0*.png", "yellow0*.png", "purple0*.png", "white0*.png" };
-
-  private static final String backgroundFolder = "j:/tmp/images/backgrounds";
-
-  private static final String[] backgroundFiles = { "mainmenubackground.png",
-      "puzzlemenubackground.png", "mainmenubackground.png",
-      "37gamebackground.png", "61gamebackground.png",
-      "helpbackgroundwithbutton.png", "achievementbackground.png",
-      "37twoplayergamebackground.png", "mainselectplayersbackground.png" };
-
   private static void initBallsImages() {
-    ImageAid.loadFromFile(ballFolder, ballFiles, ballsImages, ballsFrameCounts);
+    ImageAid.loadFromFile(SourceManagement.BallFolder,
+        SourceManagement.BallFiles, ballsImages, ballsFrameCounts);
   }
 
   private static void initLockImages() {
-    lockImages = ImageAid.loadFromFile(ballFolder, lockFile);
+    lockImages = ImageAid.loadFromFile(SourceManagement.BallFolder,
+        SourceManagement.LockFile);
   }
 
   private static void initBackgroundImages() {
-    backgroundImages = ImageAid.loadFromFile(backgroundFolder, backgroundFiles);
+    backgroundImages = ImageAid.loadFromFile(SourceManagement.BackgroundFolder,
+        SourceManagement.BackgroundFiles);
   }
 
   /**
@@ -146,7 +136,7 @@ public class BasicPainter {
    */
   public static void paintBackGround(int id, Graphics graphics, int width,
       int height, int frame) {
-    if (id < 0 || id >= backgroundFolder.length())
+    if (id < 0 || id >= SourceManagement.BackgroundFolder.length())
       return;
 
     // Initialize backgrounds if necessary
