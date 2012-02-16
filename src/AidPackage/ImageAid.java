@@ -72,9 +72,9 @@ public class ImageAid {
     int stringWidth = g2d.getFontMetrics().stringWidth(text);
     int stringAscent = g2d.getFontMetrics().getAscent();
     int stringHeight = g2d.getFontMetrics().getAscent()
-        + g2d.getFontMetrics().getDescent();
+        - g2d.getFontMetrics().getDescent();
     g2d.drawString(text, (int) (centerPosition.getX() - stringWidth / 2),
-        (int) (centerPosition.getY() - stringHeight / 2));
+        (int) (centerPosition.getY() + stringHeight / 2));
   }
 
   /**
