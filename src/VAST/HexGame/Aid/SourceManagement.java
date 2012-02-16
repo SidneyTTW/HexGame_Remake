@@ -17,9 +17,14 @@ public class SourceManagement {
   
   public static final String HintFolder = mainFolder + "/images/hint";
   public static final String ButtonFolder = mainFolder + "/images/buttons";
+  
+  public static final String BonusFolder = mainFolder + "/images/bonus";
+  public static final String FlameBonusFile = "flame.png";
+  public static final String StarBonusFile = "star.png";
 
   public static final int StandardButtonWidth = 160;
   public static final int StandardButtonHeight = 60;
+  public static final int StandardBonusRadious = 25;
   public static final String StandardButtonNormalFile = "buttonbackground.png";
   public static final String StandardButtonPressedFile = "buttonbackground.png";
 

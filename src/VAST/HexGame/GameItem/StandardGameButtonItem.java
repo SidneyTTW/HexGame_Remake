@@ -24,7 +24,7 @@ public class StandardGameButtonItem extends RectButtonItem {
   public StandardGameButtonItem() {
     setImageSeries(SourceManagement.ButtonFolder,
         SourceManagement.StandardButtonNormalFile);
-    this.setImageSeries(SourceManagement.ButtonFolder,
+    setPressedImageSeries(SourceManagement.ButtonFolder,
         SourceManagement.StandardButtonPressedFile);
     setWidth(SourceManagement.StandardButtonWidth);
     setHeight(SourceManagement.StandardButtonHeight);
