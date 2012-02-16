@@ -67,14 +67,15 @@ public abstract class AbstractStandardConnectionCalculator implements
           if (balls[chain.elementAt(0)] != null) {
             firstBall = balls[chain.elementAt(0)];
             for (int j = 0; j < 6; ++j) {
+              int currentIndex = chain.elementAt(j);
               // A complex condition to judge whether the
               // ball can be in a connection and whether the
               // ball has the same color with the first ball
-              if (balls[chain.elementAt(j)] == null
-                  || !firstBall.sameColor(balls[chain.elementAt(j)])
-                  || !((!onlyStableBalls) && ((balls[chain.elementAt(j)]
+              if (balls[currentIndex] == null
+                  || (!firstBall.sameColor(balls[currentIndex]))
+                  || (!((!onlyStableBalls) || ((balls[currentIndex]
                       .getState() == Ball.State.Stable) || (balls[chain
-                      .elementAt(j)].getState() == Ball.State.AlmostStable)))) {
+                      .elementAt(j)].getState() == Ball.State.AlmostStable))))) {
                 chainCanBeEliminated = false;
                 break;
               }
