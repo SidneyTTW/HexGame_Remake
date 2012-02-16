@@ -4,10 +4,17 @@
 package VAST.HexGame.GameWidget;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.Vector;
 
+import AidPackage.MathAid;
+import AidPackage.SoundController;
+import VAST.HexGame.Aid.Statistics;
 import VAST.HexGame.Effect.EffectPainter;
 import VAST.HexGame.Game.Ball;
+import VAST.HexGame.Game.ConnectionInterface;
 import VAST.HexGame.Game.CoreController;
+import VAST.HexGame.Game.GameBoardInterface;
 import VAST.HexGame.Game.GameEffectAdapter;
 import VAST.HexGame.Game.RotateGestureController;
 import VAST.HexGame.Game.RotateStandardConnectionCalculator;
@@ -16,7 +23,10 @@ import VAST.HexGame.Game.StandardGameRule;
 import VAST.HexGame.Game.SwapGestureController;
 import VAST.HexGame.Game.SwapStandardConnectionCalculator;
 import VAST.HexGame.Game.ThirtySevenGameBoard;
+import VAST.HexGame.GameItem.AbstractBonusItem;
+import VAST.HexGame.GameItem.FlameBonusItem;
 import VAST.HexGame.GameItem.StandardGameButtonItem;
+import VAST.HexGame.GameItem.StarBonusItem;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
 
 /**
@@ -31,8 +41,15 @@ public class ClassicGameWidget extends AbstractStandardGameWidget {
   private static final int ExitButton = AbstractStandardGameWidget.BUILT_IN_BUTTON_COUNT + 2;
 
   public ClassicGameWidget(StandardGesture gesture) {
+
     standardInit();
     
+    flameItem.setLogicalPosition(new Point((int) (width() * 0.1),
+        (int) (height() * 0.4)));
+
+    starItem.setLogicalPosition(new Point((int) (width() * 0.1),
+        (int) (height() * 0.55)));
+
     this.gesture = gesture;
     gameBoard = new ThirtySevenGameBoard();
     balls = new Ball[gameBoard.totalBallCount()];
@@ -40,23 +57,23 @@ public class ClassicGameWidget extends AbstractStandardGameWidget {
       balls[i] = null;
 
     rule = new StandardGameRule();
-    gameEffectAdapter = new GameEffectAdapter(new EffectPainter());
+    gameEffectAdapter =  new GameEffectAdapter(new EffectPainter());
     coreController = new CoreController(this, rule, balls);
-    ballFiller = new StandardBallFiller(rule, gameBoard.totalBallCount() / 3);
+    ballFiller = new StandardBallFiller(rule, gameBoard.totalBallCount() / 2);
 
     switch (gesture) {
     case Swap:
-      connectionCalculator = new SwapStandardConnectionCalculator();
+      connectionCalculator = null;//new SwapStandardConnectionCalculator();
       gestureController = new SwapGestureController(this, rule);
       break;
     case Rotate:
-      connectionCalculator = new RotateStandardConnectionCalculator();
+      connectionCalculator = null;// = new RotateStandardConnectionCalculator();
       gestureController = new RotateGestureController(this, rule);
       break;
     }
 
     boolean rollBack = true;
-    boolean autoRotate = true;
+    boolean autoRotate = false;
     boolean endlessFill = false;
 
     rule.setBallFiller(ballFiller);
@@ -86,6 +103,60 @@ public class ClassicGameWidget extends AbstractStandardGameWidget {
     addItem(button, AbstractSimpleWidget.ItemType.ButtonItem);
   }
 
+  @Override
+  public void stableConnectionTested(ConnectionInterface connections) {
+    super.stableConnectionTested(connections);
+    Vector<Vector<Integer>> allChains = connections.allChains();
+    for (int i = 0; i < gameBoard.totalBallCount(); ++i) {
+      int relatedChainCount = connections.relatedChainCount(i);
+      if (gameEffectAdapter != null && relatedChainCount >= 2)
+        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+      if (relatedChainCount == 2) {
+        // Add sound effect
+        SoundController.addSound(SoundController.GetFlame);
+        // Get a flame
+        flameItem.addOne();
+        // Connect to statistic
+        Statistics.addStatistic(Statistics.FlameGetCount, 1);
+      } else if (relatedChainCount > 2) {
+        // Add sound effect
+        SoundController.addSound(SoundController.GetStar);
+        // Get a flame
+        starItem.addOne();
+        // Connect to statistic
+        Statistics.addStatistic(Statistics.StarGetCount, 1);
+      }
+    }
+
+    for (int i = 0; i < allChains.size(); ++i) {
+      int size = allChains.elementAt(i).size();
+      Point pos1 = new Point(gameBoard.ballLogicalPositionOfIndex(allChains
+          .elementAt(i).elementAt(0)));
+      Point pos2 = new Point(gameBoard.ballLogicalPositionOfIndex(allChains
+          .elementAt(i).elementAt(size - 1)));
+      if (gameEffectAdapter != null)
+        gameEffectAdapter.wordsAt(MathAid.midPosition(pos1, pos2, 0.5), ""
+            + size, size * 4 + 15);
+      if (gameEffectAdapter != null && size >= 4)
+        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+      if (size == 4) {
+        // Add sound effect
+        SoundController.addSound(SoundController.GetFlame);
+        // Get a flame
+        flameItem.addOne();
+        // Connect to statistic
+        Statistics.addStatistic(Statistics.FlameGetCount, 1);
+      } else if (size > 4) {
+        // Add sound effect
+        SoundController.addSound(SoundController.GetStar);
+        // Get a flame
+        starItem.addOne();
+        // Connect to statistic
+        Statistics.addStatistic(Statistics.StarGetCount, 1);
+      }
+    }
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -93,8 +164,6 @@ public class ClassicGameWidget extends AbstractStandardGameWidget {
    */
   @Override
   public void eliminated(int count) {
-    // TODO Auto-generated method stub
-
   }
 
   /*

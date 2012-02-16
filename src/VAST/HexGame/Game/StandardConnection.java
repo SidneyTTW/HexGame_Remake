@@ -64,6 +64,20 @@ public class StandardConnection implements ConnectionInterface {
   /*
    * (non-Javadoc)
    * 
+   * @see VAST.HexGame.Game.ConnectionInterface#relatedChainCount(int)
+   */
+  @Override
+  public int relatedChainCount(int index) {
+    int result = 0;
+    for (int i = 0;i < 10;++i)
+      if (i != 3 && connectionsOfIndex[index][i] != null)
+        ++result;
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Game.ConnectionInterface#allChains()
    */
   @Override

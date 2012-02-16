@@ -41,6 +41,13 @@ public interface ConnectionInterface {
   public boolean isInAChain(int index);
   
   /**
+   * @param index
+   *          The given index of the ball.
+   * @return The number of hte chains related.
+   */
+  public int relatedChainCount(int index);
+  
+  /**
    * @return All the chains detected.
    */
   public Vector<Vector<Integer> > allChains();

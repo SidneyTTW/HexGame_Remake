@@ -5,11 +5,16 @@ package VAST.HexGame.GameWidget;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import AidPackage.MathAid;
+import AidPackage.SoundController;
+import VAST.HexGame.Aid.SourceManagement;
+import VAST.HexGame.Aid.Statistics;
 import VAST.HexGame.Game.Ball;
 import VAST.HexGame.Game.BallFillerInterface;
 import VAST.HexGame.Game.BasicPainter;
@@ -20,9 +25,16 @@ import VAST.HexGame.Game.GameBoardInterface;
 import VAST.HexGame.Game.GameEffectAdapter;
 import VAST.HexGame.Game.GameInterface;
 import VAST.HexGame.Game.GestureControllerInterface;
+import VAST.HexGame.Game.RotateGestureController;
+import VAST.HexGame.Game.RotateStandardConnectionCalculator;
 import VAST.HexGame.Game.StandardGameRule;
+import VAST.HexGame.Game.SwapGestureController;
+import VAST.HexGame.Game.SwapStandardConnectionCalculator;
+import VAST.HexGame.GameItem.AbstractBonusItem;
+import VAST.HexGame.GameItem.FlameBonusItem;
 import VAST.HexGame.GameItem.RectMaskItem;
 import VAST.HexGame.GameItem.StandardGameButtonItem;
+import VAST.HexGame.GameItem.StarBonusItem;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
 import VAST.HexGame.Widgets.ItemInterface;
 import VAST.HexGame.Widgets.RectButtonItem;
@@ -76,17 +88,27 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.6));
   private static final int ResetConfirmButton = 0;
   private static final int ResetCancelButton = 1;
+  private static final int FlameItem = 0;
+  private static final int StarItem = 1;
   public static final int BUILT_IN_BUTTON_COUNT = 3;
+  public static final int BUILT_IN_BONUS_ITEM_COUNT = 2;
+
   protected int reseting = -1;
 
-  ItemInterface resetMask;
-  ItemInterface resetBackgound;
-  ItemInterface resetConfirmButton;
-  ItemInterface resetCancelButton;
+  protected ItemInterface resetMask;
+  protected ItemInterface resetBackgound = null;
+  protected ItemInterface resetConfirmButton;
+  protected ItemInterface resetCancelButton;
+
+  protected AbstractBonusItem flameItem = null;
+  protected AbstractBonusItem starItem = null;
 
   protected void standardInit() {
+    flameItem = new FlameBonusItem();
+    starItem = new StarBonusItem();
 
-    resetBackgound = new RectItem();
+    if (resetBackgound == null)
+      resetBackgound = new RectItem();
     resetBackgound.setVisible(false);
     addItem(resetBackgound, AbstractSimpleWidget.ItemType.SimpleItem);
 
@@ -111,6 +133,9 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
     ((RectItem) resetMask).setWidth(AbstractSimpleWidget.SIMPLE_WIDGET_WIDTH);
     ((RectItem) resetMask).setHeight(AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT);
     addItem(resetMask, AbstractSimpleWidget.ItemType.ButtonItem);
+
+    addItem(flameItem, AbstractSimpleWidget.ItemType.SimpleItem);
+    addItem(starItem, AbstractSimpleWidget.ItemType.SimpleItem);
   }
 
   /**
@@ -147,6 +172,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
    */
   @Override
   public void stableConnectionTested(ConnectionInterface connections) {
+    if (gameEffectAdapter == null)
+      return;
     for (int i = 0; i < gameBoard.totalBallCount(); ++i)
       if (connections.isInAChain(i))
         gameEffectAdapter.highlightAt(gameBoard, i);
@@ -161,6 +188,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
    */
   @Override
   public void userMovingConnectionTested(ConnectionInterface connections) {
+    if (gameEffectAdapter == null)
+      return;
     gameEffectAdapter.clearUserMovingEliminationHints();
     for (int i = 0; i < gameBoard.totalBallCount(); ++i)
       if (connections.isInAChain(i))
@@ -174,7 +203,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
    */
   @Override
   public void goodMove() {
-    // TODO will be finished after finishing the statistic
+    SoundController.addSound(SoundController.GoodMove);
+    Statistics.addStatistic(Statistics.GoodMoveCount, 1);
   }
 
   /*
@@ -184,7 +214,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
    */
   @Override
   public void badMove() {
-    // TODO will be finished after finishing the statistic
+    SoundController.addSound(SoundController.BadMove);
+    Statistics.addStatistic(Statistics.BadMoveCount, 1);
   }
 
   @Override
@@ -211,8 +242,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   @Override
   public void paint(Graphics g) {
     BasicPainter.paintBackGround(BasicPainter.Game37, g, width(), height(), 0);
-    super.paint(g);
     BasicPainter.paintBasicBalls(rule.getGameBoard(), balls, g, frame);
+    super.paint(g);
     if (gameEffectAdapter != null)
       gameEffectAdapter.paint(g);
     if (reseting >= 0) {
@@ -275,7 +306,39 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
    * Give hint to the user.
    */
   protected void hint() {
-    // TODO
+    if (connectionCalculator == null)
+      return;
+    int hintIndex = connectionCalculator.hint(balls, gameBoard);
+    Point hintPos;
+    int hintType;
+    if (hintIndex >= 0) {
+      hintPos = (Point) gameBoard.ballLogicalPositionOfIndex(hintIndex).clone();
+      switch (gesture) {
+      case Swap:
+        hintPos.translate(0, -gameBoard.getBallRadius() * 2);
+        hintType = SourceManagement.ArrowHint;
+        break;
+      case Rotate:
+        hintType = SourceManagement.RotateHint;
+        break;
+      default:
+        return;
+      }
+    } else {
+      hintType = SourceManagement.ArrowHint;
+      if (!flameItem.isEmpty()) {
+        hintPos = (Point) flameItem.getLogicalPosition().clone();
+        hintPos.translate(0, -flameItem.getRadius() * 2);
+      } else if (!starItem.isEmpty()) {
+        hintPos = (Point) starItem.getLogicalPosition().clone();
+        hintPos.translate(0, -starItem.getRadius() * 2);
+      } else {
+        // TODO -.-
+        return;
+      }
+    }
+    if (gameEffectAdapter != null)
+      gameEffectAdapter.hintAt(hintPos, hintType);
   }
 
   /**
@@ -302,4 +365,93 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   }
 
   public abstract void reset();
+
+  @Override
+  public void dragTo(int indexOfTheDraggableItem, Point position) {
+    if (gameEffectAdapter != null)
+      gameEffectAdapter.clearBonusEliminationHints();
+    int index = gameBoard.ballIndexAtLogicalPosition(position);
+    if (index < 0)
+      return;
+    Vector<Integer> indexesToEliminate = null;
+    switch (indexOfTheDraggableItem) {
+    case FlameItem:
+      if (flameItem.isEmpty())
+        return;
+      indexesToEliminate = flameChain(index);
+      break;
+    case StarItem:
+      if (starItem.isEmpty())
+        return;
+      indexesToEliminate = starChain(index);
+      break;
+    default:
+      return;
+    }
+    if (gameEffectAdapter != null)
+      for (int i = 0; i < indexesToEliminate.size(); ++i)
+        if (indexesToEliminate.elementAt(i) >= 0)
+          gameEffectAdapter.bonusEliminationHintAt(gameBoard,
+              indexesToEliminate.elementAt(i));
+  }
+
+  @Override
+  public void dragApplied(int indexOfTheDraggableItem, Point position) {
+    if (gameEffectAdapter != null)
+      gameEffectAdapter.clearBonusEliminationHints();
+    int index = gameBoard.ballIndexAtLogicalPosition(position);
+    if (index < 0)
+      return;
+    switch (indexOfTheDraggableItem) {
+    case FlameItem: {
+      if (flameItem.isEmpty())
+        return;
+      flameItem.minusOne();
+      if (gameEffectAdapter != null)
+        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+      // Add sound effect
+      SoundController.addSound(SoundController.UseFlame);
+      // Connect to statistic
+      Statistics.addStatistic(Statistics.FlameUsedCount, 1);
+      // Apply the bonus item
+      Vector<Integer> indexesToEliminate = flameChain(index);
+      coreController.eliminate(indexesToEliminate);
+      break;
+    }
+    case StarItem: {
+      if (starItem.isEmpty())
+        return;
+      starItem.minusOne();
+      if (gameEffectAdapter != null)
+        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+      // Add sound effect
+      SoundController.addSound(SoundController.UseStar);
+      // Connect to statistic
+      Statistics.addStatistic(Statistics.StarUsedCount, 1);
+      Vector<Integer> indexesToEliminate = starChain(index);
+      coreController.eliminate(indexesToEliminate);
+      break;
+    }
+    }
+  }
+
+  protected Vector<Integer> flameChain(int index) {
+    Vector<Integer> result = (Vector<Integer>) gameBoard
+        .chainAroundIndex(index).clone();
+    result.add(index);
+    return result;
+  }
+
+  protected Vector<Integer> starChain(int index) {
+    Vector<Integer> result = new Vector<Integer>();
+    result.add(index);
+    for (int i = 0; i < 0; ++i) {
+      int currentIndex = gameBoard.nearbyIndex(index, i);
+      while (currentIndex >= 0) {
+        result.add(currentIndex);
+        currentIndex = gameBoard.nearbyIndex(currentIndex, i);
+      }
+    }
+    return result;
+  }
 }
