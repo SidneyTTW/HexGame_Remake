@@ -7,17 +7,26 @@ package VAST.HexGame.Aid;
  * Class to save the paths of all resources.
  * 
  * @author SidneyTTW
- *
+ * 
  */
 public class SourceManagement {
   public static final int ArrowHint = 0;
   public static final int RotateHint = 1;
 
+  public static final int WordBackground182 = 0;
+  public static final int WordBackground280 = 1;
+  public static final int WordBackground316 = 2;
+
+  public static final int WordBackgroundHeight = 70;
+  public static final int WordBackgroundWidth182 = 182;
+  public static final int WordBackgroundWidth280 = 280;
+  public static final int WordBackgroundWidth316 = 316;
+
   private static final String mainFolder = "j:/tmp";
-  
+
   public static final String HintFolder = mainFolder + "/images/hint";
   public static final String ButtonFolder = mainFolder + "/images/buttons";
-  
+
   public static final String BonusFolder = mainFolder + "/images/bonus";
   public static final String FlameBonusFile = "flame.png";
   public static final String StarBonusFile = "star.png";
@@ -42,7 +51,12 @@ public class SourceManagement {
       "37gamebackground.png", "61gamebackground.png",
       "helpbackgroundwithbutton.png", "achievementbackground.png",
       "37twoplayergamebackground.png", "mainselectplayersbackground.png" };
-  
-  public static final String [] HintFile = {"arrow.png", "rotate.png"};
+
+  public static final String[] HintFile = { "arrow.png", "rotate.png" };
+
+  public static final String WordBackgroundFolder = "j:/tmp/images/backgrounds";
+
+  public static final String[] WordBackgroundFile = { "label182.png",
+      "label280.png", "label316.png" };
 
 }

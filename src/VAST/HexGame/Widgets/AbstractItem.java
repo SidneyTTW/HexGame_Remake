@@ -45,13 +45,13 @@ public abstract class AbstractItem implements ItemInterface {
   /**
    * Rotation of the item.
    */
-  protected int rotation = 0;
+  protected double rotation = 0;
 
   /**
    * @param rotation
    *          The rotation to set.
    */
-  public void setRotation(int rotation) {
+  public void setRotation(double rotation) {
     this.rotation = rotation;
   }
 
