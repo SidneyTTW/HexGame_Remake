@@ -5,13 +5,16 @@ package VAST.HexGame.Widgets;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+
+import AidPackage.ImageAid;
 
 /**
  * Class of a round item with radius.
  * 
  * @author SidneyTTW
- *
+ * 
  */
 public class RoundItem extends AbstractItem {
   /**
@@ -20,17 +23,13 @@ public class RoundItem extends AbstractItem {
   private int radius = 0;
 
   /**
-   * Rotation of the item.
-   */
-  private int rotation = 0;
-  
-  /**
-   * @param radius The radius of the item.
+   * @param radius
+   *          The radius of the item.
    */
   public void setRadius(int radius) {
     this.radius = radius;
   }
-  
+
   /**
    * @return The radius of the item.
    */
@@ -38,22 +37,9 @@ public class RoundItem extends AbstractItem {
     return radius;
   }
 
-  /**
-   * @param rotation The rotation to set.
-   */
-  public void setRotation(int rotation) {
-    this.rotation = rotation;
-  }
-  
-  @Override
-  public void paint(Graphics g, int frame) {
-    Graphics2D g2d = (Graphics2D) g;
-    g2d.rotate(rotation);
-    super.paint(g2d, frame);
-    g2d.rotate(-rotation);
-  }
-
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#isIn(java.awt.Point)
    */
   @Override

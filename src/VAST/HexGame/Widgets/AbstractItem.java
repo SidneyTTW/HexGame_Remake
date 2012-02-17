@@ -4,6 +4,7 @@
 package VAST.HexGame.Widgets;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.Vector;
@@ -14,30 +15,45 @@ import AidPackage.ImageAid;
  * Abstract class of items, realized all the functions except isIn, dx and dy.
  * 
  * @author SidneyTTW
- *
+ * 
  */
 public abstract class AbstractItem implements ItemInterface {
-  public static enum ItemState{Normal, Pressed}
-  
+  public static enum ItemState {
+    Normal, Pressed
+  }
+
   /**
    * The images of the normal state.
    */
   Vector<Image> normalImages = null;
-  
+
   /**
    * The images of the pressed state.
    */
   Vector<Image> pressedImages = null;
-  
+
   /**
    * The state of the item.
    */
   ItemState state = ItemState.Normal;
-  
+
   /**
    * The center position of the item.
    */
-  private Point position = new Point(0, 0);
+  protected Point position = new Point(0, 0);
+
+  /**
+   * Rotation of the item.
+   */
+  protected int rotation = 0;
+
+  /**
+   * @param rotation
+   *          The rotation to set.
+   */
+  public void setRotation(int rotation) {
+    this.rotation = rotation;
+  }
 
   /**
    * Whether the item is visible.
@@ -56,7 +72,9 @@ public abstract class AbstractItem implements ItemInterface {
     return state == ItemState.Pressed;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#isVisible()
    */
   @Override
@@ -64,7 +82,9 @@ public abstract class AbstractItem implements ItemInterface {
     return visible;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#setVisible(boolean)
    */
   @Override
@@ -72,7 +92,9 @@ public abstract class AbstractItem implements ItemInterface {
     this.visible = visible;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#isEnabled()
    */
   @Override
@@ -80,7 +102,9 @@ public abstract class AbstractItem implements ItemInterface {
     return enabled;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#setEnabled(boolean)
    */
   @Override
@@ -89,7 +113,9 @@ public abstract class AbstractItem implements ItemInterface {
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#getLogicalPosition()
    */
   @Override
@@ -97,7 +123,9 @@ public abstract class AbstractItem implements ItemInterface {
     return position;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#setLogicalPosition(java.awt.Point)
    */
   @Override
@@ -106,7 +134,9 @@ public abstract class AbstractItem implements ItemInterface {
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#paint(java.awt.Graphics, int)
    */
   @Override
@@ -126,10 +156,13 @@ public abstract class AbstractItem implements ItemInterface {
     }
     if (image == null)
       return;
-    ImageAid.drawImageAt(g, image, 1.0, 1.0, getLogicalPosition(), false, true);
+    Graphics2D g2d = (Graphics2D) g;
+    ImageAid.drawImageAt(g, image, 1.0, 1.0, position, false, true, rotation);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#press()
    */
   @Override
@@ -137,7 +170,9 @@ public abstract class AbstractItem implements ItemInterface {
     state = ItemState.Pressed;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#release()
    */
   @Override
@@ -145,7 +180,9 @@ public abstract class AbstractItem implements ItemInterface {
     state = ItemState.Normal;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.ItemInterface#setImageSeries(String, String)
    */
   @Override
@@ -155,8 +192,11 @@ public abstract class AbstractItem implements ItemInterface {
       pressedImages = normalImages;
   }
 
-  /* (non-Javadoc)
-   * @see VAST.HexGame.Widgets.ItemInterface#setPressedImageSeries(String, String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see VAST.HexGame.Widgets.ItemInterface#setPressedImageSeries(String,
+   * String)
    */
   @Override
   public void setPressedImageSeries(String dir, String file) {

@@ -20,6 +20,6 @@ public class StarBonusItem extends AbstractBonusItem {
     setPressedImageSeries(SourceManagement.BonusFolder,
         SourceManagement.StarBonusFile);
     setRadius(SourceManagement.StandardBonusRadious);
-    setColor(Color.yellow);
+    setColor(Color.yellow );
   }
 }

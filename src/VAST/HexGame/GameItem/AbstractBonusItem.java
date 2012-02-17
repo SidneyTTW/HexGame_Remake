@@ -122,7 +122,7 @@ public abstract class AbstractBonusItem extends RoundItem implements
     Point center = getLogicalPosition();
     Point pos = new Point(center.x + wordsOffset.x, center.y + wordsOffset.y);
     g.setColor(color);
-    ImageAid.drawText((Graphics2D) g, pos, "" + current);
+    ImageAid.drawText((Graphics2D) g, pos, "" + current, rotation);
   }
   
   @Override

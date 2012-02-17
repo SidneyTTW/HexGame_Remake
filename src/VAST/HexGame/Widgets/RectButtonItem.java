@@ -73,7 +73,7 @@ public class RectButtonItem extends RectItem {
     g.setColor(color);
     if (isPressed())
       center.setLocation(center.getX() + 2, center.getY() + 2);
-    ImageAid.drawText((Graphics2D) g, center, text);
+    ImageAid.drawText((Graphics2D) g, center, text, rotation);
     g.setFont(lastFont);
   }
 }

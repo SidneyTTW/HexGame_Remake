@@ -68,9 +68,20 @@ public class ImageAid {
     }
   }
 
+  public static void drawText(Graphics2D g2d, Point centerPosition,
+      String text, double rotation) {
+    g2d.translate(centerPosition.x, centerPosition.y);
+    g2d.rotate(rotation);
+    int stringWidth = g2d.getFontMetrics().stringWidth(text);
+    int stringHeight = g2d.getFontMetrics().getAscent()
+        - g2d.getFontMetrics().getDescent();
+    g2d.drawString(text, -stringWidth / 2, stringHeight / 2);
+    g2d.rotate(-rotation);
+    g2d.translate(-centerPosition.x, -centerPosition.y);
+  }
+
   public static void drawText(Graphics2D g2d, Point centerPosition, String text) {
     int stringWidth = g2d.getFontMetrics().stringWidth(text);
-    int stringAscent = g2d.getFontMetrics().getAscent();
     int stringHeight = g2d.getFontMetrics().getAscent()
         - g2d.getFontMetrics().getDescent();
     g2d.drawString(text, (int) (centerPosition.getX() - stringWidth / 2),
@@ -81,8 +92,50 @@ public class ImageAid {
    * Draw a image with some options.
    */
   public static void drawImageAt(Graphics graphics, Image image, double xRate,
+      double yRate, Point pos, boolean resize, boolean center, double rotation) {
+    // Calculate the width and height the image should be
+    int width = image.getWidth(null);
+    int height = image.getHeight(null);
+
+    if (width < 1 || height < 1)
+      return;
+
+    if (xRate >= 0.999 && xRate <= 1.001 && yRate >= 0.999 && yRate <= 1.001)
+      resize = false;
+
+    if (resize) {
+      width *= xRate;
+      height *= yRate;
+    }
+
+    Graphics2D g2d = (Graphics2D) graphics;
+    g2d.translate(pos.x, pos.y);
+    g2d.rotate(rotation);
+
+    // Calculate the left up position of the image
+    Point leftUp = new Point(0, 0);
+    if (center)
+      leftUp = new Point((int) -width / 2, (int) -height / 2);
+
+    g2d.translate((int) leftUp.getX(), (int) leftUp.getY());
+    g2d.scale(xRate, yRate);
+
+    // Draw the image
+    g2d.drawImage(image, 0, 0, null);
+
+    g2d.scale(1.0 / xRate, 1.0 / yRate);
+    g2d.translate((int) -leftUp.getX(), (int) -leftUp.getY());
+
+    g2d.rotate(-rotation);
+    g2d.translate(-pos.x, -pos.y);
+  }
+
+  /**
+   * Draw a image with some options.
+   */
+  public static void drawImageAt(Graphics graphics, Image image, double xRate,
       double yRate, Point pos, boolean resize, boolean center) {
-    // Calculate the width and height the pixmap should be
+    // Calculate the width and height the image should be
     double width = image.getWidth(null);
     double height = image.getHeight(null);
 
