@@ -37,14 +37,15 @@ public class SourceManagement {
   public static final String StandardButtonNormalFile = "buttonbackground.png";
   public static final String StandardButtonPressedFile = "buttonbackground.png";
 
-  public static final String BallFolder = "j:/tmp/images/balls";
+  public static final String BallFolder = mainFolder + "/images/balls";
 
   public static final String LockFile = "lock0*.png";
 
   public static final String[] BallFiles = { "red0*.png", "blue0*.png",
       "green0*.png", "yellow0*.png", "purple0*.png", "white0*.png" };
 
-  public static final String BackgroundFolder = "j:/tmp/images/backgrounds";
+  public static final String BackgroundFolder = mainFolder
+      + "/images/backgrounds";
 
   public static final String[] BackgroundFiles = { "mainmenubackground.png",
       "puzzlemenubackground.png", "mainmenubackground.png",
@@ -54,7 +55,8 @@ public class SourceManagement {
 
   public static final String[] HintFile = { "arrow.png", "rotate.png" };
 
-  public static final String WordBackgroundFolder = "j:/tmp/images/backgrounds";
+  public static final String WordBackgroundFolder = mainFolder
+      + "/images/wordbackgrounds";
 
   public static final String[] WordBackgroundFile = { "label182.png",
       "label280.png", "label316.png" };

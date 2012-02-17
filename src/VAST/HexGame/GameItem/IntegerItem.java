@@ -153,10 +153,12 @@ public class IntegerItem extends RectItem {
     String word = "" + number;
     pos.translate(0, numberYOffset);
     g.setFont(numberFont);
+    g.setColor(numberColor);
     ImageAid.drawText((Graphics2D) g, pos, word, rotation);
     pos.translate(0, -numberYOffset);
     pos.translate(0, descriptionYOffset);
     g.setFont(descriptionFont);
+    g.setColor(descriptionColor);
     ImageAid.drawText((Graphics2D) g, pos, description, rotation);
     g.setFont(lastFont);
   }
