@@ -14,7 +14,6 @@ import java.util.Vector;
 import AidPackage.MathAid;
 import AidPackage.SoundController;
 import VAST.HexGame.Aid.SourceManagement;
-import VAST.HexGame.Aid.Statistics;
 import VAST.HexGame.Game.Ball;
 import VAST.HexGame.Game.BallFillerInterface;
 import VAST.HexGame.Game.BasicPainter;
@@ -28,6 +27,7 @@ import VAST.HexGame.Game.GestureControllerInterface;
 import VAST.HexGame.Game.RotateGestureController;
 import VAST.HexGame.Game.RotateStandardConnectionCalculator;
 import VAST.HexGame.Game.StandardGameRule;
+import VAST.HexGame.Game.Statistics;
 import VAST.HexGame.Game.SwapGestureController;
 import VAST.HexGame.Game.SwapStandardConnectionCalculator;
 import VAST.HexGame.GameItem.AbstractBonusItem;
@@ -445,7 +445,7 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   protected Vector<Integer> starChain(int index) {
     Vector<Integer> result = new Vector<Integer>();
     result.add(index);
-    for (int i = 0; i < 0; ++i) {
+    for (int i = 0; i < 6; ++i) {
       int currentIndex = gameBoard.nearbyIndex(index, i);
       while (currentIndex >= 0) {
         result.add(currentIndex);

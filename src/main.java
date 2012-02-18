@@ -1,5 +1,6 @@
 import javax.swing.JFrame;
 
+import VAST.HexGame.Game.Statistics;
 import VAST.HexGame.GameWidget.AbstractStandardGameWidget;
 import VAST.HexGame.GameWidget.ClassicGameWidget;
 import VAST.HexGame.GameWidget.TestGameWidget;
@@ -22,6 +23,7 @@ public class main {
   public static void main(String[] args) {
     MainWidget mainWidget = new MainWidget();
     //TestWidget test = new TestWidget(mainWidget);
+    Statistics.setMainWidget(mainWidget);
     ClassicGameWidget test = new ClassicGameWidget(AbstractStandardGameWidget.StandardGesture.Swap);
     mainWidget.changeControl(test, false);
     JFrame frame = new JFrame();

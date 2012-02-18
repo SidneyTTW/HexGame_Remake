@@ -25,17 +25,17 @@ public abstract class AbstractItem implements ItemInterface {
   /**
    * The images of the normal state.
    */
-  Vector<Image> normalImages = null;
+  protected Vector<Image> normalImages = null;
 
   /**
    * The images of the pressed state.
    */
-  Vector<Image> pressedImages = null;
+  protected Vector<Image> pressedImages = null;
 
   /**
    * The state of the item.
    */
-  ItemState state = ItemState.Normal;
+  protected ItemState state = ItemState.Normal;
 
   /**
    * The center position of the item.
