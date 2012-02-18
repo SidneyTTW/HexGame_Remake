@@ -193,6 +193,7 @@ public class MainWidget extends JPanel implements MouseListener,
       g2d.scale(1 / xScale, 1 / yScale);
     }
 
+    // Paint the anim item
     if (animItems.isEmpty())
       return;
     AnimItem item = animItems.getFirst();
@@ -271,5 +272,10 @@ public class MainWidget extends JPanel implements MouseListener,
       Point stayPosition, Point screenSize, int lastTime) {
     animItems.addLast(new AnimItem(item, startEndPosition, stayPosition,
         screenSize, lastTime));
+  }
+
+  @Override
+  public Point topWidgetSize() {
+    return new Point(widgets.peek().width(), widgets.peek().height());
   }
 }

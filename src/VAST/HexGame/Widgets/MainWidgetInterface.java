@@ -42,4 +42,9 @@ public interface MainWidgetInterface {
    */
   public void addAnimItem(ItemInterface item, Point startEndPosition,
       Point stayPosition, Point screenSize, int lastTime);
+
+  /**
+   * @return The size of the top widget.
+   */
+  public Point topWidgetSize();
 }
