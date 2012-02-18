@@ -217,12 +217,10 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
     mousePosition = logicalPos;
     if (lastItem != null && lastItem instanceof DraggableItemInterface) {
       for (int i = 0; i < draggableItems.size(); ++i) {
-        if (draggableItems.elementAt(i).isIn(logicalPos)) {
-          ItemInterface theItem = draggableItems.elementAt(i);
-          if (theItem == lastItem)
-            dragTo(i, logicalPos);
-          return;
-        }
+        ItemInterface theItem = draggableItems.elementAt(i);
+        if (theItem == lastItem)
+          dragTo(i, logicalPos);
+        return;
       }
       return;
     }
