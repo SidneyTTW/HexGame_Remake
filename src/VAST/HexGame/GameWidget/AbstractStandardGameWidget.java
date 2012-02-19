@@ -48,13 +48,14 @@ import VAST.HexGame.Widgets.RectItem;
  */
 public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
     implements GameInterface {
+
   public static final int ADVANCE_INTERVAL = 60;
 
   public static enum StandardGesture {
     Swap, Rotate
   };
 
-  protected Ball[] balls;
+  protected Ball[] balls = null;
   protected StandardGameRule rule;
   protected ConnectionCalculatorInterface connectionCalculator;
   protected BallFillerInterface ballFiller;
@@ -88,10 +89,14 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.6));
   private static final int ResetConfirmButton = 0;
   private static final int ResetCancelButton = 1;
-  private static final int FlameItem = 0;
-  private static final int StarItem = 1;
-  public static final int BUILT_IN_BUTTON_COUNT = 3;
-  public static final int BUILT_IN_BONUS_ITEM_COUNT = 2;
+  private static final int ResetButton = 3;
+  private static final int ExitButton = 4;
+
+  public static final int BUILT_IN_BUTTON_COUNT = 5;
+  public static final int BUILT_IN_BONUS_ITEM_COUNT = 0;
+
+  protected StandardGameButtonItem resetButton;
+  protected StandardGameButtonItem exitButton;
 
   protected int reseting = -1;
 
@@ -100,12 +105,7 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   protected ItemInterface resetConfirmButton;
   protected ItemInterface resetCancelButton;
 
-  protected AbstractBonusItem flameItem = null;
-  protected AbstractBonusItem starItem = null;
-
   protected void standardInit() {
-    flameItem = new FlameBonusItem();
-    starItem = new StarBonusItem();
 
     if (resetBackgound == null)
       resetBackgound = new RectItem();
@@ -134,8 +134,18 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
     ((RectItem) resetMask).setHeight(AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT);
     addItem(resetMask, AbstractSimpleWidget.ItemType.ButtonItem);
 
-    addItem(flameItem, AbstractSimpleWidget.ItemType.SimpleItem);
-    addItem(starItem, AbstractSimpleWidget.ItemType.SimpleItem);
+    resetButton = new StandardGameButtonItem();
+    resetButton.setText("Reset");
+    resetButton.setLogicalPosition(new Point((int) (width() * 0.1),
+        (int) (height() * 0.8)));
+    addItem(resetButton, AbstractSimpleWidget.ItemType.ButtonItem);
+
+    exitButton = new StandardGameButtonItem();
+    exitButton.setText("Exit");
+    exitButton.setLogicalPosition(new Point((int) (width() * 0.1),
+        (int) (height() * 0.9)));
+    addItem(exitButton, AbstractSimpleWidget.ItemType.ButtonItem);
+
   }
 
   /**
@@ -255,10 +265,6 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   }
 
   @Override
-  public void eliminated(int count) {
-  }
-
-  @Override
   public void buttonClicked(int indexOfTheButton) {
     switch (indexOfTheButton) {
     case ResetConfirmButton:
@@ -273,6 +279,12 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
       resetMask.setEnabled(false);
       resetConfirmButton.setEnabled(false);
       resetCancelButton.setEnabled(false);
+      break;
+    case ResetButton:
+      startReset();
+      break;
+    case ExitButton:
+      exit();
       break;
     }
   }
@@ -303,45 +315,6 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   }
 
   /**
-   * Give hint to the user.
-   */
-  protected void hint() {
-    if (connectionCalculator == null)
-      return;
-    int hintIndex = connectionCalculator.hint(balls, gameBoard);
-    Point hintPos;
-    int hintType;
-    if (hintIndex >= 0) {
-      hintPos = (Point) gameBoard.ballLogicalPositionOfIndex(hintIndex).clone();
-      switch (gesture) {
-      case Swap:
-        hintPos.translate(0, -gameBoard.getBallRadius() * 2);
-        hintType = SourceManagement.ArrowHint;
-        break;
-      case Rotate:
-        hintType = SourceManagement.RotateHint;
-        break;
-      default:
-        return;
-      }
-    } else {
-      hintType = SourceManagement.ArrowHint;
-      if (!flameItem.isEmpty()) {
-        hintPos = (Point) flameItem.getLogicalPosition().clone();
-        hintPos.translate(0, -flameItem.getRadius() * 2);
-      } else if (!starItem.isEmpty()) {
-        hintPos = (Point) starItem.getLogicalPosition().clone();
-        hintPos.translate(0, -starItem.getRadius() * 2);
-      } else {
-        // TODO -.-
-        return;
-      }
-    }
-    if (gameEffectAdapter != null)
-      gameEffectAdapter.hintAt(hintPos, hintType);
-  }
-
-  /**
    * Start to choose whether to reset.
    */
   protected void startReset() {
@@ -366,92 +339,5 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
 
   public abstract void reset();
 
-  @Override
-  public void dragTo(int indexOfTheDraggableItem, Point position) {
-    if (gameEffectAdapter != null)
-      gameEffectAdapter.clearBonusEliminationHints();
-    int index = gameBoard.ballIndexAtLogicalPosition(position);
-    if (index < 0)
-      return;
-    Vector<Integer> indexesToEliminate = null;
-    switch (indexOfTheDraggableItem) {
-    case FlameItem:
-      if (flameItem.isEmpty())
-        return;
-      indexesToEliminate = flameChain(index);
-      break;
-    case StarItem:
-      if (starItem.isEmpty())
-        return;
-      indexesToEliminate = starChain(index);
-      break;
-    default:
-      return;
-    }
-    if (gameEffectAdapter != null)
-      for (int i = 0; i < indexesToEliminate.size(); ++i)
-        if (indexesToEliminate.elementAt(i) >= 0)
-          gameEffectAdapter.bonusEliminationHintAt(gameBoard,
-              indexesToEliminate.elementAt(i));
-  }
-
-  @Override
-  public void dragApplied(int indexOfTheDraggableItem, Point position) {
-    if (gameEffectAdapter != null)
-      gameEffectAdapter.clearBonusEliminationHints();
-    int index = gameBoard.ballIndexAtLogicalPosition(position);
-    if (index < 0)
-      return;
-    switch (indexOfTheDraggableItem) {
-    case FlameItem: {
-      if (flameItem.isEmpty())
-        return;
-      flameItem.minusOne();
-      if (gameEffectAdapter != null)
-        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
-      // Add sound effect
-      SoundController.addSound(SoundController.UseFlame);
-      // Connect to statistic
-      Statistics.addStatistic(Statistics.FlameUsedCount, 1);
-      // Apply the bonus item
-      Vector<Integer> indexesToEliminate = flameChain(index);
-      coreController.eliminate(indexesToEliminate);
-      break;
-    }
-    case StarItem: {
-      if (starItem.isEmpty())
-        return;
-      starItem.minusOne();
-      if (gameEffectAdapter != null)
-        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
-      // Add sound effect
-      SoundController.addSound(SoundController.UseStar);
-      // Connect to statistic
-      Statistics.addStatistic(Statistics.StarUsedCount, 1);
-      Vector<Integer> indexesToEliminate = starChain(index);
-      coreController.eliminate(indexesToEliminate);
-      break;
-    }
-    }
-  }
-
-  protected Vector<Integer> flameChain(int index) {
-    Vector<Integer> result = (Vector<Integer>) gameBoard
-        .chainAroundIndex(index).clone();
-    result.add(index);
-    return result;
-  }
-
-  protected Vector<Integer> starChain(int index) {
-    Vector<Integer> result = new Vector<Integer>();
-    result.add(index);
-    for (int i = 0; i < 6; ++i) {
-      int currentIndex = gameBoard.nearbyIndex(index, i);
-      while (currentIndex >= 0) {
-        result.add(currentIndex);
-        currentIndex = gameBoard.nearbyIndex(currentIndex, i);
-      }
-    }
-    return result;
-  }
+  public abstract void exit();
 }

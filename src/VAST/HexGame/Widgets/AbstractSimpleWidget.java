@@ -40,7 +40,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
   /**
    * The main widget.
    */
-  private MainWidgetInterface mainWidget = null;
+  protected MainWidgetInterface mainWidget = null;
 
   /**
    * Count of the frame.

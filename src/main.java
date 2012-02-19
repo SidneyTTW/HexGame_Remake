@@ -1,11 +1,8 @@
 import javax.swing.JFrame;
 
 import VAST.HexGame.Game.Statistics;
-import VAST.HexGame.GameWidget.AbstractStandardGameWidget;
-import VAST.HexGame.GameWidget.ClassicGameWidget;
-import VAST.HexGame.GameWidget.TestGameWidget;
+import VAST.HexGame.GameWidget.*;
 import VAST.HexGame.Widgets.MainWidget;
-import VAST.HexGame.Widgets.TestWidget;
 
 /**
  * 

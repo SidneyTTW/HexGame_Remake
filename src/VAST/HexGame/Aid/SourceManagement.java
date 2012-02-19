@@ -53,6 +53,10 @@ public class SourceManagement {
       RecordFolder + "/exchange", RecordFolder + "/unite",
       RecordFolder + "/lock" };
 
+  public static final String[] NonPuzzleRecordFiles = {
+      RecordFolder + "/swapclassic", RecordFolder + "/rotateclassic",
+      RecordFolder + "/swapendless", RecordFolder + "/rotateendless" };
+
   public static final String PuzzleFolder[] = { PuzzleMainFolder + "/Exchange",
       PuzzleMainFolder + "/Unite", PuzzleMainFolder + "/Lock" };
 

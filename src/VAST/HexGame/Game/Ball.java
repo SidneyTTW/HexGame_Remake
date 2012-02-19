@@ -21,7 +21,7 @@ public class Ball {
   public static final int Purple = 4;
   public static final int White = 5;
   public static final int BadColor = 6;
-  
+
   public Ball(int color) {
     this.color = color;
   }
@@ -161,7 +161,7 @@ public class Ball {
       // Currently not used, may be used later to speed up
       // if (stopPositions.size() < 2)
       // state = State.AlmostStable;
-      
+
       // Change the state
       if (stopPositions.size() == 0)
         state = State.Stable;
@@ -182,4 +182,34 @@ public class Ball {
     state = State.Stable;
   }
 
+  public static int ballToInt(Ball ball) {
+    if (ball == null)
+      return -1;
+    return ball.color + (ball.locked ? 0x10 : 0);
+  }
+
+  public static Ball intToBall(int value) {
+    if (value == -1)
+      return null;
+    Ball result = new Ball(value & 0xF);
+    if (((value >> 4) & 0x1) == 1)
+      result.locked = true;
+    return result;
+  }
+
+  public static int[] ballsToInts(Ball[] balls) {
+    int[] result = new int[balls.length];
+    for (int i = 0; i < balls.length; ++i) {
+      result[i] = ballToInt(balls[i]);
+    }
+    return result;
+  }
+
+  public static Ball[] intsToBalls(int[] values) {
+    Ball[] result = new Ball[values.length];
+    for (int i = 0; i < values.length; ++i) {
+      result[i] = intToBall(values[i]);
+    }
+    return result;
+  }
 }

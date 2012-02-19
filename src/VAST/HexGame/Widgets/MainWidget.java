@@ -135,8 +135,10 @@ public class MainWidget extends JPanel implements MouseListener,
     // Adjust the stack
     if (popMySelf)
       widgets.pop();
-    if (target != null)
+    if (target != null) {
       widgets.push(target);
+      target.setMainWidget(this);
+    }
 
     // Adjust the count of animation
     if (!widgets.isEmpty()) {

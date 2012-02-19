@@ -5,42 +5,34 @@ package VAST.HexGame.GameWidget;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 import AidPackage.MathAid;
 import AidPackage.SoundController;
-import VAST.HexGame.Effect.EffectPainter;
-import VAST.HexGame.Game.Ball;
 import VAST.HexGame.Game.ConnectionInterface;
-import VAST.HexGame.Game.CoreController;
-import VAST.HexGame.Game.GameEffectAdapter;
-import VAST.HexGame.Game.RotateGestureController;
-import VAST.HexGame.Game.RotateStandardConnectionCalculator;
-import VAST.HexGame.Game.StandardBallFiller;
-import VAST.HexGame.Game.StandardGameRule;
 import VAST.HexGame.Game.Statistics;
-import VAST.HexGame.Game.SwapGestureController;
-import VAST.HexGame.Game.SwapStandardConnectionCalculator;
-import VAST.HexGame.Game.ThirtySevenGameBoard;
 import VAST.HexGame.GameItem.IntegerItem;
-import VAST.HexGame.GameItem.ProgressBarIterface;
-import VAST.HexGame.GameItem.StandardGameButtonItem;
-import VAST.HexGame.GameItem.VerticalProgressBarItem;
 import VAST.HexGame.GameWidget.AbstractNonePuzzleGameWidget.NonPuzzleGameRecord;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
 
 /**
- * Class to play a classic game.
+ * Class to play a timing game.
  * 
  * @author SidneyTTW
  * 
  */
-public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
+public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
+  protected IntegerItem currentScoreItem;
+  
+  private Timer timingTimer = null;
 
-  public ClassicGameWidget(StandardGesture gesture) {
+  public TimingGameWidget(StandardGesture gesture) {
     rollBack = true;
     autoRotate = true;
-    endlessFill = false;
+    endlessFill = true;
 
     this.gesture = gesture;
     
@@ -48,28 +40,40 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
     record.load();
     
     balls = record.balls;
-    
+
     standardInit();
     
+    verticalBar.setMax(60);
+    verticalBar.setCurrent(60);
+
+    currentScoreItem = new IntegerItem(180);
+    currentScoreItem.setDescription("Current Score");
+    currentScoreItem.setLogicalPosition((new Point((int) (width() * 0.1),
+        (int) (height() * 0.25))));
+    addItem(currentScoreItem, AbstractSimpleWidget.ItemType.SimpleItem);
+    
     highestScoreItem.setNumber(record.highestScore);
-    verticalBar.setMin(record.levelMinScore);
-    verticalBar.setMax(record.levelMaxScore);
-    verticalBar.setCurrent(record.levelCurrentScore);
-    flameItem.setCurrent(record.flame);
-    starItem.setCurrent(record.star);
+  }
+  
+  /**
+   * @author SidneyTTW
+   * 
+   * @brief The timer task to timing.
+   */
+  public class TimingTimerTask extends TimerTask {
+    public void run() {
+      oneSecond();
+    }
   }
 
   @Override
   public void stableConnectionTested(ConnectionInterface connections) {
     super.stableConnectionTested(connections);
-    int scoreToAdd = 0;
     Vector<Vector<Integer>> allChains = connections.allChains();
     for (int i = 0; i < gameBoard.totalBallCount(); ++i) {
       int relatedChainCount = connections.relatedChainCount(i);
       if (gameEffectAdapter != null && relatedChainCount >= 2)
         gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
-      if (relatedChainCount > 0)
-        ++scoreToAdd;
       if (relatedChainCount == 2) {
         // Add sound effect
         SoundController.addSound(SoundController.GetFlame);
@@ -114,7 +118,6 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
         Statistics.addStatistic(Statistics.StarGetCount, 1);
       }
     }
-    verticalBar.setCurrent(verticalBar.getCurrent() + scoreToAdd);
   }
 
   /*
@@ -124,9 +127,12 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
    */
   @Override
   public void eliminated(int count) {
+    currentScoreItem.setNumber(currentScoreItem.getNumber() + count);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.GameWidget.AbstractStandardGameWidget#reset()
    */
   @Override
@@ -135,33 +141,40 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.GameWidget.AbstractStandardGameWidget#exit()
    */
   @Override
   public void exit() {
-    NonPuzzleGameRecord record = new NonPuzzleGameRecord();
-    record.highestScore = highestScoreItem.getNumber();
-    record.levelMinScore = verticalBar.getMin();
-    record.levelMaxScore = verticalBar.getMax();
-    record.levelCurrentScore = verticalBar.getCurrent();
-    record.flame = flameItem.getCurrent();
-    record.star = starItem.getCurrent();
-    record.balls = balls;
-    record.save();
-    
     mainWidget.changeControl(null, true);
   }
-
-  public void nextStage() {
-    // TODO Auto-generated method stub
-
+  
+  @Override
+  public void getFocus() {
+    super.getFocus();
+    if (timingTimer == null) {
+      TimingTimerTask task = new TimingTimerTask();
+      timingTimer = new Timer();
+      timingTimer.schedule(task, new Date(), 1000);
+    }
+  }
+  
+  public void oneSecond() {
+    int last = verticalBar.getCurrent();
+    if (last > 0)
+      verticalBar.setCurrent(last - 1);
+    else
+      gameOver();
+  }
+  
+  private void gameOver() {
+    //TODO
   }
 
   @Override
   public int typeBase() {
-    // TODO Auto-generated method stub
-    return 0;
+    return AbstractNonePuzzleGameWidget.NonPuzzleGameRecord.SwapTiming;
   }
-
 }
