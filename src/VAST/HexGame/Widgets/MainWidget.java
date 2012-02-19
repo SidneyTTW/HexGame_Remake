@@ -157,6 +157,10 @@ public class MainWidget extends JPanel implements MouseListener,
       timer = null;
       animCount = 0;
     }
+    
+    if (widgets.isEmpty()) {
+      System.exit(0);
+    }
   }
 
   @Override

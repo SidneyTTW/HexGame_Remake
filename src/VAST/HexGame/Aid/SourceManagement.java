@@ -10,6 +10,8 @@ package VAST.HexGame.Aid;
  * 
  */
 public class SourceManagement {
+  public static int MAIN_MENU_ITEM_RADIOS = 60;
+  
   public static int PUZZLE_TOTAL_TYPES = 6;
   public static int PUZZLE_TOTAL_STAGES = 38;
 
@@ -98,6 +100,10 @@ public class SourceManagement {
       "37twoplayergamebackground.png", "mainselectplayersbackground.png" };
 
   public static final String[] HintFile = { "arrow.png", "rotate.png" };
+  
+  public static final String MainMenuItemFolder = mainFolder + "/images/mainmenuitems";
+  public static final String MainMenuCircleItemFile = "circle.png";
+  public static final String MainMenuGameButtonsItemFile = "mainmenugamebuttons.png";
 
   public static final String WordBackgroundFolder = mainFolder
       + "/images/wordbackgrounds";

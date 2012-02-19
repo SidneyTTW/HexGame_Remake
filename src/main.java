@@ -21,7 +21,8 @@ public class main {
     MainWidget mainWidget = new MainWidget();
     //TestWidget test = new TestWidget(mainWidget);
     Statistics.setMainWidget(mainWidget);
-    ClassicGameWidget test = new ClassicGameWidget(AbstractStandardGameWidget.StandardGesture.Swap);
+    //ClassicGameWidget test = new ClassicGameWidget(AbstractStandardGameWidget.StandardGesture.Swap);
+    SinglePlayerMainWidget test = new SinglePlayerMainWidget();
     mainWidget.changeControl(test, false);
     JFrame frame = new JFrame();
     frame.setSize(1024, 600);
