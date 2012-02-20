@@ -59,14 +59,8 @@ public class BasicPainter {
    *          The game board.
    * @param balls
    *          The balls.
-   * @param totalCount
-   *          Count of the balls.
    * @param graphics
    *          The graphics.
-   * @param xRate
-   *          The scale in X direction.
-   * @param yRate
-   *          The scale in Y direction.
    * @param frame
    *          The index of the frame to show.
    */
@@ -75,6 +69,8 @@ public class BasicPainter {
 
     // Size of the ball
     double size = gameBoard.getBallRadius() * 2;
+
+    double rate = size / SourceManagement.BALL_IMAGE_SIZE;
 
     // Initialize balls if necessary
     if (ballsImages.isEmpty())
@@ -96,10 +92,10 @@ public class BasicPainter {
         if (balls[index] != null) {
           // Get the position of the ball
           Point pos = balls[index].getPosition();
-          
+
           if (pos.x == 0 && pos.y == 0)
             return;
-          
+
           // Get the color
           int colorIndex = balls[index].getColor();
           // Get the image
@@ -110,14 +106,70 @@ public class BasicPainter {
             continue;
 
           // Draw the image
-          ImageAid.drawImageAt(graphics, image, 1.0, 1.0, pos, true, true);
+          ImageAid.drawImageAt(graphics, image, rate, rate, pos, true, true);
 
           // If the ball is locked
           // If the first statement is missed, may cause a null pointer error
           // which may be caused by the multithreading
           if (balls[index] != null && balls[index].isLocked()) {
             image = lockImages.elementAt(frame % lockImages.size());
-            ImageAid.drawImageAt(graphics, image, 1.0, 1.0, pos, true, true);
+            ImageAid.drawImageAt(graphics, image, rate, rate, pos, true, true);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Paint the hint balls of the puzzle game.
+   * 
+   * @param gameBoard
+   *          The game board.
+   * @param ballColors
+   *          The color of the balls.
+   * @param graphics
+   *          The graphics.
+   * @param frame
+   *          The index of the frame to show.
+   * @param rate
+   *          The scale in both directions.
+   */
+  public static void paintPuzzleGameBallHint(GameBoardInterface gameBoard,
+      int[] ballColors, Graphics graphics, int frame, double rate) {
+
+    // Size of the ball
+    double size = gameBoard.getBallRadius() * 2;
+
+    double sizeRate = rate * size / SourceManagement.BALL_IMAGE_SIZE;
+
+    // Initialize balls if necessary
+    if (ballsImages.isEmpty())
+      initBallsImages();
+
+    // For each ball
+    Vector<Vector<Integer>> chains = gameBoard.chains();
+    for (int i = 0; i < chains.size(); ++i) {
+      Vector<Integer> originalChain = chains.elementAt(i);
+      for (int j = 0; j < originalChain.size(); ++j) {
+        int index = originalChain.elementAt(j);
+        if (ballColors[index] >= 0) {
+          int color = ballColors[index] & 0xF;
+          // If the ball exists
+          if (color >= 0) {
+            // Get the position of the ball
+            Point pos = gameBoard.ballLogicalPositionOfIndex(index);
+            pos = new Point((int) (pos.x * rate), (int) (pos.y * rate));
+
+            // Get the image
+            Image image = ballsImages.elementAt(color).elementAt(
+                frame % ballsFrameCounts.elementAt(color));
+
+            if (image == null)
+              continue;
+
+            // Draw the image
+            ImageAid.drawImageAt(graphics, image, sizeRate, sizeRate, pos,
+                true, true);
           }
         }
       }

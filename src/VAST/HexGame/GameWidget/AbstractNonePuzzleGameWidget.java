@@ -3,6 +3,7 @@
  */
 package VAST.HexGame.GameWidget;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Vector;
@@ -12,6 +13,7 @@ import AidPackage.SoundController;
 import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Effect.EffectPainter;
 import VAST.HexGame.Game.Ball;
+import VAST.HexGame.Game.BasicPainter;
 import VAST.HexGame.Game.CoreController;
 import VAST.HexGame.Game.GameEffectAdapter;
 import VAST.HexGame.Game.RotateGestureController;
@@ -337,6 +339,12 @@ public abstract class AbstractNonePuzzleGameWidget extends
       hint();
       break;
     }
+  }
+  
+  @Override
+  public void paint(Graphics g) {
+    BasicPainter.paintBackGround(BasicPainter.Game37, g, width(), height(), 0);
+    super.paint(g);
   }
 
   /**

@@ -10,8 +10,10 @@ package VAST.HexGame.Aid;
  * 
  */
 public class SourceManagement {
+  public static int BALL_IMAGE_SIZE = 60;
+
   public static int MAIN_MENU_ITEM_RADIOS = 60;
-  
+
   public static int PUZZLE_TOTAL_TYPES = 6;
   public static int PUZZLE_TOTAL_STAGES = 38;
 
@@ -59,8 +61,8 @@ public class SourceManagement {
       RecordFolder + "/swapclassic", RecordFolder + "/rotateclassic",
       RecordFolder + "/swapendless", RecordFolder + "/rotateendless" };
 
-  public static final String PuzzleFolder[] = { PuzzleMainFolder + "/Exchange",
-      PuzzleMainFolder + "/Unite", PuzzleMainFolder + "/Lock" };
+  public static final String PuzzleFolder[] = { PuzzleMainFolder + "/exchange",
+      PuzzleMainFolder + "/unite", PuzzleMainFolder + "/lock" };
 
   public static final String FlameBonusFile = "flame.png";
   public static final String StarBonusFile = "star.png";
@@ -100,8 +102,9 @@ public class SourceManagement {
       "37twoplayergamebackground.png", "mainselectplayersbackground.png" };
 
   public static final String[] HintFile = { "arrow.png", "rotate.png" };
-  
-  public static final String MainMenuItemFolder = mainFolder + "/images/mainmenuitems";
+
+  public static final String MainMenuItemFolder = mainFolder
+      + "/images/mainmenuitems";
   public static final String MainMenuCircleItemFile = "circle.png";
   public static final String MainMenuGameButtonsItemFile = "mainmenugamebuttons.png";
 
@@ -112,6 +115,7 @@ public class SourceManagement {
       "label280.png", "label316.png" };
 
   public static String puzzleFile(int type, int stage, boolean advanced) {
-    return PuzzleFolder[type] + (advanced ? "advanced" : "") + stage;
+    return PuzzleFolder[type] + "/" + (stage + 1)
+        + (advanced ? "advanced" : "");
   }
 }

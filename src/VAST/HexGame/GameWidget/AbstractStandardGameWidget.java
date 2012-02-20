@@ -89,6 +89,7 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.6));
   private static final int ResetConfirmButton = 0;
   private static final int ResetCancelButton = 1;
+  protected static final int ResetMaskButton = 2;
   private static final int ResetButton = 3;
   private static final int ExitButton = 4;
 
@@ -145,7 +146,6 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
     exitButton.setLogicalPosition(new Point((int) (width() * 0.1),
         (int) (height() * 0.9)));
     addItem(exitButton, AbstractSimpleWidget.ItemType.ButtonItem);
-
   }
 
   /**
@@ -251,7 +251,6 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
 
   @Override
   public void paint(Graphics g) {
-    BasicPainter.paintBackGround(BasicPainter.Game37, g, width(), height(), 0);
     BasicPainter.paintBasicBalls(rule.getGameBoard(), balls, g, frame);
     super.paint(g);
     if (gameEffectAdapter != null)

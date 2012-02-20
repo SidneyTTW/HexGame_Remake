@@ -47,15 +47,15 @@ public class PuzzleInfo {
   public static int minStep(int type, int index, boolean advanced) {
     if (type < 0 || type >= SourceManagement.PUZZLE_TOTAL_TYPES
         || index >= totalStages(type))
-      return -1;
+      return 0;
     if (!FileProcessor.exists(SourceManagement.PuzzleRecordFiles[type]))
       FileProcessor.createFile(SourceManagement.PuzzleRecordFiles[type],
           SourceManagement.PuzzleCounts[type]);
     int data[] = FileProcessor
         .readData(SourceManagement.PuzzleRecordFiles[type]);
-
+    index = index + (advanced ? data.length / 2 : 0);
     if (index < 0 || index >= data.length)
-      return -1;
+      return 0;
     return data[index];
   }
 
@@ -67,12 +67,28 @@ public class PuzzleInfo {
           SourceManagement.PuzzleCounts[type]);
     int data[] = FileProcessor
         .readData(SourceManagement.PuzzleRecordFiles[type]);
+    int [] result = new int[data.length / 2];
+    for (int i = 0;i < data.length / 2;++i)
+      result[i] = data[i + (advanced ? data.length / 2 : 0)];
     return data;
+  }
+
+  public static boolean testMinSteps(int type, int stage, boolean advanced, int steps) {
+    if (type < 0 || type >= SourceManagement.PUZZLE_TOTAL_TYPES
+        || stage >= totalStages(type) || steps < 0)
+      return false;
+    int lastSteps = minStep(type, stage, advanced);
+    boolean result = false;
+    if (lastSteps <= 0)
+      result = true;
+    FileProcessor.writeData(SourceManagement.PuzzleRecordFiles[type], stage + (advanced ? totalStages(type) : 0), steps);
+    return result;
   }
 
   public static void readColorIndexes(int type, int stage, boolean advanced,
       int[] current, int[] target) {
     try {
+      String tmp = SourceManagement.puzzleFile(type, stage, advanced);
       BufferedReader reader = new BufferedReader(new FileReader(
           SourceManagement.puzzleFile(type, stage, advanced)));
 
