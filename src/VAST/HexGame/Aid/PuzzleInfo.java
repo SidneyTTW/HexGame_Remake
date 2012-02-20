@@ -67,10 +67,13 @@ public class PuzzleInfo {
           SourceManagement.PuzzleCounts[type]);
     int data[] = FileProcessor
         .readData(SourceManagement.PuzzleRecordFiles[type]);
-    int [] result = new int[data.length / 2];
-    for (int i = 0;i < data.length / 2;++i)
-      result[i] = data[i + (advanced ? data.length / 2 : 0)];
-    return data;
+//    int [] result = new int[data.length / 2];
+//    for (int i = 0;i < data.length / 2;++i)
+//      result[i] = data[i + (advanced ? data.length / 2 : 0)];
+    int [] result = new int[10];
+    for (int i = 0;i < 10;++i)
+      result[i] = 1;
+    return result;
   }
 
   public static boolean testMinSteps(int type, int stage, boolean advanced, int steps) {
@@ -88,7 +91,6 @@ public class PuzzleInfo {
   public static void readColorIndexes(int type, int stage, boolean advanced,
       int[] current, int[] target) {
     try {
-      String tmp = SourceManagement.puzzleFile(type, stage, advanced);
       BufferedReader reader = new BufferedReader(new FileReader(
           SourceManagement.puzzleFile(type, stage, advanced)));
 
