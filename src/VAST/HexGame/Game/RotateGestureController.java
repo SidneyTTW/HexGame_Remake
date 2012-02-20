@@ -62,6 +62,11 @@ public class RotateGestureController implements GestureControllerInterface {
   int offset;
 
   /**
+   * Whether to rotate empty balls.
+   */
+  boolean rotateEmpty = false;
+
+  /**
    * Constructor
    * 
    * @param game
@@ -132,13 +137,14 @@ public class RotateGestureController implements GestureControllerInterface {
       int currentIndex = indexes.elementAt((i + offset) % n);
       originalBalls[i] = balls[index];
       currentBalls[i] = balls[currentIndex];
-      if (index < 0 || balls[index] == null || balls[index].isLocked())
+      if (index < 0 || (balls[index] != null && balls[index].isLocked()))
         return;
     }
     for (int i = 0; i < n; ++i) {
       int index = indexes.elementAt(i);
       balls[index] = currentBalls[i];
-      balls[index].setState(Ball.State.SystemMoving);
+      if (balls[index] != null)
+        balls[index].setState(Ball.State.SystemMoving);
     }
 
     boolean rotateSuccessful = rule.getConnectionCalculator() == null;
@@ -170,7 +176,8 @@ public class RotateGestureController implements GestureControllerInterface {
       for (int i = 0; i < n; ++i) {
         int index = indexes.elementAt(i);
         balls[index] = originalBalls[i];
-        balls[index].setState(Ball.State.SystemMoving);
+        if (balls[index] != null)
+          balls[index].setState(Ball.State.SystemMoving);
         coreController.rotateABallTo(balls[index],
             gameBoard.ballLogicalPositionOfIndex(index), centerPosition, 5,
             false, 1);
@@ -233,18 +240,26 @@ public class RotateGestureController implements GestureControllerInterface {
         center = i;
         break;
       }
-    if (gameBoard.canBeRotateCenter(center)) {
+    
+    boolean canStartRotate = gameBoard.canBeRotateCenter(center);
+    if (!rotateEmpty){
+    Vector<Integer> chain = gameBoard.chainAroundIndex(center);
+    for (int i = 0; i < chain.size(); ++i)
+      if(balls[chain.elementAt(i)] == null)
+        canStartRotate = false;
+    }
+
+    if (canStartRotate) {
       gestureState = GestureState.LocateGesture;
       indexes = (Vector<Integer>) gameBoard.chainAroundIndex(center).clone();
       originalAngles = new Vector<Double>();
       centerPosition = gameBoard.ballLogicalPositionOfIndex(center);
       for (int i = 0; i < indexes.size(); ++i) {
-        double angle = 0;
-        if (balls[indexes.elementAt(i)] != null) {
-          angle = MathAid.angle(balls[indexes.elementAt(i)].getPosition(),
-              centerPosition);
+        double angle = MathAid.angle(
+            gameBoard.ballLogicalPositionOfIndex(indexes.elementAt(i)),
+            centerPosition);
+        if (balls[indexes.elementAt(i)] != null)
           balls[indexes.elementAt(i)].setState(Ball.State.UserMoving);
-        }
         originalAngles.add(angle);
         gestureStartAngle = MathAid.angle(logicalPos, centerPosition);
         offset = 0;
