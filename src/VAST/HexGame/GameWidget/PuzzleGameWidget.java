@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import VAST.HexGame.Aid.PuzzleInfo;
+import VAST.HexGame.Effect.EffectPainter;
 import VAST.HexGame.Game.*;
 import VAST.HexGame.GameItem.IntegerItem;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
@@ -33,7 +34,7 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
   private static final int PuzzleHintButton = AbstractStandardGameWidget.BUILT_IN_BUTTON_COUNT + 0;
 
   protected RectButtonItem puzzleHintButton;
-  
+
   protected IntegerItem currentMoveItem;
   protected IntegerItem leastMoveItem;
 
@@ -77,7 +78,7 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
     // }
 
     rule = new StandardGameRule();
-    gameEffectAdapter = null;
+    gameEffectAdapter = new GameEffectAdapter(new EffectPainter());
     coreController = new CoreController(this, rule, balls);
     ballFiller = null;
 
@@ -98,26 +99,26 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
     puzzleHintButton.setLogicalPosition(new Point((int) (width()
         * HINT_BASE_RATE / 2), (int) (height() * HINT_BASE_RATE / 2)));
     addItem(puzzleHintButton, AbstractSimpleWidget.ItemType.ButtonItem);
-    
+
     currentMoveItem = new IntegerItem(280);
     currentMoveItem.setDescription("Current moved steps:");
     currentMoveItem.setNumber(0);
     currentMoveItem.setLogicalPosition(new Point((int) (width() * 0.15),
         (int) (height() * 0.45)));
     addItem(currentMoveItem, AbstractSimpleWidget.ItemType.SimpleItem);
-    
+
     leastMoveItem = new IntegerItem(280);
     leastMoveItem.setDescription(" Least moved steps: ");
     leastMoveItem.setNumber(0);
     leastMoveItem.setLogicalPosition(new Point((int) (width() * 0.15),
         (int) (height() * 0.6)));
     addItem(leastMoveItem, AbstractSimpleWidget.ItemType.SimpleItem);
-    
+
     resetButton.setLogicalPosition(new Point((int) (width() * 0.15),
         (int) (height() * 0.8)));
     exitButton.setLogicalPosition(new Point((int) (width() * 0.15),
         (int) (height() * 0.9)));
-    
+
   }
 
   /*
@@ -129,7 +130,7 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
   public void eliminated(int count) {
     // Not supposed to be called
   }
-  
+
   @Override
   public void goodMove() {
     super.goodMove();
@@ -143,7 +144,9 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
    */
   @Override
   public void reset() {
-    // TODO Auto-generated method stub
+    for (int i = 0;i < balls.length;++i)
+      balls[i] = Ball.intToBall(record.originalColorIndexes[i]);
+    currentMoveItem.setNumber(0);
   }
 
   /*
