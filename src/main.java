@@ -22,7 +22,10 @@ public class main {
     //TestWidget test = new TestWidget(mainWidget);
     Statistics.setMainWidget(mainWidget);
     //ClassicGameWidget test = new ClassicGameWidget(AbstractStandardGameWidget.StandardGesture.Swap);
-    SinglePlayerMainWidget test = new SinglePlayerMainWidget();
+    //SinglePlayerMainWidget test = new SinglePlayerMainWidget();
+    //PuzzleGameWidget test = new PuzzleGameWidget(0,0,false);
+    PuzzleChooseTypeWidget test = new PuzzleChooseTypeWidget();
+    //PuzzleChooseStageWidget test = new PuzzleChooseStageWidget(0, true);
     mainWidget.changeControl(test, false);
     JFrame frame = new JFrame();
     frame.setSize(1024, 600);

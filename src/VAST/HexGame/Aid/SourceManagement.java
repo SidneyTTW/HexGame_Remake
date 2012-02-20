@@ -10,16 +10,13 @@ package VAST.HexGame.Aid;
  * 
  */
 public class SourceManagement {
+
   public static int BALL_IMAGE_SIZE = 60;
 
   public static int MAIN_MENU_ITEM_RADIOS = 60;
 
   public static int PUZZLE_TOTAL_TYPES = 6;
   public static int PUZZLE_TOTAL_STAGES = 38;
-
-  public static int PuzzleExchange = 0;
-  public static int PuzzleUnite = 1;
-  public static int PuzzleLock = 2;
 
   public static int PuzzleCounts[] = { 4, 5, 10 };
 
@@ -117,5 +114,35 @@ public class SourceManagement {
   public static String puzzleFile(int type, int stage, boolean advanced) {
     return PuzzleFolder[type] + "/" + (stage + 1)
         + (advanced ? "advanced" : "");
+  }
+
+  public static final int PuzzleExchange = 0;
+  public static final int PuzzleUnite = 1;
+  public static final int PuzzleLock = 2;
+
+  public static final int PUZZLE_TYPE_IMAGE_SIZE = 300;
+
+  public static final String PuzzleTypeFolder = mainFolder
+      + "/images/puzzlemenuitems";
+  public static final String[] PuzzleTypeFile = { "exchange.png", "unite.png",
+      "lock.png" };
+
+  public static int PUZZLE_STAGE_IMAGE_RADIUS = 53;
+
+  public static final String PuzzleStageFolder = mainFolder
+      + "/images/stageitems";
+
+  public static final String[] stageNames = { "01", "02", "03", "04", "05",
+      "06", "07", "08", "09", "10" };
+
+  public static String puzzleStageFile(int stage, boolean advanced,
+      boolean locked) {
+    if (stage >= 0)
+      return "stage_img" + (advanced ? "_advanced" : "")
+          + (locked ? "_locked" : "") + stageNames[stage] + "*.png";
+    else if (stage == -1)
+      return advanced ? "button_advanced.png" : "button_normal.png";
+    else
+      return "button_exit.png";
   }
 }
