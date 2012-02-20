@@ -111,6 +111,7 @@ public class CoreController implements CoreControllerInterface {
         needTestStableEliminate = fill();
       }
     } else {
+      fill();
       return needTestStableEliminate;
     }
 
@@ -174,8 +175,10 @@ public class CoreController implements CoreControllerInterface {
    * @return Whether any ball has moved or added.
    */
   private boolean fill() {
-    if (rule.getBallFiller() == null)
+    if (rule.getBallFiller() == null) {
+      moveToStable();
       return false;
+    }
     boolean result = false;
     if (rule.autoRotate())
       autoRotate();
