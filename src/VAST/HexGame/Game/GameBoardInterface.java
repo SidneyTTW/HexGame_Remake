@@ -3,8 +3,9 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Point;
 import java.util.Vector;
+
+import AidPackage.MyPoint;
 
 /**
  * Interface of a game board, have the ability to tell detailed information of a
@@ -41,14 +42,14 @@ public interface GameBoardInterface {
    *          The given logical position.
    * @return The index of the ball. -1 means no ball at given position.
    */
-  public int ballIndexAtLogicalPosition(Point position);
+  public int ballIndexAtLogicalPosition(MyPoint position);
 
   /**
    * @param index
    *          The given index of the ball.
    * @return The logical position. Point() means no such index.
    */
-  public Point ballLogicalPositionOfIndex(int index);
+  public MyPoint ballLogicalPositionOfIndex(int index);
 
   /**
    * @param index
@@ -134,7 +135,7 @@ public interface GameBoardInterface {
   /**
    * @return The center position of the game board.
    */
-  public Point centerPosition();
+  public MyPoint centerPosition();
 
   /**
    * @return Total ball count.

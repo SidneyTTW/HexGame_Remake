@@ -3,7 +3,7 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Point;
+import AidPackage.MyPoint;
 
 /**
  * @author SidneyTTW
@@ -40,11 +40,11 @@ public interface MainWidgetInterface {
    * @param lastTime
    *          The last time.
    */
-  public void addAnimItem(ItemInterface item, Point startEndPosition,
-      Point stayPosition, Point screenSize, int lastTime);
+  public void addAnimItem(ItemInterface item, MyPoint startEndPosition,
+      MyPoint stayPosition, MyPoint screenSize, int lastTime);
 
   /**
    * @return The size of the top widget.
    */
-  public Point topWidgetSize();
+  public MyPoint topWidgetSize();
 }

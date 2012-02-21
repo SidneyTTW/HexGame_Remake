@@ -3,12 +3,10 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Stroke;
+import AidPackage.MyColor;
+import AidPackage.MyGraphics;
+import AidPackage.MyPolygon;
+import AidPackage.MyStroke;
 
 /**
  * Class of an effect to show a polygon border.
@@ -25,7 +23,7 @@ public class BorderEffect extends AbstractEffect {
    * @param color
    *          The color.
    */
-  public BorderEffect(Polygon border, Color color, int width) {
+  public BorderEffect(MyPolygon border, MyColor color, int width) {
     this.info = new BorderEffectPrivateInfo(border, color, width);
   }
 
@@ -35,15 +33,14 @@ public class BorderEffect extends AbstractEffect {
    * @see VAST.HexGame.Effect.AbstractEffect#paint(java.awt.Graphics)
    */
   @Override
-  public void paint(Graphics graphics) {
-    Graphics2D g2d = (Graphics2D) graphics;
-    Stroke oldStroke = g2d.getStroke();
+  public void paint(MyGraphics graphics) {
+    MyStroke oldStroke = graphics.getStroke();
     BorderEffectPrivateInfo myInfo = (BorderEffectPrivateInfo) info;
-    g2d.setStroke(new BasicStroke(myInfo.width, BasicStroke.CAP_SQUARE,
-        BasicStroke.JOIN_ROUND));
-    g2d.setColor(myInfo.color);
-    g2d.drawPolygon(myInfo.border);
-    g2d.setStroke(oldStroke);
+    graphics.setStroke(new MyStroke(myInfo.width, MyStroke.CAP_SQUARE,
+        MyStroke.JOIN_ROUND));
+    graphics.setColor(myInfo.color);
+    graphics.drawPolygon(myInfo.border);
+    graphics.setStroke(oldStroke);
   }
 
   /*
@@ -64,12 +61,12 @@ public class BorderEffect extends AbstractEffect {
     /**
      * The border of the effect.
      */
-    private Polygon border;
+    private MyPolygon border;
 
     /**
      * The color of the border.
      */
-    private Color color;
+    private MyColor color;
 
     /**
      * The width of the border.
@@ -84,7 +81,7 @@ public class BorderEffect extends AbstractEffect {
      * @param color
      *          The color.
      */
-    public BorderEffectPrivateInfo(Polygon border, Color color, int width) {
+    public BorderEffectPrivateInfo(MyPolygon border, MyColor color, int width) {
       this.border = border;
       this.color = color;
       this.width = width;
@@ -93,28 +90,28 @@ public class BorderEffect extends AbstractEffect {
     /**
      * Set the position.
      */
-    public void setBorder(Polygon border) {
+    public void setBorder(MyPolygon border) {
       this.border = border;
     }
 
     /**
      * Get the position.
      */
-    public Polygon getBorder() {
+    public MyPolygon getBorder() {
       return border;
     }
 
     /**
      * Set the color.
      */
-    public void setColor(Color color) {
+    public void setColor(MyColor color) {
       this.color = color;
     }
 
     /**
      * Get the color.
      */
-    public Color getColor() {
+    public MyColor getColor() {
       return color;
     }
   }

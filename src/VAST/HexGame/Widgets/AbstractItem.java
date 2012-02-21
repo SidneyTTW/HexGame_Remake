@@ -3,13 +3,12 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
 import java.util.Vector;
 
 import AidPackage.ImageAid;
+import AidPackage.MyGraphics;
+import AidPackage.MyImage;
+import AidPackage.MyPoint;
 
 /**
  * Abstract class of items, realized all the functions except isIn, dx and dy.
@@ -25,12 +24,12 @@ public abstract class AbstractItem implements ItemInterface {
   /**
    * The images of the normal state.
    */
-  protected Vector<Image> normalImages = null;
+  protected Vector<MyImage> normalImages = null;
 
   /**
    * The images of the pressed state.
    */
-  protected Vector<Image> pressedImages = null;
+  protected Vector<MyImage> pressedImages = null;
 
   /**
    * The state of the item.
@@ -40,7 +39,7 @@ public abstract class AbstractItem implements ItemInterface {
   /**
    * The center position of the item.
    */
-  protected Point position = new Point(0, 0);
+  protected MyPoint position = new MyPoint(0, 0);
 
   /**
    * Rotation of the item.
@@ -119,7 +118,7 @@ public abstract class AbstractItem implements ItemInterface {
    * @see VAST.HexGame.Widgets.ItemInterface#getLogicalPosition()
    */
   @Override
-  public Point getLogicalPosition() {
+  public MyPoint getLogicalPosition() {
     return position;
   }
 
@@ -129,7 +128,7 @@ public abstract class AbstractItem implements ItemInterface {
    * @see VAST.HexGame.Widgets.ItemInterface#setLogicalPosition(java.awt.Point)
    */
   @Override
-  public void setLogicalPosition(Point logicalPosition) {
+  public void setLogicalPosition(MyPoint logicalPosition) {
     this.position = logicalPosition;
 
   }
@@ -140,8 +139,8 @@ public abstract class AbstractItem implements ItemInterface {
    * @see VAST.HexGame.Widgets.ItemInterface#paint(java.awt.Graphics, int)
    */
   @Override
-  public void paint(Graphics g, int frame) {
-    Image image = null;
+  public void paint(MyGraphics g, int frame) {
+    MyImage image = null;
     switch (state) {
     case Normal:
       if (normalImages == null || normalImages.isEmpty())
@@ -156,7 +155,6 @@ public abstract class AbstractItem implements ItemInterface {
     }
     if (image == null)
       return;
-    Graphics2D g2d = (Graphics2D) g;
     ImageAid.drawImageAt(g, image, 1.0, 1.0, position, false, true, rotation);
   }
 

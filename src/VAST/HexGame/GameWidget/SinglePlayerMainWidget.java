@@ -3,14 +3,12 @@
  */
 package VAST.HexGame.GameWidget;
 
-import java.awt.Graphics;
-import java.awt.Point;
-
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Game.BasicPainter;
 import VAST.HexGame.GameItem.StandardGameButtonItem;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
-import VAST.HexGame.Widgets.RectItem;
 import VAST.HexGame.Widgets.RoundItem;
 import VAST.HexGame.Widgets.WidgetInterface;
 
@@ -35,72 +33,72 @@ public class SinglePlayerMainWidget extends AbstractSimpleWidget {
   public SinglePlayerMainWidget() {
     StandardGameButtonItem achivementButton = new StandardGameButtonItem();
     achivementButton.setText("Achivement");
-    achivementButton.setLogicalPosition(new Point((int) (width() * 0.1),
+    achivementButton.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.55)));
     addItem(achivementButton, AbstractSimpleWidget.ItemType.ButtonItem);
 
     StandardGameButtonItem helpButton = new StandardGameButtonItem();
     helpButton.setText("Help");
-    helpButton.setLogicalPosition(new Point((int) (width() * 0.1),
+    helpButton.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.65)));
     addItem(helpButton, AbstractSimpleWidget.ItemType.ButtonItem);
 
     StandardGameButtonItem exitButton = new StandardGameButtonItem();
     exitButton.setText("Exit");
-    exitButton.setLogicalPosition(new Point((int) (width() * 0.1),
+    exitButton.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.8)));
     addItem(exitButton, AbstractSimpleWidget.ItemType.ButtonItem);
 
     RoundItem item = new RoundItem();
     item.setRadius(SourceManagement.MAIN_MENU_ITEM_RADIOS);
-    item.setLogicalPosition(new Point((int) (width() * 0.375),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.375),
         (int) (height() * 0.5)));
     addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
 
     item = new RoundItem();
     item.setRadius(SourceManagement.MAIN_MENU_ITEM_RADIOS);
-    item.setLogicalPosition(new Point((int) (width() * 0.835),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.835),
         (int) (height() * 0.5)));
     addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
 
     item = new RoundItem();
     item.setRadius(SourceManagement.MAIN_MENU_ITEM_RADIOS);
-    item.setLogicalPosition(new Point((int) (width() * 0.49),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.49),
         (int) (height() * 0.16)));
     addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
 
     item = new RoundItem();
     item.setRadius(SourceManagement.MAIN_MENU_ITEM_RADIOS);
-    item.setLogicalPosition(new Point((int) (width() * 0.72),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.72),
         (int) (height() * 0.84)));
     addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
 
     item = new RoundItem();
     item.setRadius(SourceManagement.MAIN_MENU_ITEM_RADIOS);
-    item.setLogicalPosition(new Point((int) (width() * 0.72),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.72),
         (int) (height() * 0.16)));
     addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
 
     item = new RoundItem();
     item.setRadius(SourceManagement.MAIN_MENU_ITEM_RADIOS);
-    item.setLogicalPosition(new Point((int) (width() * 0.49),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.49),
         (int) (height() * 0.84)));
     addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
 
     item = new RoundItem();
     item.setRadius(SourceManagement.MAIN_MENU_ITEM_RADIOS);
-    item.setLogicalPosition(new Point((int) (width() * 0.605),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.605),
         (int) (height() * 0.5)));
     addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
     
     item = new RoundItem();
-    item.setLogicalPosition(new Point((int) (width() * 0.605),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.605),
         (int) (height() * 0.5)));
     item.setImageSeries(SourceManagement.MainMenuItemFolder, SourceManagement.MainMenuGameButtonsItemFile);
     addItem(item, AbstractSimpleWidget.ItemType.SimpleItem);
     
     item = new RoundItem();
-    item.setLogicalPosition(new Point((int) (width() * 0.6),
+    item.setLogicalPosition(new MyPoint((int) (width() * 0.6),
         (int) (height() * 0.495)));
     item.setImageSeries(SourceManagement.MainMenuItemFolder, SourceManagement.MainMenuCircleItemFile);
     addItem(item, AbstractSimpleWidget.ItemType.SimpleItem);
@@ -164,7 +162,7 @@ public class SinglePlayerMainWidget extends AbstractSimpleWidget {
    * @see VAST.HexGame.Widgets.AbstractSimpleWidget#dragTo(int, java.awt.Point)
    */
   @Override
-  public void dragTo(int indexOfTheDraggableItem, Point position) {
+  public void dragTo(int indexOfTheDraggableItem, MyPoint position) {
   }
 
   /*
@@ -174,11 +172,11 @@ public class SinglePlayerMainWidget extends AbstractSimpleWidget {
    * java.awt.Point)
    */
   @Override
-  public void dragApplied(int indexOfTheDraggableItem, Point position) {
+  public void dragApplied(int indexOfTheDraggableItem, MyPoint position) {
   }
 
   @Override
-  public void paint(Graphics g) {
+  public void paint(MyGraphics g) {
     BasicPainter
         .paintBackGround(BasicPainter.MainMenu, g, width(), height(), 0);
     super.paint(g);

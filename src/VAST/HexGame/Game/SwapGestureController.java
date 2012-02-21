@@ -3,8 +3,9 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Point;
 import java.util.Vector;
+
+import AidPackage.MyPoint;
 
 /**
  * Swap gesture controller.
@@ -58,7 +59,7 @@ public class SwapGestureController implements GestureControllerInterface {
    * int, int)
    */
   @Override
-  public void pressAt(Point logicalPos, int button, int mouseId) {
+  public void pressAt(MyPoint logicalPos, int button, int mouseId) {
     // Clear
     lastIndex = -1;
 
@@ -94,7 +95,7 @@ public class SwapGestureController implements GestureControllerInterface {
    * int, int)
    */
   @Override
-  public void releaseAt(Point logicalPos, int button, int mouseId) {
+  public void releaseAt(MyPoint logicalPos, int button, int mouseId) {
     // End of the gesture
     gestureState = GestureState.NoGesture;
 
@@ -112,7 +113,7 @@ public class SwapGestureController implements GestureControllerInterface {
    * int, int)
    */
   @Override
-  public void dragAt(Point logicalPos, int button, int mouseId) {
+  public void dragAt(MyPoint logicalPos, int button, int mouseId) {
     GameEffectAdapter effectPainter = rule.getEffectPainter();
     GameBoardInterface gameBoard = rule.getGameBoard();
     CoreControllerInterface coreController = rule.getCoreController();
@@ -219,12 +220,12 @@ public class SwapGestureController implements GestureControllerInterface {
           // Some complex calculation to calculate the positions
           // the balls should be at
           int halfSteps = 5;
-          Point fromPos = gameBoard.ballLogicalPositionOfIndex(index1);
-          double fromX = fromPos.getX();
-          double fromY = fromPos.getY();
-          Point toPos = gameBoard.ballLogicalPositionOfIndex(index2);
-          double toX = toPos.getX();
-          double toY = toPos.getY();
+          MyPoint fromPos = gameBoard.ballLogicalPositionOfIndex(index1);
+          double fromX = fromPos.x;
+          double fromY = fromPos.y;
+          MyPoint toPos = gameBoard.ballLogicalPositionOfIndex(index2);
+          double toX = toPos.x;
+          double toY = toPos.y;
 
           balls[index1].getStopPositions().clear();
           balls[index2].getStopPositions().clear();
@@ -232,11 +233,11 @@ public class SwapGestureController implements GestureControllerInterface {
           // Move to the new position
           for (int i = 0; i < halfSteps; ++i) {
             balls[index1].getStopPositions().add(
-                new Point(
+                new MyPoint(
                     (int) ((fromX * (halfSteps - i) + toX * i) / halfSteps),
                     (int) ((fromY * (halfSteps - i) + toY * i) / halfSteps)));
             balls[index2].getStopPositions().add(
-                new Point(
+                new MyPoint(
                     (int) ((toX * (halfSteps - i) + fromX * i) / halfSteps),
                     (int) ((toY * (halfSteps - i) + fromY * i) / halfSteps)));
           }

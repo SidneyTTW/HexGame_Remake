@@ -22,15 +22,15 @@ public class MathAid {
    * positive direction of y. Right will be the positive direction of x. The
    * angle will be counterclockwise.
    * 
-   * @param point
+   * @param mousePos
    *          The point.
-   * @param origin
+   * @param centerPosition
    *          The origin.
    * @return The angle(in [0, 2*PI)).
    */
-  public static double angle(Point point, Point origin) {
-    double dx = point.getX() - origin.getX();
-    double dy = origin.getY() - point.getY();
+  public static double angle(MyPoint mousePos, MyPoint centerPosition) {
+    double dx = mousePos.x - centerPosition.x;
+    double dy = centerPosition.y - mousePos.y;
     double result = Math.atan(Math.abs(dy / dx));
     if (dx < 0 && dy >= 0)
       return PI - result;
@@ -75,7 +75,7 @@ public class MathAid {
    *          The origin.
    * @return The position.
    */
-  public static Point calculatePosition(double a, double r, Point origin) {
+  public static MyPoint calculatePosition(double a, double r, MyPoint origin) {
     double dx = Math.cos(a) * r;
     double dy = -Math.sin(a) * r;
     if ((PI - a < 0.02 && PI - a > -0.02)) {
@@ -85,9 +85,9 @@ public class MathAid {
         dx = r;
       dy = 0;
     }
-    double x = dx + origin.getX();
-    double y = dy + origin.getY();
-    return new Point((int) x, (int) y);
+    double x = dx + origin.x;
+    double y = dy + origin.y;
+    return new MyPoint((int) x, (int) y);
   }
 
   /**
@@ -116,9 +116,9 @@ public class MathAid {
    *          The percentage of the progress.
    * @return The middle Position of the two points.
    */
-  public static Point midPosition(Point from, Point to, double percentage) {
+  public static MyPoint midPosition(MyPoint from, MyPoint to, double percentage) {
     double midX = from.x * (1 - percentage) + to.x * percentage;
     double midY = from.y * (1 - percentage) + to.y * percentage;
-    return new Point((int) midX, (int) midY);
+    return new MyPoint((int) midX, (int) midY);
   }
 }

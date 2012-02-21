@@ -3,9 +3,10 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Graphics;
-import java.awt.Point;
 import java.util.Vector;
+
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 
 /**
  * A Kind of widget manages the simple items and buttons.
@@ -55,7 +56,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
   /**
    * The last mouse position.
    */
-  Point mousePosition;
+  MyPoint mousePosition;
 
   /*
    * (non-Javadoc)
@@ -63,7 +64,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    * @see VAST.HexGame.Widgets.WidgetInterface#paint(java.awt.Graphics)
    */
   @Override
-  public void paint(Graphics g) {
+  public void paint(MyGraphics g) {
     for (int i = items.size() - 1; i >= 0; --i)
       if (items.elementAt(i).isVisible())
         items.elementAt(i).paint(g, frame);
@@ -107,8 +108,8 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    * @see VAST.HexGame.Widgets.WidgetInterface#toLogicalPoint(double, double)
    */
   @Override
-  public Point toLogicalPoint(double xRate, double yRate) {
-    return new Point((int) (xRate * width()), (int) (yRate * height()));
+  public MyPoint toLogicalPoint(double xRate, double yRate) {
+    return new MyPoint((int) (xRate * width()), (int) (yRate * height()));
   }
 
   /*
@@ -128,7 +129,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    * int)
    */
   @Override
-  public void mousePressed(Point logicalPos, int button, int mouseId) {
+  public void mousePressed(MyPoint logicalPos, int button, int mouseId) {
     mousePosition = logicalPos;
     lastItem = null;
     for (int i = 0; i < buttons.size(); ++i) {
@@ -170,7 +171,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    * int, int)
    */
   @Override
-  public void mouseReleased(Point logicalPos, int button, int mouseId) {
+  public void mouseReleased(MyPoint logicalPos, int button, int mouseId) {
     mousePosition = logicalPos;
     if (lastItem != null && lastItem instanceof DraggableItemInterface) {
       for (int i = 0; i < draggableItems.size(); ++i) {
@@ -213,7 +214,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    * int)
    */
   @Override
-  public void mouseDragged(Point logicalPos, int button, int mouseId) {
+  public void mouseDragged(MyPoint logicalPos, int button, int mouseId) {
     mousePosition = logicalPos;
     if (lastItem != null && lastItem instanceof DraggableItemInterface) {
       for (int i = 0; i < draggableItems.size(); ++i) {
@@ -273,7 +274,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    * int)
    */
   @Override
-  public void mouseMoved(Point logicalPos, int button, int mouseId) {
+  public void mouseMoved(MyPoint logicalPos, int button, int mouseId) {
   }
 
   /**
@@ -281,7 +282,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    *      int)
    */
   @Override
-  public void mouseClicked(Point logicalPos, int button, int mouseId) {
+  public void mouseClicked(MyPoint logicalPos, int button, int mouseId) {
     // TODO Currently, it's empty because I haven't found any thing to do here.
     // Maybe sonething will be added later.
   }
@@ -345,7 +346,7 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    * @param position
    *          The position of the release of the mouse.
    */
-  public abstract void dragTo(int indexOfTheDraggableItem, Point position);
+  public abstract void dragTo(int indexOfTheDraggableItem, MyPoint position);
 
   /**
    * Called when one of the draggable items is dragged and released.
@@ -355,6 +356,6 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
    * @param position
    *          The position of the release of the mouse.
    */
-  public abstract void dragApplied(int indexOfTheDraggableItem, Point position);
+  public abstract void dragApplied(int indexOfTheDraggableItem, MyPoint position);
 
 }

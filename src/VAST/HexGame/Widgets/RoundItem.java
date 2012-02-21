@@ -3,12 +3,7 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-
-import AidPackage.ImageAid;
+import AidPackage.MyPoint;
 
 /**
  * Class of a round item with radius.
@@ -40,10 +35,9 @@ public class RoundItem extends AbstractItem {
   /*
    * (non-Javadoc)
    * 
-   * @see VAST.HexGame.Widgets.ItemInterface#isIn(java.awt.Point)
    */
   @Override
-  public boolean isIn(Point logicalPosition) {
+  public boolean isIn(MyPoint logicalPosition) {
     return getLogicalPosition().distance(logicalPosition) <= radius;
   }
 }

@@ -3,7 +3,7 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.Graphics;
+import AidPackage.MyGraphics;
 
 /**
  * Interface of effect painter
@@ -39,7 +39,7 @@ public interface EffectPainterInterface {
    * @param graphics
    *          The graphics.
    */
-  public void paint(Graphics graphics);
+  public void paint(MyGraphics graphics);
   
   /**
    * Advance the effects.

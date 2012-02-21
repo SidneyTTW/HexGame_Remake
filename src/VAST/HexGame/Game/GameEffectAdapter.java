@@ -3,22 +3,20 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-
 import AidPackage.ImageAid;
 import AidPackage.ImageMapper;
+import AidPackage.MyColor;
+import AidPackage.MyGraphics;
+import AidPackage.MyImage;
+import AidPackage.MyPoint;
+import AidPackage.MyPolygon;
+import AidPackage.MyRectangle;
 import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Effect.AbstractEffect;
 import VAST.HexGame.Effect.BorderEffect;
 import VAST.HexGame.Effect.EffectPainterInterface;
 import VAST.HexGame.Effect.ExplosionEffect;
 import VAST.HexGame.Effect.FillEffect;
-import VAST.HexGame.Effect.FillEffect.FillEffectPrivateInfo;
 import VAST.HexGame.Effect.FlashEffect;
 import VAST.HexGame.Effect.HintEffect;
 import VAST.HexGame.Effect.LightningEffect;
@@ -53,10 +51,10 @@ public class GameEffectAdapter {
    *          The index of the ball.
    */
   public void selectAt(GameBoardInterface gameBoard, int index) {
-    Point center = gameBoard.ballLogicalPositionOfIndex(index);
+    MyPoint center = gameBoard.ballLogicalPositionOfIndex(index);
     int interval = gameBoard.intervalBetweenTwoLayers() / 2;
-    Polygon border = new Polygon();
-    Color color = new Color(255, 0, 0, 150);
+    MyPolygon border = new MyPolygon();
+    MyColor color = new MyColor(255, 0, 0, 150);
     double dy = 0.577 * interval;
     border.addPoint(center.x - interval, (int) (center.y + dy));
     border.addPoint(center.x, (int) (center.y + dy * 2));
@@ -105,10 +103,10 @@ public class GameEffectAdapter {
    */
   public void userMovingEliminationHintAt(GameBoardInterface gameBoard,
       int index) {
-    Point center = gameBoard.ballLogicalPositionOfIndex(index);
+    MyPoint center = gameBoard.ballLogicalPositionOfIndex(index);
     int interval = gameBoard.intervalBetweenTwoLayers() / 2 + 1;
-    Polygon border = new Polygon();
-    Color color = new Color(255, 255, 255, 150);
+    MyPolygon border = new MyPolygon();
+    MyColor color = new MyColor(255, 255, 255, 150);
     double dy = 0.577 * interval;
     border.addPoint(center.x - interval, (int) (center.y + dy));
     border.addPoint(center.x, (int) (center.y + dy * 2));
@@ -137,20 +135,20 @@ public class GameEffectAdapter {
    *          The index of the ball.
    */
   public void explodeAt(GameBoardInterface gameBoard, int index) {
-    Point center = gameBoard.ballLogicalPositionOfIndex(index);
+    MyPoint center = gameBoard.ballLogicalPositionOfIndex(index);
     int radios = 2 * (gameBoard.getBallRadius() + gameBoard
         .intervalBetweenTwoLayers());
     float[] dist = { 0.0f, 1.0f };
-    Color[] colors = { new Color(255, 255, 255, 200),
-        new Color(255, 255, 255, 50) };
+    MyColor[] colors = { new MyColor(255, 255, 255, 200),
+        new MyColor(255, 255, 255, 50) };
     ExplosionEffect effect = new ExplosionEffect(center, radios, dist, colors,
         5);
     effectPainter.addEffect(effect);
   }
 
   private static final float[] dist = { 0.0f, 1.0f };
-  private static final Color[] colors = { new Color(255, 255, 255, 255),
-      new Color(255, 255, 255, 100) };
+  private static final MyColor[] colors = { new MyColor(255, 255, 255, 255),
+      new MyColor(255, 255, 255, 100) };
 
   /**
    * Lightning at the position.
@@ -161,17 +159,17 @@ public class GameEffectAdapter {
    *          The index of the ball.
    */
   public void lightningAt(GameBoardInterface gameBoard, int index) {
-    Point center = gameBoard.ballLogicalPositionOfIndex(index);
+    MyPoint center = gameBoard.ballLogicalPositionOfIndex(index);
     int r = gameBoard.getBallRadius();
     int interval = 6 * gameBoard.intervalBetweenTwoLayers();
-    Point[] gradientOffsets = new Point[3];
-    Point[] lineOffsets = new Point[3];
-    gradientOffsets[0] = new Point((int) (-r / 2 * 1.732), r / 2);
-    gradientOffsets[1] = new Point((int) (r / 2 * 1.732), r / 2);
-    gradientOffsets[2] = new Point(0, (int) (r));
-    lineOffsets[0] = new Point(interval / 2, (int) (interval / 2 * 1.732));
-    lineOffsets[1] = new Point(interval / 2, (int) (-interval / 2 * 1.732));
-    lineOffsets[2] = new Point(-interval, 0);
+    MyPoint[] gradientOffsets = new MyPoint[3];
+    MyPoint[] lineOffsets = new MyPoint[3];
+    gradientOffsets[0] = new MyPoint((int) (-r / 2 * 1.732), r / 2);
+    gradientOffsets[1] = new MyPoint((int) (r / 2 * 1.732), r / 2);
+    gradientOffsets[2] = new MyPoint(0, (int) (r));
+    lineOffsets[0] = new MyPoint(interval / 2, (int) (interval / 2 * 1.732));
+    lineOffsets[1] = new MyPoint(interval / 2, (int) (-interval / 2 * 1.732));
+    lineOffsets[2] = new MyPoint(-interval, 0);
     LightningEffect effect = new LightningEffect(center, gradientOffsets,
         lineOffsets, dist, colors, 4);
     effectPainter.addEffect(effect);
@@ -181,11 +179,11 @@ public class GameEffectAdapter {
    * Highlight at the position.
    */
   public void highlightAt(GameBoardInterface gameBoard, int index) {
-    Point center = gameBoard.ballLogicalPositionOfIndex(index);
+    MyPoint center = gameBoard.ballLogicalPositionOfIndex(index);
     int radios = gameBoard.getBallRadius();
     float[] dist = { 0.0f, 1.0f };
-    Color[] colors = { new Color(255, 255, 255, 200),
-        new Color(255, 255, 255, 50) };
+    MyColor[] colors = { new MyColor(255, 255, 255, 200),
+        new MyColor(255, 255, 255, 50) };
     ExplosionEffect effect = new ExplosionEffect(center, radios, dist, colors,
         5);
     effectPainter.addEffect(effect);
@@ -194,7 +192,7 @@ public class GameEffectAdapter {
   /**
    * Show words at the position.
    */
-  public void wordsAt(Point pos, String text, int size) {
+  public void wordsAt(MyPoint pos, String text, int size) {
     WordsEffect effect = new WordsEffect(pos, text, size, 20);
     effectPainter.addEffect(effect);
   }
@@ -202,7 +200,7 @@ public class GameEffectAdapter {
   /**
    * Flash the whole screen.
    */
-  public void flash(Rectangle area) {
+  public void flash(MyRectangle area) {
     FlashEffect effect = new FlashEffect(area);
     effectPainter.addEffect(effect);
   }
@@ -213,14 +211,14 @@ public class GameEffectAdapter {
   /**
    * Show a hint at the position.
    */
-  public void hintAt(Point pos, int hintType) {
-    Point centerPosition = (Point) pos.clone();
-    Image[] image = new Image[1];
+  public void hintAt(MyPoint pos, int hintType) {
+    MyPoint centerPosition = pos.clone();
+    MyImage[] image = new MyImage[1];
     image[0] = ImageAid.loadFromFile(SourceManagement.HintFolder, SourceManagement.HintFile[hintType]).elementAt(0);
-    Point[] positions = new Point[20];
+    MyPoint[] positions = new MyPoint[20];
     int[] indexMapper = new int[20];
     for (int i = 0; i < 20; ++i) {
-      positions[i] = new Point(centerPosition.x, centerPosition.y + dys[i]);
+      positions[i] = new MyPoint(centerPosition.x, centerPosition.y + dys[i]);
       indexMapper[i] = 0;
     }
     ImageMapper imageMapper = new ImageMapper(image, positions, indexMapper);
@@ -238,7 +236,7 @@ public class GameEffectAdapter {
   /**
    * Paint.
    */
-  public void paint(Graphics graphics) {
+  public void paint(MyGraphics graphics) {
     effectPainter.paint(graphics);
   }
 }

@@ -3,7 +3,7 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.Graphics;
+import AidPackage.MyGraphics;
 
 /**
  * Abstract class of effects.
@@ -32,7 +32,7 @@ public abstract class AbstractEffect {
    * @param graphics
    *          The graphics.
    */
-  public abstract void paint(Graphics graphics);
+  public abstract void paint(MyGraphics graphics);
 
   /**
    * @return The id of the effect.

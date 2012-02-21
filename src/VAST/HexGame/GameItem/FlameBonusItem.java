@@ -3,16 +3,15 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.Color;
-import java.awt.Point;
-
+import AidPackage.MyColor;
+import AidPackage.MyPoint;
 import VAST.HexGame.Aid.SourceManagement;
 
 /**
  * Class of a flame item.
  * 
  * @author SidneyTTW
- *
+ * 
  */
 public class FlameBonusItem extends AbstractBonusItem {
   public FlameBonusItem() {
@@ -21,7 +20,7 @@ public class FlameBonusItem extends AbstractBonusItem {
     setPressedImageSeries(SourceManagement.BonusFolder,
         SourceManagement.FlameBonusFile);
     setRadius(SourceManagement.StandardBonusRadious);
-    setWordsOffset(new Point(0, 5));
-    setColor(Color.blue);
+    setWordsOffset(new MyPoint(0, 5));
+    setColor(MyColor.blue);
   }
 }

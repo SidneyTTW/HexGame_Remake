@@ -3,31 +3,14 @@
  */
 package VAST.HexGame.GameWidget;
 
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Vector;
 
 import AidPackage.MathAid;
+import AidPackage.MyPoint;
+import AidPackage.MyRectangle;
 import AidPackage.SoundController;
-import VAST.HexGame.Effect.EffectPainter;
-import VAST.HexGame.Game.Ball;
 import VAST.HexGame.Game.ConnectionInterface;
-import VAST.HexGame.Game.CoreController;
-import VAST.HexGame.Game.GameEffectAdapter;
-import VAST.HexGame.Game.RotateGestureController;
-import VAST.HexGame.Game.RotateStandardConnectionCalculator;
-import VAST.HexGame.Game.StandardBallFiller;
-import VAST.HexGame.Game.StandardGameRule;
 import VAST.HexGame.Game.Statistics;
-import VAST.HexGame.Game.SwapGestureController;
-import VAST.HexGame.Game.SwapStandardConnectionCalculator;
-import VAST.HexGame.Game.ThirtySevenGameBoard;
-import VAST.HexGame.GameItem.IntegerItem;
-import VAST.HexGame.GameItem.ProgressBarIterface;
-import VAST.HexGame.GameItem.StandardGameButtonItem;
-import VAST.HexGame.GameItem.VerticalProgressBarItem;
-import VAST.HexGame.GameWidget.AbstractNonePuzzleGameWidget.NonPuzzleGameRecord;
-import VAST.HexGame.Widgets.AbstractSimpleWidget;
 
 /**
  * Class to play a classic game.
@@ -43,14 +26,14 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
     endlessFill = false;
 
     this.gesture = gesture;
-    
+
     NonPuzzleGameRecord record = new NonPuzzleGameRecord();
     record.load();
-    
+
     balls = record.balls;
-    
+
     standardInit();
-    
+
     highestScoreItem.setNumber(record.highestScore);
     verticalBar.setMin(record.levelMinScore);
     verticalBar.setMax(record.levelMaxScore);
@@ -67,7 +50,7 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
     for (int i = 0; i < gameBoard.totalBallCount(); ++i) {
       int relatedChainCount = connections.relatedChainCount(i);
       if (gameEffectAdapter != null && relatedChainCount >= 2)
-        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+        gameEffectAdapter.flash(new MyRectangle(0, 0, width(), height()));
       if (relatedChainCount > 0)
         ++scoreToAdd;
       if (relatedChainCount == 2) {
@@ -89,15 +72,15 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
 
     for (int i = 0; i < allChains.size(); ++i) {
       int size = allChains.elementAt(i).size();
-      Point pos1 = new Point(gameBoard.ballLogicalPositionOfIndex(allChains
-          .elementAt(i).elementAt(0)));
-      Point pos2 = new Point(gameBoard.ballLogicalPositionOfIndex(allChains
-          .elementAt(i).elementAt(size - 1)));
+      MyPoint pos1 = gameBoard.ballLogicalPositionOfIndex(allChains
+          .elementAt(i).elementAt(0)).clone();
+      MyPoint pos2 = gameBoard.ballLogicalPositionOfIndex(allChains
+          .elementAt(i).elementAt(size - 1)).clone();
       if (gameEffectAdapter != null)
         gameEffectAdapter.wordsAt(MathAid.midPosition(pos1, pos2, 0.5), ""
             + size, size * 4 + 15);
       if (gameEffectAdapter != null && size >= 4)
-        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+        gameEffectAdapter.flash(new MyRectangle(0, 0, width(), height()));
       if (size == 4) {
         // Add sound effect
         SoundController.addSound(SoundController.GetFlame);
@@ -126,7 +109,9 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
   public void eliminated(int count) {
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.GameWidget.AbstractStandardGameWidget#reset()
    */
   @Override
@@ -135,7 +120,9 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.GameWidget.AbstractStandardGameWidget#exit()
    */
   @Override
@@ -149,7 +136,7 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
     record.star = starItem.getCurrent();
     record.balls = balls;
     record.save();
-    
+
     mainWidget.changeControl(null, true);
   }
 
@@ -160,8 +147,7 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
 
   @Override
   public int typeBase() {
-    // TODO Auto-generated method stub
-    return 0;
+    return AbstractNonePuzzleGameWidget.NonPuzzleGameRecord.SwapClassic;
   }
 
 }

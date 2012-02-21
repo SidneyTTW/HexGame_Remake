@@ -3,13 +3,12 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Point;
-
 import VAST.HexGame.Aid.PuzzleInfo;
 import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.GameItem.AchievementItem;
 import VAST.HexGame.Widgets.MainWidgetInterface;
 import AidPackage.FileProcessor;
+import AidPackage.MyPoint;
 
 /**
  * Class to control the statistics.
@@ -129,10 +128,10 @@ public class Statistics {
       AchievementItem item = new AchievementItem();
       item.setImageSeries(SourceManagement.AchievementFolder,
           SourceManagement.achivementFiles[type][current]);
-      Point size = mainWidget.topWidgetSize();
-      size = new Point(size.x * 2, size.y * 2);
-      mainWidget.addAnimItem(item, new Point((int) (0.37 * size.x), -10),
-          new Point((int) (0.37 * size.x), (int) (0.2 * size.y)), size, 80);
+      MyPoint size = mainWidget.topWidgetSize();
+      size = new MyPoint(size.x * 2, size.y * 2);
+      mainWidget.addAnimItem(item, new MyPoint((int) (0.37 * size.x), -10),
+          new MyPoint((int) (0.37 * size.x), (int) (0.2 * size.y)), size, 80);
     }
   }
 }

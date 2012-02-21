@@ -3,11 +3,8 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.AlphaComposite;
-import java.awt.Composite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
+import AidPackage.MyComposite;
+import AidPackage.MyGraphics;
 import VAST.HexGame.Widgets.RectItem;
 import VAST.HexGame.Widgets.RoundItem;
 
@@ -61,7 +58,7 @@ public class AchievementItem extends RoundItem implements TabInterface {
   }
 
   @Override
-  public void paintTab(Graphics graphics, int frame) {
+  public void paintTab(MyGraphics graphics, int frame) {
     if (tabItem == null)
       return;
     float alphaFactor = 1.0f * (frame - lastFrame) / ANIM_COUNT;
@@ -71,16 +68,15 @@ public class AchievementItem extends RoundItem implements TabInterface {
       alphaFactor = 1;
     boolean changeAlpha = alphaFactor < 1;
     if (changeAlpha) {
-      Graphics2D g2d = (Graphics2D) graphics;
-      Composite lastComposite = g2d.getComposite();
+      MyComposite lastComposite = graphics.getComposite();
       float lastAlpha = 1.0f;
-      if (lastComposite instanceof AlphaComposite)
-        lastAlpha = ((AlphaComposite) lastComposite).getAlpha();
-      AlphaComposite currentComposite = AlphaComposite.getInstance(
-          AlphaComposite.SRC_ATOP, lastAlpha * alphaFactor);
-      g2d.setComposite(currentComposite);
-      tabItem.paint(g2d, frame);
-      g2d.setComposite(lastComposite);
+      if (lastComposite != null)
+        lastAlpha = lastComposite.getAlpha();
+      MyComposite currentComposite = MyComposite.getInstance(
+          MyComposite.SRC_ATOP, lastAlpha * alphaFactor);
+      graphics.setComposite(currentComposite);
+      tabItem.paint(graphics, frame);
+      graphics.setComposite(lastComposite);
     } else
       tabItem.paint(graphics, frame);
   }

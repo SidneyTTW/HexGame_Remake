@@ -3,10 +3,10 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Point;
 import java.util.Vector;
 
 import AidPackage.MathAid;
+import AidPackage.MyPoint;
 
 /**
  * Class to realize the simulator.
@@ -275,12 +275,12 @@ public class CoreController implements CoreControllerInterface {
    * Point, int, boolean, int)
    */
   @Override
-  public void rotateABallTo(Ball ball, Point toPos, Point centerPos, int steps,
+  public void rotateABallTo(Ball ball, MyPoint toPos, MyPoint centerPos, int steps,
       boolean forceFillDirection, int distance) {
     if (ball == null)
       return;
 
-    Point lastPos = ball.getPosition();
+    MyPoint lastPos = ball.getPosition();
     if (!ball.getStopPositions().isEmpty())
       lastPos = ball.getStopPositions().elementAt(0);
     if (lastPos.distance(toPos) < 20 && ball.getStopPositions().isEmpty()) {
@@ -296,9 +296,9 @@ public class CoreController implements CoreControllerInterface {
 
     // The distance from the center
     double maxR = gameBoard.intervalBetweenTwoLayers();
-    Vector<Point> stopPositions = new Vector<Point>();
+    Vector<MyPoint> stopPositions = new Vector<MyPoint>();
     ball.setState(Ball.State.SystemMoving);
-    Point fromPos = ball.getPosition();
+    MyPoint fromPos = ball.getPosition();
     double currentA = MathAid.angle(fromPos, centerPos);
     double finalA = MathAid.angle(toPos, centerPos);
 
@@ -337,19 +337,19 @@ public class CoreController implements CoreControllerInterface {
    * Point, int, boolean)
    */
   @Override
-  public void translateABallTo(Ball ball, Point toPos, int steps, boolean plain) {
-    Vector<Point> stopPositions = new Vector<Point>();
+  public void translateABallTo(Ball ball, MyPoint toPos, int steps, boolean plain) {
+    Vector<MyPoint> stopPositions = new Vector<MyPoint>();
 
     if (ball == null)
       return;
 
     // Some simple calculation to calculate the positions
     // the ball should be at
-    Point fromPos = ball.getPosition();
-    double fromX = fromPos.getX();
-    double fromY = fromPos.getY();
-    double toX = toPos.getX();
-    double toY = toPos.getY();
+    MyPoint fromPos = ball.getPosition();
+    double fromX = fromPos.x;
+    double fromY = fromPos.y;
+    double toX = toPos.x;
+    double toY = toPos.y;
 
     double dis = fromPos.distance(toPos);
 
@@ -357,7 +357,7 @@ public class CoreController implements CoreControllerInterface {
       double dy = 0;
       if (!plain)
         dy = dis * 3 * MathAid.bridgeY(1.0 * (steps - i) / steps);
-      stopPositions.add(new Point(
+      stopPositions.add(new MyPoint(
           (int) ((fromX * i + toX * (steps - i)) / steps),
           (int) ((fromY * i + toY * (steps - i)) / steps - dy)));
     }

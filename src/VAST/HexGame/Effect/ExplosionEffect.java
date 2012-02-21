@@ -3,12 +3,11 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.Color;
-import java.awt.MultipleGradientPaint.CycleMethod;
-import java.awt.RadialGradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import AidPackage.MyColor;
+import AidPackage.MyCycleMethod;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
+import AidPackage.MyRadialGradientPaint;
 
 /**
  * Class of an effect to show an explosion.
@@ -31,8 +30,8 @@ public class ExplosionEffect extends AbstractTimingEffect {
    * @param limit
    *          The limit to set.
    */
-  public ExplosionEffect(Point center, int radios, float[] dist,
-      Color[] colors, int limit) {
+  public ExplosionEffect(MyPoint center, int radios, float[] dist,
+      MyColor[] colors, int limit) {
     info = new ExplosionEffectPrivateInfo(center, radios, dist, colors, limit);
   }
 
@@ -42,16 +41,15 @@ public class ExplosionEffect extends AbstractTimingEffect {
    * @see VAST.HexGame.Effect.AbstractEffect#paint(java.awt.Graphics)
    */
   @Override
-  public void paint(Graphics graphics) {
-    Graphics2D g2d = (Graphics2D) graphics;
+  public void paint(MyGraphics graphics) {
     ExplosionEffectPrivateInfo myInfo = (ExplosionEffectPrivateInfo) info;
     int r = myInfo.radios * myInfo.getAge() / myInfo.getLimit();
     if (r <= 0)
       r = 1;
-    RadialGradientPaint gradient = new RadialGradientPaint(myInfo.center, r,
-        myInfo.dist, myInfo.colors, CycleMethod.NO_CYCLE);
-    g2d.setPaint(gradient);
-    g2d.fillOval((int) myInfo.center.getX() - r / 2, (int) myInfo.center.getY()
+    MyRadialGradientPaint gradient = new MyRadialGradientPaint(myInfo.center, r,
+        myInfo.dist, myInfo.colors, MyCycleMethod.NO_CYCLE);
+    graphics.setPaint(gradient);
+    graphics.fillOval(myInfo.center.x - r / 2, myInfo.center.y
         - r / 2, r, r);
   }
 
@@ -73,7 +71,7 @@ public class ExplosionEffect extends AbstractTimingEffect {
     /**
      * The center of the effect.
      */
-    private Point center;
+    private MyPoint center;
 
     /**
      * The radios of the effect.
@@ -88,7 +86,7 @@ public class ExplosionEffect extends AbstractTimingEffect {
     /**
      * The color of each distance.
      */
-    private Color[] colors;
+    private MyColor[] colors;
 
     /**
      * Constructor.
@@ -104,8 +102,8 @@ public class ExplosionEffect extends AbstractTimingEffect {
    * @param limit
    *          The limit to set.
      */
-    public ExplosionEffectPrivateInfo(Point center, int radios, float[] dist,
-        Color[] colors, int limit) {
+    public ExplosionEffectPrivateInfo(MyPoint center, int radios, float[] dist,
+        MyColor[] colors, int limit) {
       this.center = center;
       this.radios = radios;
       this.dist = dist;
@@ -117,14 +115,14 @@ public class ExplosionEffect extends AbstractTimingEffect {
      * @param center
      *          The center to set.
      */
-    public void setCenter(Point center) {
+    public void setCenter(MyPoint center) {
       this.center = center;
     }
 
     /**
      * @return The center.
      */
-    public Point getCenter() {
+    public MyPoint getCenter() {
       return center;
     }
 
@@ -162,14 +160,14 @@ public class ExplosionEffect extends AbstractTimingEffect {
      * @param colors
      *          The colors to set.
      */
-    public void setColors(Color[] colors) {
+    public void setColors(MyColor[] colors) {
       this.colors = colors;
     }
 
     /**
      * @return The colors.
      */
-    public Color[] getColors() {
+    public MyColor[] getColors() {
       return colors;
     }
   }

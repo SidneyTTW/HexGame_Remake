@@ -3,9 +3,8 @@
  */
 package VAST.HexGame.GameWidget;
 
-import java.awt.Graphics;
-import java.awt.Point;
-
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 import VAST.HexGame.Aid.PuzzleInfo;
 import VAST.HexGame.Effect.EffectPainter;
 import VAST.HexGame.Game.*;
@@ -96,27 +95,27 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
     puzzleHintButton = new RectButtonItem();
     puzzleHintButton.setWidth((int) (width() * HINT_BASE_RATE));
     puzzleHintButton.setHeight((int) (height() * HINT_BASE_RATE));
-    puzzleHintButton.setLogicalPosition(new Point((int) (width()
+    puzzleHintButton.setLogicalPosition(new MyPoint((int) (width()
         * HINT_BASE_RATE / 2), (int) (height() * HINT_BASE_RATE / 2)));
     addItem(puzzleHintButton, AbstractSimpleWidget.ItemType.ButtonItem);
 
     currentMoveItem = new IntegerItem(280);
     currentMoveItem.setDescription("Current moved steps:");
     currentMoveItem.setNumber(0);
-    currentMoveItem.setLogicalPosition(new Point((int) (width() * 0.15),
+    currentMoveItem.setLogicalPosition(new MyPoint((int) (width() * 0.15),
         (int) (height() * 0.45)));
     addItem(currentMoveItem, AbstractSimpleWidget.ItemType.SimpleItem);
 
     leastMoveItem = new IntegerItem(280);
     leastMoveItem.setDescription(" Least moved steps: ");
     leastMoveItem.setNumber(0);
-    leastMoveItem.setLogicalPosition(new Point((int) (width() * 0.15),
+    leastMoveItem.setLogicalPosition(new MyPoint((int) (width() * 0.15),
         (int) (height() * 0.6)));
     addItem(leastMoveItem, AbstractSimpleWidget.ItemType.SimpleItem);
 
-    resetButton.setLogicalPosition(new Point((int) (width() * 0.15),
+    resetButton.setLogicalPosition(new MyPoint((int) (width() * 0.15),
         (int) (height() * 0.8)));
-    exitButton.setLogicalPosition(new Point((int) (width() * 0.15),
+    exitButton.setLogicalPosition(new MyPoint((int) (width() * 0.15),
         (int) (height() * 0.9)));
 
   }
@@ -165,7 +164,7 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
    * @see VAST.HexGame.Widgets.AbstractSimpleWidget#dragTo(int, java.awt.Point)
    */
   @Override
-  public void dragTo(int indexOfTheDraggableItem, Point position) {
+  public void dragTo(int indexOfTheDraggableItem, MyPoint position) {
     // Not supposed to be called
   }
 
@@ -176,12 +175,12 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
    * java.awt.Point)
    */
   @Override
-  public void dragApplied(int indexOfTheDraggableItem, Point position) {
+  public void dragApplied(int indexOfTheDraggableItem, MyPoint position) {
     // Not supposed to be called
   }
 
   @Override
-  public void paint(Graphics g) {
+  public void paint(MyGraphics g) {
     BasicPainter.paintBackGround(BasicPainter.Game61, g, width(), height(), 0);
     super.paint(g);
     BasicPainter.paintPuzzleGameBallHint(gameBoard, record.targetColorIndexes,

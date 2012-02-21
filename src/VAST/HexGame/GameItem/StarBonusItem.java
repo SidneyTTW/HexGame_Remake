@@ -3,8 +3,7 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.Color;
-
+import AidPackage.MyColor;
 import VAST.HexGame.Aid.SourceManagement;
 
 /**
@@ -15,11 +14,10 @@ import VAST.HexGame.Aid.SourceManagement;
  */
 public class StarBonusItem extends AbstractBonusItem {
   public StarBonusItem() {
-    setImageSeries(SourceManagement.BonusFolder,
-        SourceManagement.StarBonusFile);
+    setImageSeries(SourceManagement.BonusFolder, SourceManagement.StarBonusFile);
     setPressedImageSeries(SourceManagement.BonusFolder,
         SourceManagement.StarBonusFile);
     setRadius(SourceManagement.StandardBonusRadious);
-    setColor(Color.yellow );
+    setColor(MyColor.yellow);
   }
 }

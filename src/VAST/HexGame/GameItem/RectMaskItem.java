@@ -3,13 +3,9 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-
-import AidPackage.ImageAid;
+import AidPackage.MyColor;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 import VAST.HexGame.Widgets.RectButtonItem;
 
 /**
@@ -20,7 +16,7 @@ import VAST.HexGame.Widgets.RectButtonItem;
  * 
  */
 public class RectMaskItem extends RectButtonItem {
-  public static final Color STANDARD_COLOR = new Color(0, 0, 0, 100);
+  public static final MyColor STANDARD_COLOR = new MyColor(0, 0, 0, 100);
 
   /**
    * Constructor which create a mask with standard color.
@@ -30,10 +26,10 @@ public class RectMaskItem extends RectButtonItem {
   }
 
   @Override
-  public void paint(Graphics g, int frame) {
-    Point center = getLogicalPosition();
-    Point leftUp = new Point((int) (center.getX() - getWidth() / 2),
-        (int) (center.getY() - getHeight() / 2));
+  public void paint(MyGraphics g, int frame) {
+    MyPoint center = getLogicalPosition();
+    MyPoint leftUp = new MyPoint(center.x - getWidth() / 2, center.y
+        - getHeight() / 2);
     g.setColor(color);
     g.fillRect(leftUp.x, leftUp.y, getWidth(), getHeight());
   }

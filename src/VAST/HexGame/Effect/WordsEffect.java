@@ -3,13 +3,11 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-
 import AidPackage.ImageAid;
+import AidPackage.MyColor;
+import AidPackage.MyFont;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 
 /**
  * Class of an effect to show words.
@@ -21,7 +19,7 @@ public class WordsEffect extends AbstractTimingEffect {
   /**
    * Constructor.
    */
-  public WordsEffect(Point position, String string, int size, int limit) {
+  public WordsEffect(MyPoint position, String string, int size, int limit) {
     this.info = new WordsEffectPrivateInfo(position, string, size, limit);
   }
 
@@ -31,15 +29,15 @@ public class WordsEffect extends AbstractTimingEffect {
    * @see VAST.HexGame.Effect.AbstractEffect#paint(java.awt.Graphics)
    */
   @Override
-  public void paint(Graphics graphics) {
+  public void paint(MyGraphics graphics) {
     WordsEffectPrivateInfo myInfo = (WordsEffectPrivateInfo) info;
-    Font lastFont = graphics.getFont();
-    graphics.setFont(new Font("Default",Font.PLAIN, myInfo.size));
-    graphics.setColor(new Color(255, 255, 255, 100 + 50 * myInfo.getAge()
+    MyFont lastFont = graphics.getFont();
+    graphics.setFont(new MyFont("Default",MyFont.BOLD, myInfo.size));
+    graphics.setColor(new MyColor(255, 255, 255, 100 + 50 * myInfo.getAge()
         / myInfo.getLimit()));
-    Point center = new Point(myInfo.position.x, myInfo.position.y
+    MyPoint center = new MyPoint(myInfo.position.x, myInfo.position.y
         - myInfo.getAge());
-    ImageAid.drawText((Graphics2D) graphics, center, myInfo.string);
+    ImageAid.drawText(graphics, center, myInfo.string);
     graphics.setFont(lastFont);
   }
 
@@ -61,7 +59,7 @@ public class WordsEffect extends AbstractTimingEffect {
     /**
      * The position.
      */
-    private Point position;
+    private MyPoint position;
 
     /**
      * The string.
@@ -73,7 +71,7 @@ public class WordsEffect extends AbstractTimingEffect {
      */
     private int size;
     
-    public WordsEffectPrivateInfo(Point position, String string, int size, int limit) {
+    public WordsEffectPrivateInfo(MyPoint position, String string, int size, int limit) {
       this.position = position;
       this.string = string;
       this.size = size;
@@ -83,7 +81,7 @@ public class WordsEffect extends AbstractTimingEffect {
     /**
      * @return The position.
      */
-    public Point getPosition() {
+    public MyPoint getPosition() {
       return position;
     }
 
@@ -91,7 +89,7 @@ public class WordsEffect extends AbstractTimingEffect {
      * @param position
      *          The position to set.
      */
-    public void setPosition(Point position) {
+    public void setPosition(MyPoint position) {
       this.position = position;
     }
 

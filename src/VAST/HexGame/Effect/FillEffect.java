@@ -3,9 +3,9 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Polygon;
+import AidPackage.MyColor;
+import AidPackage.MyGraphics;
+import AidPackage.MyPolygon;
 
 /**
  * Class of an effect to show a fill.
@@ -22,46 +22,8 @@ public class FillEffect extends AbstractEffect {
    * @param color
    *          The color.
    */
-  public FillEffect(Polygon border, Color color) {
+  public FillEffect(MyPolygon border, MyColor color) {
     this.info = new FillEffectPrivateInfo(border, color);
-  }
-
-  /**
-   * The border of the effect.
-   */
-  private Polygon border;
-
-  /**
-   * The color of the effect.
-   */
-  private Color color;
-
-  /**
-   * Set the position.
-   */
-  public void setBorder(Polygon border) {
-    this.border = border;
-  }
-
-  /**
-   * Get the position.
-   */
-  public Polygon getBorder() {
-    return border;
-  }
-
-  /**
-   * Set the color.
-   */
-  public void setColor(Color color) {
-    this.color = color;
-  }
-
-  /**
-   * Get the color.
-   */
-  public Color getColor() {
-    return color;
   }
 
   /*
@@ -70,7 +32,7 @@ public class FillEffect extends AbstractEffect {
    * @see VAST.HexGame.Effect.AbstractEffect#paint(java.awt.Graphics)
    */
   @Override
-  public void paint(Graphics graphics) {
+  public void paint(MyGraphics graphics) {
     FillEffectPrivateInfo myInfo = (FillEffectPrivateInfo) info;
     graphics.setColor(myInfo.color);
     graphics.fillPolygon(myInfo.border);
@@ -93,12 +55,12 @@ public class FillEffect extends AbstractEffect {
     /**
      * The border of the effect.
      */
-    private Polygon border;
+    private MyPolygon border;
 
     /**
      * The color of the effect.
      */
-    private Color color;
+    private MyColor color;
 
     /**
      * Constructor
@@ -108,7 +70,7 @@ public class FillEffect extends AbstractEffect {
      * @param color
      *          The color.
      */
-    public FillEffectPrivateInfo(Polygon border, Color color) {
+    public FillEffectPrivateInfo(MyPolygon border, MyColor color) {
       this.border = border;
       this.color = color;
     }
@@ -116,28 +78,28 @@ public class FillEffect extends AbstractEffect {
     /**
      * Set the border.
      */
-    public void setBorder(Polygon border) {
+    public void setBorder(MyPolygon border) {
       this.border = border;
     }
 
     /**
      * Get the border.
      */
-    public Polygon getBorder() {
+    public MyPolygon getBorder() {
       return border;
     }
 
     /**
      * Set the color.
      */
-    public void setColor(Color color) {
+    public void setColor(MyColor color) {
       this.color = color;
     }
 
     /**
      * Get the color.
      */
-    public Color getColor() {
+    public MyColor getColor() {
       return color;
     }
   }

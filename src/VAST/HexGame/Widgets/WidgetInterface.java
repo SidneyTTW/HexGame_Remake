@@ -3,8 +3,8 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 
 
 /**
@@ -23,7 +23,7 @@ public interface WidgetInterface {
    *
    * @param g The graphics of the paintable device.
    */
-  public void paint(Graphics g);
+  public void paint(MyGraphics g);
   
   /**
    * Called by the main widget when paint is needed, in order to adjust the graphics.
@@ -46,7 +46,7 @@ public interface WidgetInterface {
    * @param yRate The rate in y direction.
    * @return The logical point in the widget.
    */
-  public Point toLogicalPoint(double xRate, double yRate);
+  public MyPoint toLogicalPoint(double xRate, double yRate);
   
   /**
    * Called by the main widget when setting the refresh timer.
@@ -63,7 +63,7 @@ public interface WidgetInterface {
    * @param mouseId The id of the mouse.
    *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
-  public void mousePressed(Point logicalPos, int button, int mouseId);
+  public void mousePressed(MyPoint logicalPos, int button, int mouseId);
   
   /**
    * Deal with the release event.
@@ -73,7 +73,7 @@ public interface WidgetInterface {
    * @param mouseId The id of the mouse.
    *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
-  public void mouseReleased(Point logicalPos, int button, int mouseId);
+  public void mouseReleased(MyPoint logicalPos, int button, int mouseId);
   
   /**
    * Deal with the drag event.
@@ -83,7 +83,7 @@ public interface WidgetInterface {
    * @param mouseId The id of the mouse.
    *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
-  public void mouseDragged(Point logicalPos, int button, int mouseId);
+  public void mouseDragged(MyPoint logicalPos, int button, int mouseId);
   
   /**
    * Deal with the move event.
@@ -93,7 +93,7 @@ public interface WidgetInterface {
    * @param mouseId The id of the mouse.
    *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
-  public void mouseMoved(Point logicalPos, int button, int mouseId);
+  public void mouseMoved(MyPoint logicalPos, int button, int mouseId);
   
   /**
    * Deal with the click event.
@@ -103,7 +103,7 @@ public interface WidgetInterface {
    * @param mouseId The id of the mouse.
    *  In a simple application, it should only be 1, but on a tablet, it may be some bigger number.
    */
-  public void mouseClicked(Point logicalPos, int button, int mouseId);
+  public void mouseClicked(MyPoint logicalPos, int button, int mouseId);
 
   /**
    * Set the main widget.

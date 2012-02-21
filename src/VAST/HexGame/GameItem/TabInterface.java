@@ -3,7 +3,7 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.Graphics;
+import AidPackage.MyGraphics;
 
 /**
  * Interface of a tab.
@@ -20,7 +20,7 @@ public interface TabInterface {
    * @param frame
    *          The frame to paint.
    */
-  public void paintTab(Graphics graphics, int frame);
+  public void paintTab(MyGraphics graphics, int frame);
   
   /**
    * Called when the tab get focus.

@@ -3,17 +3,14 @@
  */
 package VAST.HexGame.GameWidget;
 
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 
 import AidPackage.MathAid;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 import AidPackage.SoundController;
-import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Game.Ball;
 import VAST.HexGame.Game.BallFillerInterface;
 import VAST.HexGame.Game.BasicPainter;
@@ -24,17 +21,10 @@ import VAST.HexGame.Game.GameBoardInterface;
 import VAST.HexGame.Game.GameEffectAdapter;
 import VAST.HexGame.Game.GameInterface;
 import VAST.HexGame.Game.GestureControllerInterface;
-import VAST.HexGame.Game.RotateGestureController;
-import VAST.HexGame.Game.RotateStandardConnectionCalculator;
 import VAST.HexGame.Game.StandardGameRule;
 import VAST.HexGame.Game.Statistics;
-import VAST.HexGame.Game.SwapGestureController;
-import VAST.HexGame.Game.SwapStandardConnectionCalculator;
-import VAST.HexGame.GameItem.AbstractBonusItem;
-import VAST.HexGame.GameItem.FlameBonusItem;
 import VAST.HexGame.GameItem.RectMaskItem;
 import VAST.HexGame.GameItem.StandardGameButtonItem;
-import VAST.HexGame.GameItem.StarBonusItem;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
 import VAST.HexGame.Widgets.ItemInterface;
 import VAST.HexGame.Widgets.RectButtonItem;
@@ -70,21 +60,21 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   protected static final int RESET_ANIM_MAX = 5;
   private static final double[] ANIM_PERCENTAGE = { 1, 0.85, 0.425, 0.25, 0.05,
       0 };
-  private static final Point resetBackgroundFrom = new Point(
+  private static final MyPoint resetBackgroundFrom = new MyPoint(
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_WIDTH * 0.5), -100);
-  private static final Point resetBackgroundTo = new Point(
+  private static final MyPoint resetBackgroundTo = new MyPoint(
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_WIDTH * 0.5),
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.5));
-  private static final Point confirmFrom = new Point(-100,
+  private static final MyPoint confirmFrom = new MyPoint(-100,
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.6));
-  private static final Point confirmTo = new Point(
+  private static final MyPoint confirmTo = new MyPoint(
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_WIDTH * 0.4),
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.6));
 
-  private static final Point cancelFrom = new Point(
+  private static final MyPoint cancelFrom = new MyPoint(
       AbstractSimpleWidget.SIMPLE_WIDGET_WIDTH + 100,
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.6));
-  private static final Point cancelTo = new Point(
+  private static final MyPoint cancelTo = new MyPoint(
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_WIDTH * 0.6),
       (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.6));
   private static final int ResetConfirmButton = 0;
@@ -128,7 +118,7 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
     resetMask = new RectMaskItem();
     resetMask.setVisible(false);
     resetMask.setEnabled(false);
-    resetMask.setLogicalPosition(new Point(
+    resetMask.setLogicalPosition(new MyPoint(
         (int) (AbstractSimpleWidget.SIMPLE_WIDGET_WIDTH * 0.5),
         (int) (AbstractSimpleWidget.SIMPLE_WIDGET_HEIGHT * 0.5)));
     ((RectItem) resetMask).setWidth(AbstractSimpleWidget.SIMPLE_WIDGET_WIDTH);
@@ -137,13 +127,13 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
 
     resetButton = new StandardGameButtonItem();
     resetButton.setText("Reset");
-    resetButton.setLogicalPosition(new Point((int) (width() * 0.1),
+    resetButton.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.8)));
     addItem(resetButton, AbstractSimpleWidget.ItemType.ButtonItem);
 
     exitButton = new StandardGameButtonItem();
     exitButton.setText("Exit");
-    exitButton.setLogicalPosition(new Point((int) (width() * 0.1),
+    exitButton.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.9)));
     addItem(exitButton, AbstractSimpleWidget.ItemType.ButtonItem);
   }
@@ -229,28 +219,28 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   }
 
   @Override
-  public void mousePressed(Point logicalPos, int button, int mouseId) {
+  public void mousePressed(MyPoint logicalPos, int button, int mouseId) {
     super.mousePressed(logicalPos, button, mouseId);
     if (gestureController != null && reseting < 0)
       gestureController.pressAt(logicalPos, button, mouseId);
   }
 
   @Override
-  public void mouseDragged(Point logicalPos, int button, int mouseId) {
+  public void mouseDragged(MyPoint logicalPos, int button, int mouseId) {
     super.mouseDragged(logicalPos, button, mouseId);
     if (gestureController != null && reseting < 0)
       gestureController.dragAt(logicalPos, button, mouseId);
   }
 
   @Override
-  public void mouseReleased(Point logicalPos, int button, int mouseId) {
+  public void mouseReleased(MyPoint logicalPos, int button, int mouseId) {
     super.mouseReleased(logicalPos, button, mouseId);
     if (gestureController != null && reseting < 0)
       gestureController.releaseAt(logicalPos, button, mouseId);
   }
 
   @Override
-  public void paint(Graphics g) {
+  public void paint(MyGraphics g) {
     BasicPainter.paintBasicBalls(rule.getGameBoard(), balls, g, frame);
     super.paint(g);
     if (gameEffectAdapter != null)

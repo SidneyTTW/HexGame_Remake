@@ -3,9 +3,8 @@
  */
 package VAST.HexGame.GameWidget;
 
-import java.awt.Graphics;
-import java.awt.Point;
-
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Game.BasicPainter;
 import VAST.HexGame.GameItem.StandardGameButtonItem;
@@ -34,7 +33,7 @@ public class PuzzleChooseTypeWidget extends AbstractSimpleWidget {
       item = new RectButtonItem();
       item.setImageSeries(SourceManagement.PuzzleTypeFolder,
           SourceManagement.PuzzleTypeFile[i]);
-      item.setLogicalPosition(new Point((int) (width() * xRates[i]),
+      item.setLogicalPosition(new MyPoint((int) (width() * xRates[i]),
           (int) (height() * yRates[i])));
       item.setWidth(SourceManagement.PUZZLE_TYPE_IMAGE_SIZE);
       item.setHeight(SourceManagement.PUZZLE_TYPE_IMAGE_SIZE);
@@ -43,7 +42,7 @@ public class PuzzleChooseTypeWidget extends AbstractSimpleWidget {
     
     item = new StandardGameButtonItem();
     item.setText("Exit");
-    item.setLogicalPosition(new Point((int) (width() * xRates[3]),
+    item.setLogicalPosition(new MyPoint((int) (width() * xRates[3]),
         (int) (height() * yRates[3])));
     addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
   }
@@ -82,7 +81,7 @@ public class PuzzleChooseTypeWidget extends AbstractSimpleWidget {
    * @see VAST.HexGame.Widgets.AbstractSimpleWidget#dragTo(int, java.awt.Point)
    */
   @Override
-  public void dragTo(int indexOfTheDraggableItem, Point position) {}
+  public void dragTo(int indexOfTheDraggableItem, MyPoint position) {}
 
   /*
    * (non-Javadoc)
@@ -91,10 +90,10 @@ public class PuzzleChooseTypeWidget extends AbstractSimpleWidget {
    * java.awt.Point)
    */
   @Override
-  public void dragApplied(int indexOfTheDraggableItem, Point position) {}
+  public void dragApplied(int indexOfTheDraggableItem, MyPoint position) {}
   
   @Override
-  public void paint(Graphics g) {
+  public void paint(MyGraphics g) {
     BasicPainter.paintBackGround(BasicPainter.PuzzleMenu, g, width(), height(), frame);
     super.paint(g);
   }

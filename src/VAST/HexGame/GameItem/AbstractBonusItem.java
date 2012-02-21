@@ -3,12 +3,10 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-
 import AidPackage.ImageAid;
+import AidPackage.MyColor;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 import VAST.HexGame.Widgets.DraggableItemInterface;
 import VAST.HexGame.Widgets.RoundItem;
 
@@ -33,12 +31,12 @@ public abstract class AbstractBonusItem extends RoundItem implements
   /**
    * Color of the number.
    */
-  Color color = Color.black;
-  
+  MyColor color = MyColor.black;
+
   /**
    * Offset of the number.
    */
-  Point wordsOffset = new Point();
+  MyPoint wordsOffset = new MyPoint();
 
   /**
    * @return the current
@@ -86,7 +84,7 @@ public abstract class AbstractBonusItem extends RoundItem implements
   public void minusOne() {
     setCurrent(current - 1);
   }
-  
+
   /**
    * @return Whether the bonus item is empty.
    */
@@ -99,14 +97,15 @@ public abstract class AbstractBonusItem extends RoundItem implements
    * @param color
    *          The color to set.
    */
-  protected void setColor(Color color) {
+  protected void setColor(MyColor color) {
     this.color = color;
   }
 
   /**
-   * @param wordsOffset the wordsOffset to set
+   * @param wordsOffset
+   *          the wordsOffset to set
    */
-  public void setWordsOffset(Point wordsOffset) {
+  public void setWordsOffset(MyPoint wordsOffset) {
     this.wordsOffset = wordsOffset;
   }
 
@@ -118,15 +117,16 @@ public abstract class AbstractBonusItem extends RoundItem implements
    * @param frame
    *          The frame
    */
-  private void paintNumber(Graphics g, int frame) {
-    Point center = getLogicalPosition();
-    Point pos = new Point(center.x + wordsOffset.x, center.y + wordsOffset.y);
+  private void paintNumber(MyGraphics g, int frame) {
+    MyPoint center = getLogicalPosition();
+    MyPoint pos = new MyPoint(center.x + wordsOffset.x, center.y
+        + wordsOffset.y);
     g.setColor(color);
-    ImageAid.drawText((Graphics2D) g, pos, "" + current, rotation);
+    ImageAid.drawText(g, pos, "" + current, rotation);
   }
-  
+
   @Override
-  public void paint(Graphics g, int frame) {
+  public void paint(MyGraphics g, int frame) {
     super.paint(g, frame);
     paintNumber(g, frame);
   }
@@ -139,8 +139,8 @@ public abstract class AbstractBonusItem extends RoundItem implements
    * java.awt.Graphics, int)
    */
   @Override
-  public void paintShadow(Point position, Graphics g, int frame) {
-    Point origianlPos = getLogicalPosition();
+  public void paintShadow(MyPoint position, MyGraphics g, int frame) {
+    MyPoint origianlPos = getLogicalPosition();
     g.translate(position.x - origianlPos.x, position.y - origianlPos.y);
     super.paint(g, frame);
     g.translate(origianlPos.x - position.x, origianlPos.y - position.y);

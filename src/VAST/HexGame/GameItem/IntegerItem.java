@@ -3,13 +3,11 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-
 import AidPackage.ImageAid;
+import AidPackage.MyColor;
+import AidPackage.MyFont;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Widgets.RectItem;
 
@@ -24,16 +22,16 @@ public class IntegerItem extends RectItem {
 
   String description = "";
 
-  Font numberFont = new Font("Default", Font.PLAIN, 20);
+  MyFont numberFont = new MyFont("Default", MyFont.PLAIN, 20);
 
-  Font descriptionFont = new Font("Default", Font.PLAIN, 20);
+  MyFont descriptionFont = new MyFont("Default", MyFont.PLAIN, 20);
 
-  Color numberColor = new Color(115, 0, 0);
+  MyColor numberColor = new MyColor(115, 0, 0);
 
-  Color descriptionColor = new Color(0, 0, 255);
-  
+  MyColor descriptionColor = new MyColor(0, 0, 255);
+
   int numberYOffset = -10;
-  
+
   int descriptionYOffset = 15;
 
   public IntegerItem(int preferredWidth) {
@@ -88,7 +86,7 @@ public class IntegerItem extends RectItem {
   /**
    * @return the numberFont
    */
-  public Font getNumberFont() {
+  public MyFont getNumberFont() {
     return numberFont;
   }
 
@@ -96,14 +94,14 @@ public class IntegerItem extends RectItem {
    * @param numberFont
    *          the numberFont to set
    */
-  public void setNumberFont(Font numberFont) {
+  public void setNumberFont(MyFont numberFont) {
     this.numberFont = numberFont;
   }
 
   /**
    * @return the descriptionFont
    */
-  public Font getDescriptionFont() {
+  public MyFont getDescriptionFont() {
     return descriptionFont;
   }
 
@@ -111,14 +109,14 @@ public class IntegerItem extends RectItem {
    * @param descriptionFont
    *          the descriptionFont to set
    */
-  public void setDescriptionFont(Font descriptionFont) {
+  public void setDescriptionFont(MyFont descriptionFont) {
     this.descriptionFont = descriptionFont;
   }
 
   /**
    * @return the numberColor
    */
-  public Color getNumberColor() {
+  public MyColor getNumberColor() {
     return numberColor;
   }
 
@@ -126,14 +124,14 @@ public class IntegerItem extends RectItem {
    * @param numberColor
    *          the numberColor to set
    */
-  public void setNumberColor(Color numberColor) {
+  public void setNumberColor(MyColor numberColor) {
     this.numberColor = numberColor;
   }
 
   /**
    * @return the descriptionColor
    */
-  public Color getDescriptionColor() {
+  public MyColor getDescriptionColor() {
     return descriptionColor;
   }
 
@@ -141,25 +139,25 @@ public class IntegerItem extends RectItem {
    * @param descriptionColor
    *          the descriptionColor to set
    */
-  public void setDescriptionColor(Color descriptionColor) {
+  public void setDescriptionColor(MyColor descriptionColor) {
     this.descriptionColor = descriptionColor;
   }
 
   @Override
-  public void paint(Graphics g, int frame) {
+  public void paint(MyGraphics g, int frame) {
     super.paint(g, frame);
-    Point pos = (Point) position.clone();
-    Font lastFont = g.getFont();
+    MyPoint pos = position.clone();
+    MyFont lastFont = g.getFont();
     String word = "" + number;
     pos.translate(0, numberYOffset);
     g.setFont(numberFont);
     g.setColor(numberColor);
-    ImageAid.drawText((Graphics2D) g, pos, word, rotation);
+    ImageAid.drawText(g, pos, word, rotation);
     pos.translate(0, -numberYOffset);
     pos.translate(0, descriptionYOffset);
     g.setFont(descriptionFont);
     g.setColor(descriptionColor);
-    ImageAid.drawText((Graphics2D) g, pos, description, rotation);
+    ImageAid.drawText(g, pos, description, rotation);
     g.setFont(lastFont);
   }
 }

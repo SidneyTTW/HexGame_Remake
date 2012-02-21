@@ -3,8 +3,8 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 
 /**
  * Interface of the items.
@@ -38,13 +38,13 @@ public interface ItemInterface {
   /**
    * @return The logical position of the item.
    */
-  public Point getLogicalPosition();
+  public MyPoint getLogicalPosition();
 
   /**
    * @param logicalPosition
    *          Set the logical position of the item.
    */
-  public void setLogicalPosition(Point logicalPosition);
+  public void setLogicalPosition(MyPoint logicalPosition);
 
   /**
    * Function to paint the item.
@@ -54,7 +54,7 @@ public interface ItemInterface {
    * @param frame
    *          The frame to paint.
    */
-  public void paint(Graphics g, int frame);
+  public void paint(MyGraphics g, int frame);
 
   /**
    * Whether the given point is in the item.
@@ -63,7 +63,7 @@ public interface ItemInterface {
    *          The logical position.
    * @return Whether the given logical position is in the item.
    */
-  public boolean isIn(Point logicalPosition);
+  public boolean isIn(MyPoint logicalPosition);
 
   /**
    * Press.

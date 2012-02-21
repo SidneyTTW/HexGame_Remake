@@ -3,8 +3,8 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 
 /**
  * Interface of draggable items.
@@ -23,5 +23,5 @@ public interface DraggableItemInterface extends ItemInterface {
    * @param frame
    *          The frame to paint.
    */
-  public void paintShadow(Point position, Graphics g, int frame);
+  public void paintShadow(MyPoint position, MyGraphics g, int frame);
 }

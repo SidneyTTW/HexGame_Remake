@@ -3,10 +3,10 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Point;
 import java.util.Vector;
 
 import AidPackage.MathAid;
+import AidPackage.MyPoint;
 import VAST.HexGame.Game.GestureControllerInterface.GestureState;
 
 /**
@@ -44,7 +44,7 @@ public class RotateGestureController implements GestureControllerInterface {
   /**
    * Center of the rotation.
    */
-  Point centerPosition;
+  MyPoint centerPosition;
 
   /**
    * Angle when the gesture starts.
@@ -84,11 +84,11 @@ public class RotateGestureController implements GestureControllerInterface {
   /*
    * (non-Javadoc)
    * 
-   * @see VAST.HexGame.Game.GestureControllerInterface#pressAt(java.awt.Point,
+   * @see VAST.HexGame.Game.GestureControllerInterface#pressAt(java.awt.MyPoint,
    * int, int)
    */
   @Override
-  public void pressAt(Point logicalPos, int button, int mouseId) {
+  public void pressAt(MyPoint logicalPos, int button, int mouseId) {
     // Clear
     indexes.clear();
     GameEffectAdapter effectPainter = rule.getEffectPainter();
@@ -103,11 +103,11 @@ public class RotateGestureController implements GestureControllerInterface {
   /*
    * (non-Javadoc)
    * 
-   * @see VAST.HexGame.Game.GestureControllerInterface#releaseAt(java.awt.Point,
+   * @see VAST.HexGame.Game.GestureControllerInterface#releaseAt(java.awt.MyPoint,
    * int, int)
    */
   @Override
-  public void releaseAt(Point logicalPos, int button, int mouseId) {
+  public void releaseAt(MyPoint logicalPos, int button, int mouseId) {
     GameEffectAdapter effectPainter = rule.getEffectPainter();
     if (effectPainter != null) {
       effectPainter.clearUserMovingEliminationHints();
@@ -196,11 +196,11 @@ public class RotateGestureController implements GestureControllerInterface {
   /*
    * (non-Javadoc)
    * 
-   * @see VAST.HexGame.Game.GestureControllerInterface#dragAt(java.awt.Point,
+   * @see VAST.HexGame.Game.GestureControllerInterface#dragAt(java.awt.MyPoint,
    * int, int)
    */
   @Override
-  public void dragAt(Point logicalPos, int button, int mouseId) {
+  public void dragAt(MyPoint logicalPos, int button, int mouseId) {
     GameBoardInterface gameBoard = rule.getGameBoard();
     if (gestureState == GestureState.ChooseGesture) {
       int index = gameBoard.ballIndexAtLogicalPosition(logicalPos);
@@ -221,7 +221,7 @@ public class RotateGestureController implements GestureControllerInterface {
     }
   }
 
-  private void testGesture(Point logicalPos) {
+  private void testGesture(MyPoint logicalPos) {
     GameBoardInterface gameBoard = rule.getGameBoard();
     Ball[] balls = rule.getCoreController().getBalls();
 
@@ -273,7 +273,7 @@ public class RotateGestureController implements GestureControllerInterface {
       effectPainter.clearSelectionHints();
   }
 
-  private void locateGesture(Point mousePos) {
+  private void locateGesture(MyPoint mousePos) {
     Ball[] balls = rule.getCoreController().getBalls();
     if (gestureState != GestureState.LocateGesture)
       return;

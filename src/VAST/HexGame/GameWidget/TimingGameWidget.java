@@ -11,6 +11,8 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import AidPackage.MathAid;
+import AidPackage.MyPoint;
+import AidPackage.MyRectangle;
 import AidPackage.SoundController;
 import VAST.HexGame.Game.ConnectionInterface;
 import VAST.HexGame.Game.Statistics;
@@ -48,7 +50,7 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
 
     currentScoreItem = new IntegerItem(180);
     currentScoreItem.setDescription("Current Score");
-    currentScoreItem.setLogicalPosition((new Point((int) (width() * 0.1),
+    currentScoreItem.setLogicalPosition((new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.25))));
     addItem(currentScoreItem, AbstractSimpleWidget.ItemType.SimpleItem);
     
@@ -73,7 +75,7 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
     for (int i = 0; i < gameBoard.totalBallCount(); ++i) {
       int relatedChainCount = connections.relatedChainCount(i);
       if (gameEffectAdapter != null && relatedChainCount >= 2)
-        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+        gameEffectAdapter.flash(new MyRectangle(0, 0, width(), height()));
       if (relatedChainCount == 2) {
         // Add sound effect
         SoundController.addSound(SoundController.GetFlame);
@@ -93,15 +95,15 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
 
     for (int i = 0; i < allChains.size(); ++i) {
       int size = allChains.elementAt(i).size();
-      Point pos1 = new Point(gameBoard.ballLogicalPositionOfIndex(allChains
-          .elementAt(i).elementAt(0)));
-      Point pos2 = new Point(gameBoard.ballLogicalPositionOfIndex(allChains
-          .elementAt(i).elementAt(size - 1)));
+      MyPoint pos1 = gameBoard.ballLogicalPositionOfIndex(allChains
+          .elementAt(i).elementAt(0)).clone();
+      MyPoint pos2 = gameBoard.ballLogicalPositionOfIndex(allChains
+          .elementAt(i).elementAt(size - 1)).clone();
       if (gameEffectAdapter != null)
         gameEffectAdapter.wordsAt(MathAid.midPosition(pos1, pos2, 0.5), ""
             + size, size * 4 + 15);
       if (gameEffectAdapter != null && size >= 4)
-        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+        gameEffectAdapter.flash(new MyRectangle(0, 0, width(), height()));
       if (size == 4) {
         // Add sound effect
         SoundController.addSound(SoundController.GetFlame);

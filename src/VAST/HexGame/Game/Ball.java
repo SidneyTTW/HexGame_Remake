@@ -3,8 +3,9 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Point;
 import java.util.Vector;
+
+import AidPackage.MyPoint;
 
 /**
  * Class of balls.
@@ -43,7 +44,7 @@ public class Ball {
   /**
    * The position of the ball.
    */
-  private Point position = new Point(0, 0);
+  private MyPoint position = new MyPoint(0, 0);
 
   /**
    * Whether the ball is locked.
@@ -53,7 +54,7 @@ public class Ball {
   /**
    * The positions to be stopped later.
    */
-  private Vector<Point> stopPositions = new Vector<Point>();
+  private Vector<MyPoint> stopPositions = new Vector<MyPoint>();
 
   /**
    * @return The color.
@@ -88,7 +89,7 @@ public class Ball {
   /**
    * @return The position.
    */
-  public Point getPosition() {
+  public MyPoint getPosition() {
     return position;
   }
 
@@ -96,7 +97,7 @@ public class Ball {
    * @param position
    *          The position to set.
    */
-  public void setPosition(Point position) {
+  public void setPosition(MyPoint position) {
     this.position = position;
   }
 
@@ -118,7 +119,7 @@ public class Ball {
   /**
    * @return The positions to be stopped later.
    */
-  public Vector<Point> getStopPositions() {
+  public Vector<MyPoint> getStopPositions() {
     return stopPositions;
   }
 
@@ -126,7 +127,7 @@ public class Ball {
    * @param stopPositions
    *          The positions to be stopped later.
    */
-  public void setStopPositions(Vector<Point> stopPositions) {
+  public void setStopPositions(Vector<MyPoint> stopPositions) {
     this.stopPositions = stopPositions;
   }
 

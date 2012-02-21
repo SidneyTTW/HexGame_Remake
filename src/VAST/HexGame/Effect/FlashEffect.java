@@ -3,9 +3,10 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+
+import AidPackage.MyColor;
+import AidPackage.MyGraphics;
+import AidPackage.MyRectangle;
 
 /**
  * 
@@ -19,7 +20,7 @@ public class FlashEffect extends AbstractTimingEffect {
   /**
    * Constructor.
    */
-  public FlashEffect(Rectangle area) {
+  public FlashEffect(MyRectangle area) {
     info = new FlashEffectPrivateInfo(area, FlashLimit);
   }
 
@@ -29,9 +30,9 @@ public class FlashEffect extends AbstractTimingEffect {
    * @see VAST.HexGame.Effect.AbstractEffect#paint(java.awt.Graphics)
    */
   @Override
-  public void paint(Graphics graphics) {
+  public void paint(MyGraphics graphics) {
     FlashEffectPrivateInfo myInfo = (FlashEffectPrivateInfo) info;
-    graphics.setColor(new Color(255, 255, 255, myInfo.getAge() % 4 * 30));
+    graphics.setColor(new MyColor(255, 255, 255, myInfo.getAge() % 4 * 30));
     graphics.fillRect(myInfo.area.x, myInfo.area.y, myInfo.area.width,
         myInfo.area.height);
   }
@@ -64,9 +65,9 @@ public class FlashEffect extends AbstractTimingEffect {
     /**
      * The area of the flash
      */
-    private Rectangle area;
+    private MyRectangle area;
     
-    public FlashEffectPrivateInfo(Rectangle area, int limit) {
+    public FlashEffectPrivateInfo(MyRectangle area, int limit) {
       this.area = area;
       setLimit(limit);
     }
@@ -74,7 +75,7 @@ public class FlashEffect extends AbstractTimingEffect {
     /**
      * @return The area.
      */
-    public Rectangle getArea() {
+    public MyRectangle getArea() {
       return area;
     }
 
@@ -82,7 +83,7 @@ public class FlashEffect extends AbstractTimingEffect {
      * @param area
      *          The area to set.
      */
-    public void setArea(Rectangle area) {
+    public void setArea(MyRectangle area) {
       this.area = area;
     }
   }

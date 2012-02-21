@@ -3,16 +3,14 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Shape;
-
 import VAST.HexGame.Aid.SourceManagement;
 
 import AidPackage.ImageAid;
+import AidPackage.MyColor;
+import AidPackage.MyGraphics;
+import AidPackage.MyImage;
+import AidPackage.MyPoint;
+import AidPackage.MyShape;
 
 /**
  * Class of a vertical progress bar. It will use the normalImages to paint the
@@ -56,30 +54,29 @@ public class VerticalProgressBarItem extends AbstractProgressBarItem {
   }
 
   @Override
-  public void paint(Graphics g, int frame) {
+  public void paint(MyGraphics g, int frame) {
     if (pressedImages != null && !pressedImages.isEmpty())
       ImageAid.drawImageAt(g,
           pressedImages.elementAt(frame % pressedImages.size()), 1.0, 1.0,
           position, false, true, rotation);
     if (normalImages != null && !normalImages.isEmpty()) {
-      Image image = normalImages.elementAt(frame % normalImages.size());
-      int width = image.getWidth(null);
-      int height = image.getHeight(null);
-      Graphics2D g2d = (Graphics2D) g;
-      g2d.translate(position.x - width / 2, position.y - height / 2);
-      g2d.rotate(rotation);
-      g2d.setColor(Color.blue);
-      ImageAid.drawText(g2d, new Point(wordXOffset, wordYOffset), "" + current);
+      MyImage image = normalImages.elementAt(frame % normalImages.size());
+      int width = image.getWidth();
+      int height = image.getHeight();
+      g.translate(position.x - width / 2, position.y - height / 2);
+      g.rotate(rotation);
+      g.setColor(MyColor.blue);
+      ImageAid.drawText(g, new MyPoint(wordXOffset, wordYOffset), "" + current);
       double percentage = Math.max(0.0,
           Math.min(1.0, 1.0 * (current - min) / (max - min)));
       int clipHeight = (int) (percentage * (foreTo - foreFrom));
-      Shape clip = g.getClip();
+      MyShape clip = g.getClip();
       g.setClip(0, foreTo - clipHeight, width, clipHeight);
       ImageAid
-          .drawImageAt(g, image, 1.0, 1.0, new Point(0, 0), false, false, 0);
+          .drawImageAt(g, image, 1.0, 1.0, new MyPoint(0, 0), false, false, 0);
       g.setClip(clip);
-      g2d.rotate(-rotation);
-      g2d.translate(-position.x + width / 2, -position.y + height / 2);
+      g.rotate(-rotation);
+      g.translate(-position.x + width / 2, -position.y + height / 2);
     }
   }
 

@@ -3,14 +3,12 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.MultipleGradientPaint;
-import java.awt.Point;
-import java.awt.LinearGradientPaint;
-import java.awt.Stroke;
+import AidPackage.MyColor;
+import AidPackage.MyCycleMethod;
+import AidPackage.MyGraphics;
+import AidPackage.MyLinearGradientPaint;
+import AidPackage.MyPoint;
+import AidPackage.MyStroke;
 
 /**
  * Class of an effect to show a lightning.
@@ -25,8 +23,8 @@ public class LightningEffect extends AbstractTimingEffect {
    * @param info
    *          The information of the effect.
    */
-  public LightningEffect(Point center, Point[] gradientOffsets,
-      Point[] lineOffsets, float[] dist, Color[] colors, int limit) {
+  public LightningEffect(MyPoint center, MyPoint[] gradientOffsets,
+      MyPoint[] lineOffsets, float[] dist, MyColor[] colors, int limit) {
     info = new LightningEffectPrivateInfo(center, gradientOffsets, lineOffsets,
         dist, colors, limit);
   }
@@ -37,30 +35,29 @@ public class LightningEffect extends AbstractTimingEffect {
    * @see VAST.HexGame.Effect.AbstractEffect#paint(java.awt.Graphics)
    */
   @Override
-  public void paint(Graphics graphics) {
-    Graphics2D g2d = (Graphics2D) graphics;
+  public void paint(MyGraphics graphics) {
     LightningEffectPrivateInfo myInfo = (LightningEffectPrivateInfo) info;
-    Stroke oldStroke = g2d.getStroke();
+    MyStroke oldStroke = graphics.getStroke();
     for (int i = 0; i < myInfo.gradientOffsets.length; ++i) {
-      Point to = (Point) myInfo.center.clone();
+      MyPoint to = myInfo.center.clone();
       to.translate(myInfo.gradientOffsets[i].x, myInfo.gradientOffsets[i].y);
-      LinearGradientPaint gradient = new LinearGradientPaint(myInfo.center, to,
-          myInfo.dist, myInfo.colors, MultipleGradientPaint.CycleMethod.REFLECT);
-      int width = 2 * (int) (new Point(0, 0)).distance(myInfo.gradientOffsets[i]);
-      g2d.setStroke(new BasicStroke(width, BasicStroke.CAP_SQUARE,
-          BasicStroke.JOIN_ROUND));
-      g2d.setPaint(gradient);
-      Point linePoint1 = (Point) myInfo.center.clone();
+      MyLinearGradientPaint gradient = new MyLinearGradientPaint(myInfo.center, to,
+          myInfo.dist, myInfo.colors, MyCycleMethod.REFLECT);
+      int width = 2 * (int) (new MyPoint(0, 0)).distance(myInfo.gradientOffsets[i]);
+      graphics.setStroke(new MyStroke(width, MyStroke.CAP_SQUARE,
+          MyStroke.JOIN_ROUND));
+      graphics.setPaint(gradient);
+      MyPoint linePoint1 = myInfo.center.clone();
       linePoint1.translate(
           myInfo.lineOffsets[i].x * myInfo.getAge() / myInfo.getLimit(),
           myInfo.lineOffsets[i].y * myInfo.getAge() / myInfo.getLimit());
-      Point linePoint2 = (Point) myInfo.center.clone();
+      MyPoint linePoint2 = myInfo.center.clone();
       linePoint2.translate(
           -myInfo.lineOffsets[i].x * myInfo.getAge() / myInfo.getLimit(),
           -myInfo.lineOffsets[i].y * myInfo.getAge() / myInfo.getLimit());
-      g2d.drawLine(linePoint1.x, linePoint1.y, linePoint2.x, linePoint2.y);
+      graphics.drawLine(linePoint1.x, linePoint1.y, linePoint2.x, linePoint2.y);
     }
-    g2d.setStroke(oldStroke);
+    graphics.setStroke(oldStroke);
   }
 
   /*
@@ -81,17 +78,17 @@ public class LightningEffect extends AbstractTimingEffect {
     /**
      * The center of the effect.
      */
-    private Point center;
+    private MyPoint center;
 
     /**
      * The offsets of the gradient.
      */
-    private Point[] gradientOffsets;
+    private MyPoint[] gradientOffsets;
 
     /**
      * The offsets of the lines.
      */
-    private Point[] lineOffsets;
+    private MyPoint[] lineOffsets;
 
     /**
      * The distance of each color.
@@ -101,10 +98,10 @@ public class LightningEffect extends AbstractTimingEffect {
     /**
      * The color of each distance.
      */
-    private Color[] colors;
+    private MyColor[] colors;
 
-    public LightningEffectPrivateInfo(Point center, Point[] gradientOffsets,
-        Point[] lineOffsets, float[] dist, Color[] colors, int limit) {
+    public LightningEffectPrivateInfo(MyPoint center, MyPoint[] gradientOffsets,
+        MyPoint[] lineOffsets, float[] dist, MyColor[] colors, int limit) {
       this.center = center;
       this.gradientOffsets = gradientOffsets;
       this.lineOffsets = lineOffsets;
@@ -116,7 +113,7 @@ public class LightningEffect extends AbstractTimingEffect {
     /**
      * Set the offsets.
      */
-    public void setOffsets(Point[] gradientOffsets, Point[] lineOffsets) {
+    public void setOffsets(MyPoint[] gradientOffsets, MyPoint[] lineOffsets) {
       this.gradientOffsets = gradientOffsets;
       this.lineOffsets = lineOffsets;
     }
@@ -124,28 +121,28 @@ public class LightningEffect extends AbstractTimingEffect {
     /**
      * Get the offsets of gradient.
      */
-    public Point[] getGradientOffsets() {
+    public MyPoint[] getGradientOffsets() {
       return gradientOffsets;
     }
 
     /**
      * Get the offsets of line.
      */
-    public Point[] getLineOffsets() {
+    public MyPoint[] getLineOffsets() {
       return lineOffsets;
     }
 
     /**
      * Set the center.
      */
-    public void setCenter(Point center) {
+    public void setCenter(MyPoint center) {
       this.center = center;
     }
 
     /**
      * Get the center.
      */
-    public Point getCenter() {
+    public MyPoint getCenter() {
       return center;
     }
 
@@ -166,14 +163,14 @@ public class LightningEffect extends AbstractTimingEffect {
     /**
      * Set the color.
      */
-    public void setColors(Color[] colors) {
+    public void setColors(MyColor[] colors) {
       this.colors = colors;
     }
 
     /**
      * Get the color.
      */
-    public Color[] getColors() {
+    public MyColor[] getColors() {
       return colors;
     }
   }

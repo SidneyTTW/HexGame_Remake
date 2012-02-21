@@ -22,13 +22,13 @@ public class ImageAid {
   /**
    * Initialize images of a thing.
    */
-  public static Vector<Image> loadFromFile(String dir, String file) {
-    Vector<Image> result = new Vector<Image>();
+  public static Vector<MyImage> loadFromFile(String dir, String file) {
+    Vector<MyImage> result = new Vector<MyImage>();
     List<File> fileList = new ArrayList<File>();
     FileSearcher.findFiles(dir, file, fileList);
     for (int i = 0; i < fileList.size(); i++) {
-      result.add(Toolkit.getDefaultToolkit().getImage(
-          fileList.get(i).getAbsolutePath()));
+      result.add(new MyImage(Toolkit.getDefaultToolkit().getImage(
+          fileList.get(i).getAbsolutePath())));
     }
     return result;
   }
@@ -36,8 +36,8 @@ public class ImageAid {
   /**
    * Initialize images of some thing, each thing has only one image.
    */
-  public static Vector<Image> loadFromFile(String dir, String[] files) {
-    Vector<Image> result = new Vector<Image>();
+  public static Vector<MyImage> loadFromFile(String dir, String[] files) {
+    Vector<MyImage> result = new Vector<MyImage>();
     result.ensureCapacity(files.length);
     for (int i = 0; i < files.length; ++i) {
       List<File> fileList = new ArrayList<File>();
@@ -45,8 +45,8 @@ public class ImageAid {
       if (fileList.isEmpty())
         result.add(null);
       else
-        result.add(Toolkit.getDefaultToolkit().getImage(
-            fileList.get(0).getAbsolutePath()));
+        result.add(new MyImage(Toolkit.getDefaultToolkit().getImage(
+            fileList.get(0).getAbsolutePath())));
     }
     return result;
   }
@@ -55,47 +55,50 @@ public class ImageAid {
    * Initialize images of some things, each thing has several images.
    */
   public static void loadFromFile(String dir, String[] files,
-      Vector<Vector<Image>> images, Vector<Integer> frameCounts) {
+      Vector<Vector<MyImage>> images, Vector<Integer> frameCounts) {
     int count = files.length;
     images.clear();
     images.ensureCapacity(count);
     frameCounts.clear();
     frameCounts.ensureCapacity(count);
     for (int i = 0; i < count; ++i) {
-      Vector<Image> currentImages = loadFromFile(dir, files[i]);
+      Vector<MyImage> currentImages = loadFromFile(dir, files[i]);
       images.add(currentImages);
       frameCounts.add(currentImages.size());
     }
   }
 
-  public static void drawText(Graphics2D g2d, Point centerPosition,
+  public static void drawText(MyGraphics graphics, MyPoint centerPosition,
       String text, double rotation) {
-    g2d.translate(centerPosition.x, centerPosition.y);
-    g2d.rotate(rotation);
-    int stringWidth = g2d.getFontMetrics().stringWidth(text);
-    int stringHeight = g2d.getFontMetrics().getAscent()
-        - g2d.getFontMetrics().getDescent();
-    g2d.drawString(text, -stringWidth / 2, stringHeight / 2);
-    g2d.rotate(-rotation);
-    g2d.translate(-centerPosition.x, -centerPosition.y);
+    graphics.translate(centerPosition.x, centerPosition.y);
+    graphics.rotate(rotation);
+    int stringWidth = graphics.stringWidth(text);
+    int stringHeight = graphics.stringHeight();
+    graphics.drawString(text, -stringWidth / 2, stringHeight / 2);
+    graphics.rotate(-rotation);
+    graphics.translate(-centerPosition.x, -centerPosition.y);
   }
 
-  public static void drawText(Graphics2D g2d, Point centerPosition, String text) {
-    int stringWidth = g2d.getFontMetrics().stringWidth(text);
-    int stringHeight = g2d.getFontMetrics().getAscent()
-        - g2d.getFontMetrics().getDescent();
-    g2d.drawString(text, (int) (centerPosition.getX() - stringWidth / 2),
-        (int) (centerPosition.getY() + stringHeight / 2));
+  public static void drawText(MyGraphics graphics, MyPoint centerPosition,
+      String text) {
+    int stringWidth = graphics.stringWidth(text);
+    int stringHeight = graphics.stringHeight();
+    graphics.drawString(text, centerPosition.x - stringWidth / 2,
+        centerPosition.y + stringHeight / 2);
   }
 
   /**
    * Draw a image with some options.
    */
-  public static void drawImageAt(Graphics graphics, Image image, double xRate,
-      double yRate, Point pos, boolean resize, boolean center, double rotation) {
+  public static void drawImageAt(MyGraphics graphics, MyImage image,
+      double xRate, double yRate, MyPoint pos, boolean resize, boolean center,
+      double rotation) {
+    if (image.image == null)
+      return;
+    
     // Calculate the width and height the image should be
-    int width = image.getWidth(null);
-    int height = image.getHeight(null);
+    int width = image.getWidth();
+    int height = image.getHeight();
 
     if (width < 1 || height < 1)
       return;
@@ -108,36 +111,38 @@ public class ImageAid {
       height *= yRate;
     }
 
-    Graphics2D g2d = (Graphics2D) graphics;
-    g2d.translate(pos.x, pos.y);
-    g2d.rotate(rotation);
+    graphics.translate(pos.x, pos.y);
+    graphics.rotate(rotation);
 
     // Calculate the left up position of the image
-    Point leftUp = new Point(0, 0);
+    MyPoint leftUp = new MyPoint(0, 0);
     if (center)
-      leftUp = new Point((int) -width / 2, (int) -height / 2);
+      leftUp = new MyPoint(-width / 2, -height / 2);
 
-    g2d.translate((int) leftUp.getX(), (int) leftUp.getY());
-    g2d.scale(xRate, yRate);
+    graphics.translate((int) leftUp.x, (int) leftUp.y);
+    graphics.scale(xRate, yRate);
 
     // Draw the image
-    g2d.drawImage(image, 0, 0, null);
+    graphics.drawImage(image, 0, 0);
 
-    g2d.scale(1.0 / xRate, 1.0 / yRate);
-    g2d.translate((int) -leftUp.getX(), (int) -leftUp.getY());
+    graphics.scale(1.0 / xRate, 1.0 / yRate);
+    graphics.translate(-leftUp.x, -leftUp.y);
 
-    g2d.rotate(-rotation);
-    g2d.translate(-pos.x, -pos.y);
+    graphics.rotate(-rotation);
+    graphics.translate(-pos.x, -pos.y);
   }
 
   /**
    * Draw a image with some options.
    */
-  public static void drawImageAt(Graphics graphics, Image image, double xRate,
-      double yRate, Point pos, boolean resize, boolean center) {
+  public static void drawImageAt(MyGraphics graphics, MyImage image,
+      double xRate, double yRate, MyPoint pos, boolean resize, boolean center) {
+    if (image.image == null)
+      return;
+    
     // Calculate the width and height the image should be
-    double width = image.getWidth(null);
-    double height = image.getHeight(null);
+    int width = image.getWidth();
+    int height = image.getHeight();
 
     if (width < 1 || height < 1)
       return;
@@ -151,21 +156,19 @@ public class ImageAid {
     }
 
     // Calculate the left up position of the pixmap
-    Point leftUp = pos;
+    MyPoint leftUp = pos;
     if (center) {
-      leftUp = new Point((int) (leftUp.getX() - width / 2),
-          (int) (leftUp.getY() - height / 2));
+      leftUp = new MyPoint(leftUp.x - width / 2, leftUp.y - height / 2);
     }
 
-    Graphics2D g2d = (Graphics2D) graphics;
-    g2d.translate((int) leftUp.getX(), (int) leftUp.getY());
-    g2d.scale(xRate, yRate);
+    graphics.translate(leftUp.x, leftUp.y);
+    graphics.scale(xRate, yRate);
 
     // Draw the pixmap
-    g2d.drawImage(image, 0, 0, null);
+    graphics.drawImage(image, 0, 0);
 
-    g2d.scale(1.0 / xRate, 1.0 / yRate);
-    g2d.translate((int) -leftUp.getX(), (int) -leftUp.getY());
+    graphics.scale(1.0 / xRate, 1.0 / yRate);
+    graphics.translate(-leftUp.x, -leftUp.y);
   }
 
 }

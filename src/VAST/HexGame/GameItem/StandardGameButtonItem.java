@@ -3,8 +3,7 @@
  */
 package VAST.HexGame.GameItem;
 
-import java.awt.Color;
-
+import AidPackage.MyColor;
 import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Widgets.RectButtonItem;
 
@@ -28,7 +27,7 @@ public class StandardGameButtonItem extends RectButtonItem {
         SourceManagement.StandardButtonPressedFile);
     setWidth(SourceManagement.StandardButtonWidth);
     setHeight(SourceManagement.StandardButtonHeight);
-    setColor(Color.white);
+    setColor(MyColor.white);
   }
 
   /**

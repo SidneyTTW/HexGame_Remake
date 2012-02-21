@@ -3,10 +3,10 @@
  */
 package VAST.HexGame.Effect;
 
-import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
+
+import AidPackage.MyGraphics;
 
 /**
  * Class to realize EffectPainterInterface.
@@ -66,7 +66,7 @@ public class EffectPainter implements EffectPainterInterface {
    * @see VAST.HexGame.Effect.EffectPainterInterface#paint(java.awt.Graphics)
    */
   @Override
-  public void paint(Graphics graphics) {
+  public void paint(MyGraphics graphics) {
     try {
       for (int i = 0; i < AbstractEffect.TOTAL_EFFECT_COUNT; ++i) {
         for (Iterator<AbstractEffect> itr = effects[i].iterator(); itr

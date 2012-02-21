@@ -3,9 +3,6 @@
  */
 package AidPackage;
 
-import java.awt.Image;
-import java.awt.Point;
-
 /**
  * A class to map index to the position and image. Each image may appears
  * repeatedly.
@@ -17,12 +14,12 @@ public class ImageMapper {
   /**
    * The images stored.
    */
-  Image[] images;
+  MyImage[] images;
 
   /**
    * The positions stored.
    */
-  Point[] positions;
+  MyPoint[] positions;
 
   /**
    * The index mapper.
@@ -39,7 +36,7 @@ public class ImageMapper {
    * @param indexMapper
    *          The index mapper.
    */
-  public ImageMapper(Image[] images, Point[] positions, int[] indexMapper) {
+  public ImageMapper(MyImage[] images, MyPoint[] positions, int[] indexMapper) {
     this.images = images;
     this.positions = positions;
     this.indexMapper = indexMapper;
@@ -51,7 +48,7 @@ public class ImageMapper {
    * @param images
    *          The images to store.
    */
-  public void setImages(Image[] images) {
+  public void setImages(MyImage[] images) {
     this.images = images;
   }
 
@@ -61,7 +58,7 @@ public class ImageMapper {
    * @param positions
    *          The positions to store.
    */
-  public void setPositions(Point[] positions) {
+  public void setPositions(MyPoint[] positions) {
     this.positions = positions;
   }
 
@@ -82,7 +79,7 @@ public class ImageMapper {
    *          The index.
    * @return The image.
    */
-  public Image getImage(int index) {
+  public MyImage getImage(int index) {
     if (index >= 0 && index < indexMapper.length)
       if (indexMapper[index] >= 0 && indexMapper[index] < images.length)
         return images[indexMapper[index]];
@@ -96,7 +93,7 @@ public class ImageMapper {
    *          The index.
    * @return The position.
    */
-  public Point getPosition(int index) {
+  public MyPoint getPosition(int index) {
     if (index >= 0 && index < indexMapper.length)
       return positions[index];
     return null;

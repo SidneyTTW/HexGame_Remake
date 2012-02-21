@@ -3,14 +3,14 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
 import java.util.Vector;
 
 import VAST.HexGame.Aid.SourceManagement;
 
 import AidPackage.ImageAid;
+import AidPackage.MyGraphics;
+import AidPackage.MyImage;
+import AidPackage.MyPoint;
 
 /**
  * A class to do the basic paint. Currently, the functions are all static,
@@ -31,11 +31,11 @@ public class BasicPainter {
   public static final int TwoPlayerGame = 7;
   public static final int MainMenu2 = 8;
 
-  private static Vector<Vector<Image>> ballsImages = new Vector<Vector<Image>>();
+  private static Vector<Vector<MyImage>> ballsImages = new Vector<Vector<MyImage>>();
   private static Vector<Integer> ballsFrameCounts = new Vector<Integer>();
-  private static Vector<Image> lockImages = new Vector<Image>();
+  private static Vector<MyImage> lockImages = new Vector<MyImage>();
 
-  private static Vector<Image> backgroundImages = new Vector<Image>();
+  private static Vector<MyImage> backgroundImages = new Vector<MyImage>();
 
   private static void initBallsImages() {
     ImageAid.loadFromFile(SourceManagement.BallFolder,
@@ -65,7 +65,7 @@ public class BasicPainter {
    *          The index of the frame to show.
    */
   public static void paintBasicBalls(GameBoardInterface gameBoard,
-      Ball[] balls, Graphics graphics, int frame) {
+      Ball[] balls, MyGraphics graphics, int frame) {
 
     // Size of the ball
     double size = gameBoard.getBallRadius() * 2;
@@ -91,7 +91,7 @@ public class BasicPainter {
         // If the ball exists
         if (balls[index] != null) {
           // Get the position of the ball
-          Point pos = balls[index].getPosition();
+          MyPoint pos = balls[index].getPosition();
 
           if (pos.x == 0 && pos.y == 0)
             return;
@@ -99,7 +99,7 @@ public class BasicPainter {
           // Get the color
           int colorIndex = balls[index].getColor();
           // Get the image
-          Image image = ballsImages.elementAt(colorIndex).elementAt(
+          MyImage image = ballsImages.elementAt(colorIndex).elementAt(
               frame % ballsFrameCounts.elementAt(colorIndex));
 
           if (image == null)
@@ -135,7 +135,7 @@ public class BasicPainter {
    *          The scale in both directions.
    */
   public static void paintPuzzleGameBallHint(GameBoardInterface gameBoard,
-      int[] ballColors, Graphics graphics, int frame, double rate) {
+      int[] ballColors, MyGraphics graphics, int frame, double rate) {
 
     // Size of the ball
     double size = gameBoard.getBallRadius() * 2;
@@ -157,11 +157,11 @@ public class BasicPainter {
           // If the ball exists
           if (color >= 0) {
             // Get the position of the ball
-            Point pos = gameBoard.ballLogicalPositionOfIndex(index);
-            pos = new Point((int) (pos.x * rate), (int) (pos.y * rate));
+            MyPoint pos = gameBoard.ballLogicalPositionOfIndex(index);
+            pos = new MyPoint((int) (pos.x * rate), (int) (pos.y * rate));
 
             // Get the image
-            Image image = ballsImages.elementAt(color).elementAt(
+            MyImage image = ballsImages.elementAt(color).elementAt(
                 frame % ballsFrameCounts.elementAt(color));
 
             if (image == null)
@@ -190,7 +190,7 @@ public class BasicPainter {
    * @param frame
    *          The index of the frame to show.
    */
-  public static void paintBackGround(int id, Graphics graphics, int width,
+  public static void paintBackGround(int id, MyGraphics graphics, int width,
       int height, int frame) {
     if (id < 0 || id >= SourceManagement.BackgroundFolder.length())
       return;
@@ -200,14 +200,14 @@ public class BasicPainter {
       initBackgroundImages();
 
     // Get the image
-    Image image = backgroundImages.elementAt(id);
+    MyImage image = backgroundImages.elementAt(id);
 
     if (image == null)
       return;
 
     // Draw the image
-    ImageAid.drawImageAt(graphics, image, 1.0 * width / image.getWidth(null),
-        1.0 * height / image.getHeight(null), new Point(0, 0), true, false);
+    ImageAid.drawImageAt(graphics, image, 1.0 * width / image.getWidth(),
+        1.0 * height / image.getHeight(), new MyPoint(0, 0), true, false);
   }
 
 }

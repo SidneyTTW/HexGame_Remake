@@ -3,19 +3,17 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-
 import AidPackage.ImageAid;
+import AidPackage.MyColor;
+import AidPackage.MyFont;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 
 /**
  * Class of a round button.
  * 
  * @author SidneyTTW
- *
+ * 
  */
 public class RoundButtonItem extends RoundItem {
   /**
@@ -26,54 +24,59 @@ public class RoundButtonItem extends RoundItem {
   /**
    * The color of the text.
    */
-  protected Color color = Color.black;
+  protected MyColor color = MyColor.black;
 
   /**
    * The color of the text.
    */
-  protected Font font = new Font("Default",Font.BOLD, 15);
+  protected MyFont font = new MyFont("Default", MyFont.BOLD, 15);
 
   /**
-   * @param text The new text.
+   * @param text
+   *          The new text.
    */
   public void setText(String text) {
     this.text = text;
   }
 
   /**
-   * @param color The new color.
+   * @param color
+   *          The new color.
    */
-  public void setColor(Color color) {
+  public void setColor(MyColor color) {
     this.color = color;
   }
-  
+
   /**
    * @return the font
    */
-  public Font getFont() {
+  public MyFont getFont() {
     return font;
   }
 
   /**
-   * @param font the font to set
+   * @param font
+   *          the font to set
    */
-  public void setFont(Font font) {
+  public void setFont(MyFont font) {
     this.font = font;
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see VAST.HexGame.Widgets.AbstractItem#paint(java.awt.Graphics, int)
    */
   @Override
-  public void paint(Graphics g, int frame) {
+  public void paint(MyGraphics g, int frame) {
     super.paint(g, frame);
-    Point center = (Point) getLogicalPosition().clone();
-    Font lastFont = g.getFont();
+    MyPoint center = (MyPoint) getLogicalPosition().clone();
+    MyFont lastFont = g.getFont();
     g.setFont(font);
     g.setColor(color);
     if (isPressed())
-      center.setLocation(center.getX() + 2, center.getY() + 2);
-    ImageAid.drawText((Graphics2D) g, center, text, rotation);
+      center.translate(2, 2);
+    ImageAid.drawText(g, center, text, rotation);
     g.setFont(lastFont);
   }
 }

@@ -3,8 +3,9 @@
  */
 package VAST.HexGame.Game;
 
-import java.awt.Point;
 import java.util.Vector;
+
+import AidPackage.MyPoint;
 
 /**
  * A class which tells us the information of a game board with 37 balls.
@@ -17,7 +18,7 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    * Total chain(circle) number.
    */
   private static final int CHAIN_NUMBER = 4;
-  
+
   /**
    * Total item number.
    */
@@ -27,7 +28,7 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    * Total row number.
    */
   private static final int ROW_NUMBER = (CHAIN_NUMBER * 2 - 1);
-  
+
   /**
    * Total column number.
    */
@@ -63,7 +64,6 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    */
   private static final double LOCATION_GAME_VIEW_Y_TO = 600;
 
-
   /**
    * The absolute position of game(I must draw a picture~~~)
    */
@@ -88,7 +88,7 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    * The interval of items in X direction.
    */
   private static final double LOCATION_GAME_BOARD_ITEM_X_INTERVAL = ((LOCATION_GAME_BOARD_ITEM_X_TO - LOCATION_GAME_BOARD_ITEM_X_FROM) / (COLUMN_NUMBER - 1));
-  
+
   /**
    * The interval of items in Y direction.
    */
@@ -123,17 +123,9 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
   public int getBallRadius() {
     return ITEM_SIZE / 2;
   }
-  
 
-  private static final int col[] = {
-          3,  5,  7,  9,
-        2,  4,  6,  8, 10,
-      1,  3,  5,  7,  9, 11,
-    0,  2,  4,  6,  8, 10, 12,
-      1,  3,  5,  7,  9, 11,
-        2,  4,  6,  8, 10,
-          3,  5,  7,  9
-  };
+  private static final int col[] = { 3, 5, 7, 9, 2, 4, 6, 8, 10, 1, 3, 5, 7, 9,
+      11, 0, 2, 4, 6, 8, 10, 12, 1, 3, 5, 7, 9, 11, 2, 4, 6, 8, 10, 3, 5, 7, 9 };
 
   /**
    * The column number of the item with the index.
@@ -142,22 +134,14 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    *          Index of the ball.
    * @return Column of the ball.
    */
-  private int columnOfIndex(int index)
-  {
+  private int columnOfIndex(int index) {
     if (index < 0 || index >= TOTAL_ITEM_NUMBER)
       return 0;
     return col[index];
   }
 
-  private static final int row[] = {
-          0,  0,  0,  0,
-        1,  1,  1,  1,  1,
-      2,  2,  2,  2,  2,  2,
-    3,  3,  3,  3,  3,  3,  3,
-      4,  4,  4,  4,  4,  4,
-        5,  5,  5,  5,  5,
-          6,  6,  6,  6
-  };
+  private static final int row[] = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+      2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6 };
 
   /**
    * The row number of the item with the index.
@@ -166,34 +150,25 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    *          Index of the ball.
    * @return Column of the ball.
    */
-  private int rowOfIndex(int index)
-  {
+  private int rowOfIndex(int index) {
     if (index < 0 || index >= TOTAL_ITEM_NUMBER)
       return 0;
     return row[index];
   }
 
-  private static final int itemCountInAChain[] = {
-    1,  6, 12, 18
-  };
+  private static final int itemCountInAChain[] = { 1, 6, 12, 18 };
 
-  private static final int originalChain[] = {
-    18,
-    17,         11,         12,         19,         25,         24,
-    16, 10,      5,  6,      7, 13,     20, 26,     31,30,      29, 23,
-    15,  9,  4,  0,  1,  2,  3,  8, 14, 21, 27, 32, 36, 35, 34, 33, 28, 22
-  };
+  private static final int originalChain[] = { 18, 17, 11, 12, 19, 25, 24, 16,
+      10, 5, 6, 7, 13, 20, 26, 31, 30, 29, 23, 15, 9, 4, 0, 1, 2, 3, 8, 14, 21,
+      27, 32, 36, 35, 34, 33, 28, 22 };
 
-  //The index of the item at the position of the scene
-  private static final int positionToIndex[] = {
-    -1, -1, -1,  0,  0,  1,  1,  2,  2,  3,  3, -1, -1, -1,
-    -1, -1,  4,  4,  5,  5,  6,  6,  7,  7,  8,  8, -1, -1,
-    -1,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, -1,
-    15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21,
-    -1, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, -1,
-    -1, -1, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, -1, -1,
-    -1, -1, -1, 33, 33, 34, 34, 35, 35, 36, 36, -1, -1, -1
-  };
+  // The index of the item at the position of the scene
+  private static final int positionToIndex[] = { -1, -1, -1, 0, 0, 1, 1, 2, 2,
+      3, 3, -1, -1, -1, -1, -1, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, -1, -1, -1, 9, 9,
+      10, 10, 11, 11, 12, 12, 13, 13, 14, 14, -1, 15, 15, 16, 16, 17, 17, 18,
+      18, 19, 19, 20, 20, 21, 21, -1, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26,
+      27, 27, -1, -1, -1, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, -1, -1, -1,
+      -1, -1, 33, 33, 34, 34, 35, 35, 36, 36, -1, -1, -1 };
 
   /*
    * (non-Javadoc)
@@ -203,15 +178,13 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    * .Point)
    */
   @Override
-  public int ballIndexAtLogicalPosition(Point position) {
-    int c = (int) Math.floor((position.getX() +
-                              LOCATION_GAME_BOARD_ITEM_X_INTERVAL -
-                              LOCATION_GAME_BOARD_ITEM_X_FROM) /
-                             LOCATION_GAME_BOARD_ITEM_X_INTERVAL);
-    int r = (int) Math.floor((position.getY() +
-                              LOCATION_GAME_BOARD_ITEM_Y_INTERVAL / 2 -
-                              LOCATION_GAME_BOARD_ITEM_Y_FROM) /
-                             LOCATION_GAME_BOARD_ITEM_Y_INTERVAL);
+  public int ballIndexAtLogicalPosition(MyPoint position) {
+    int c = (int) Math
+        .floor((position.x + LOCATION_GAME_BOARD_ITEM_X_INTERVAL - LOCATION_GAME_BOARD_ITEM_X_FROM)
+            / LOCATION_GAME_BOARD_ITEM_X_INTERVAL);
+    int r = (int) Math.floor((position.y + LOCATION_GAME_BOARD_ITEM_Y_INTERVAL
+        / 2 - LOCATION_GAME_BOARD_ITEM_Y_FROM)
+        / LOCATION_GAME_BOARD_ITEM_Y_INTERVAL);
     if (c < 0 || c > COLUMN_NUMBER || r < 0 || r >= ROW_NUMBER)
       return -1;
     int index = positionToIndex[r * (COLUMN_NUMBER + 1) + c];
@@ -219,11 +192,11 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
       return -1;
     return index;
   }
-  
+
   /**
    * Position of index.
    */
-  Vector<Point> positionOfIndex = new Vector<Point>();
+  Vector<MyPoint> positionOfIndex = new Vector<MyPoint>();
 
   /*
    * (non-Javadoc)
@@ -231,35 +204,27 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    * @see VAST.HexGame.Game.GameBoardInterface#ballLogicalPositionOfIndex(int)
    */
   @Override
-  public Point ballLogicalPositionOfIndex(int index) {
-    if (positionOfIndex.isEmpty())
-    {
-      for (int i = 0;i < TOTAL_ITEM_NUMBER;++i)
-      {
+  public MyPoint ballLogicalPositionOfIndex(int index) {
+    if (positionOfIndex.isEmpty()) {
+      for (int i = 0; i < TOTAL_ITEM_NUMBER; ++i) {
         int r = rowOfIndex(i);
         int c = columnOfIndex(i);
 
-        double x = LOCATION_GAME_BOARD_ITEM_X_FROM +
-                  c * LOCATION_GAME_BOARD_ITEM_X_INTERVAL;
-        double y = LOCATION_GAME_BOARD_ITEM_Y_FROM +
-                  r * LOCATION_GAME_BOARD_ITEM_Y_INTERVAL;
-        positionOfIndex.add(new Point((int)x, (int)y));
+        double x = LOCATION_GAME_BOARD_ITEM_X_FROM + c
+            * LOCATION_GAME_BOARD_ITEM_X_INTERVAL;
+        double y = LOCATION_GAME_BOARD_ITEM_Y_FROM + r
+            * LOCATION_GAME_BOARD_ITEM_Y_INTERVAL;
+        positionOfIndex.add(new MyPoint((int) x, (int) y));
       }
     }
     if (index < 0 || index >= TOTAL_ITEM_NUMBER)
-      return new Point();
+      return new MyPoint();
     return positionOfIndex.elementAt(index);
   }
 
-  private static final int indexToLeftDown[] = {
-            4,  5,  6,  7,
-          9, 10, 11, 12, 13,
-       15, 16, 17, 18, 19, 20,
-     -1, 22, 23, 24, 25, 26, 27,
-       -1, 28, 29, 30, 31, 32,
-         -1, 33, 34, 35, 36,
-           -1, -1, -1, -1
-  };
+  private static final int indexToLeftDown[] = { 4, 5, 6, 7, 9, 10, 11, 12, 13,
+      15, 16, 17, 18, 19, 20, -1, 22, 23, 24, 25, 26, 27, -1, 28, 29, 30, 31,
+      32, -1, 33, 34, 35, 36, -1, -1, -1, -1 };
 
   /*
    * (non-Javadoc)
@@ -272,16 +237,10 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
       return -1;
     return indexToLeftDown[index];
   }
-  
-  private static final int indexToRightDown[] = {
-          5,  6,  7,  8,
-       10, 11, 12, 13, 14,
-     16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, -1,
-     28, 29, 30, 31, 32, -1,
-       33, 34, 35, 36, -1,
-         -1, -1, -1, -1,
-  };
+
+  private static final int indexToRightDown[] = { 5, 6, 7, 8, 10, 11, 12, 13,
+      14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, -1, 28, 29, 30, 31,
+      32, -1, 33, 34, 35, 36, -1, -1, -1, -1, -1, };
 
   /*
    * (non-Javadoc)
@@ -295,15 +254,9 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
     return indexToRightDown[index];
   }
 
-  private static final int indexToRight[] = {
-            1,  2,  3, -1,
-          5,  6,  7,  8, -1,
-       10, 11, 12, 13, 14, -1,
-     16, 17, 18, 19, 20, 21, -1,
-       23, 24, 25, 26, 27, -1,
-         29, 30, 31, 32, -1,
-           34, 35, 36, -1
-  };
+  private static final int indexToRight[] = { 1, 2, 3, -1, 5, 6, 7, 8, -1, 10,
+      11, 12, 13, 14, -1, 16, 17, 18, 19, 20, 21, -1, 23, 24, 25, 26, 27, -1,
+      29, 30, 31, 32, -1, 34, 35, 36, -1 };
 
   /*
    * (non-Javadoc)
@@ -316,16 +269,10 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
       return -1;
     return indexToRight[index];
   }
-  
-  private static final int indexToRightUp[] = {
-        -1, -1, -1, -1,
-        0,  1,  2,  3, -1,
-      4,  5,  6,  7,  8, -1,
-    9, 10, 11, 12, 13, 14, -1,
-     16, 17, 18, 19, 20, 21,
-       23, 24, 25, 26, 27,
-         29, 30, 31, 32
-  };
+
+  private static final int indexToRightUp[] = { -1, -1, -1, -1, 0, 1, 2, 3, -1,
+      4, 5, 6, 7, 8, -1, 9, 10, 11, 12, 13, 14, -1, 16, 17, 18, 19, 20, 21, 23,
+      24, 25, 26, 27, 29, 30, 31, 32 };
 
   /*
    * (non-Javadoc)
@@ -338,16 +285,10 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
       return -1;
     return indexToRightUp[index];
   }
-  
-  private static final int indexToLeftUp[] = {
-          -1, -1, -1, -1,
-        -1,  0,  1,  2,  3,
-      -1, 4,  5,  6,  7,  8,
-    -1, 9, 10, 11, 12, 13, 14,
-      15, 16, 17, 18, 19, 20,
-        22, 23, 24, 25, 26,
-          28, 29, 30, 31
-  };
+
+  private static final int indexToLeftUp[] = { -1, -1, -1, -1, -1, 0, 1, 2, 3,
+      -1, 4, 5, 6, 7, 8, -1, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22,
+      23, 24, 25, 26, 28, 29, 30, 31 };
 
   /*
    * (non-Javadoc)
@@ -361,16 +302,10 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
     return indexToLeftUp[index];
   }
 
-  private static final int indexToLeft[] = {
-           -1,  0,  1,  2,
-         -1,  4,  5,  6,  7,
-       -1,  9, 10, 11, 12, 13,
-     -1, 15, 16, 17, 18, 19, 20,
-       -1, 22, 23, 24, 25, 26,
-         -1, 28, 29, 30, 31,
-           -1, 33, 34, 35
-  };
-  
+  private static final int indexToLeft[] = { -1, 0, 1, 2, -1, 4, 5, 6, 7, -1,
+      9, 10, 11, 12, 13, -1, 15, 16, 17, 18, 19, 20, -1, 22, 23, 24, 25, 26,
+      -1, 28, 29, 30, 31, -1, 33, 34, 35 };
+
   /*
    * (non-Javadoc)
    * 
@@ -392,8 +327,7 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
   public int nearbyIndex(int index, int direction) {
     if (direction < 0 || direction > 5)
       return -1;
-    switch (direction)
-    {
+    switch (direction) {
     case 0:
       return leftDownIndex(index);
     case 1:
@@ -410,9 +344,9 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
       return -1;
     }
   }
-  
-  //The chains to reload items(from inner to outter)
-  private Vector<Vector<Integer> > _chains = new Vector<Vector<Integer> >();
+
+  // The chains to reload items(from inner to outter)
+  private Vector<Vector<Integer>> _chains = new Vector<Vector<Integer>>();
 
   /*
    * (non-Javadoc)
@@ -421,13 +355,11 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    */
   @Override
   public Vector<Vector<Integer>> chains() {
-    if (_chains.isEmpty())
-    {
+    if (_chains.isEmpty()) {
       int currentIndexInOriginalChain = 0;
-      for (int i = 0;i < CHAIN_NUMBER;++i)
-      {
+      for (int i = 0; i < CHAIN_NUMBER; ++i) {
         Vector<Integer> currentChain = new Vector<Integer>();
-        for (int j = 0;j < itemCountInAChain[i];++j)
+        for (int j = 0; j < itemCountInAChain[i]; ++j)
           currentChain.add(originalChain[currentIndexInOriginalChain++]);
         _chains.add(currentChain);
       }
@@ -435,10 +367,10 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
     return _chains;
   }
 
-  //Indexes around the index
-  //At most 6 indexes
-  //The order is left, leftUp, rightUp, right, rightDown, leftDown
-  private Vector<Vector<Integer> > _chainAroundIndex = new Vector<Vector<Integer> >();
+  // Indexes around the index
+  // At most 6 indexes
+  // The order is left, leftUp, rightUp, right, rightDown, leftDown
+  private Vector<Vector<Integer>> _chainAroundIndex = new Vector<Vector<Integer>>();
 
   /*
    * (non-Javadoc)
@@ -450,10 +382,9 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
     if (index < 0 || index >= TOTAL_ITEM_NUMBER)
       return new Vector<Integer>();
     if (_chainAroundIndex.isEmpty())
-      for (int i = 0;i < TOTAL_ITEM_NUMBER;++i)
+      for (int i = 0; i < TOTAL_ITEM_NUMBER; ++i)
         _chainAroundIndex.add(new Vector<Integer>());
-    if (_chainAroundIndex.elementAt(index).isEmpty())
-    {
+    if (_chainAroundIndex.elementAt(index).isEmpty()) {
       Vector<Integer> result = _chainAroundIndex.elementAt(index);
       int tmp = leftUpIndex(index);
       if (tmp >= 0)
@@ -476,17 +407,11 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
     }
     return _chainAroundIndex.elementAt(index);
   }
-  
-  //Whether the index can be a center to rotate
-  private static final int indexToCanBeRotateCenter[] = {
-            0,  0,  0,  0,
-          0,  1,  1,  1,  0,
-        0,  1,  1,  1,  1,  0,
-      0,  1,  1,  1,  1,  1,  0,
-        0,  1,  1,  1,  1,  0,
-          0,  1,  1,  1,  0,
-            0,  0,  0,  0,
-  };
+
+  // Whether the index can be a center to rotate
+  private static final int indexToCanBeRotateCenter[] = { 0, 0, 0, 0, 0, 1, 1,
+      1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1,
+      1, 0, 0, 0, 0, 0, };
 
   /*
    * (non-Javadoc)
@@ -499,18 +424,12 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
       return false;
     return indexToCanBeRotateCenter[index] == 1;
   }
-  
-  //Whether the index is a joint of the chains(circles)
-  private static final int indexToIsJoint[] = {
-          1,  0,  0,  1,
-        0,  1,  0,  1,  0,
-      0,  0,  1,  1,  0,  0,
-    1,  1,  1,  1,  1,  1,  1,
-      0,  0,  1,  1,  0,  0,
-        0,  1,  0,  1,  0,
-          1,  0,  0,  1,
-  };
-  
+
+  // Whether the index is a joint of the chains(circles)
+  private static final int indexToIsJoint[] = { 1, 0, 0, 1, 0, 1, 0, 1, 0, 0,
+      0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1,
+      0, 0, 1, };
+
   /*
    * (non-Javadoc)
    * 
@@ -529,7 +448,7 @@ public class ThirtySevenGameBoard implements GameBoardInterface {
    * @see VAST.HexGame.Game.GameBoardInterface#centerPosition()
    */
   @Override
-  public Point centerPosition() {
+  public MyPoint centerPosition() {
     return ballLogicalPositionOfIndex(originalChain[0]);
   }
 

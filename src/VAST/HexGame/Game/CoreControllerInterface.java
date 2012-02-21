@@ -6,6 +6,8 @@ package VAST.HexGame.Game;
 import java.awt.Point;
 import java.util.Vector;
 
+import AidPackage.MyPoint;
+
 /**
  * @author SidneyTTW
  * 
@@ -44,9 +46,9 @@ public interface CoreControllerInterface {
    * 
    * @param ball
    *          The ball.
-   * @param toPos
+   * @param myPoint
    *          The destination.
-   * @param centerPos
+   * @param centerPosition
    *          The center of the rotation.
    * @param steps
    *          The steps used to reach the destination.
@@ -55,7 +57,7 @@ public interface CoreControllerInterface {
    * @param distance
    *          The distance between the ball and the center in count of layer.
    */
-  public void rotateABallTo(Ball ball, Point toPos, Point centerPos, int steps,
+  public void rotateABallTo(Ball ball, MyPoint myPoint, MyPoint centerPosition, int steps,
       boolean forceFillDirection, int distance);
   
   /**
@@ -70,5 +72,5 @@ public interface CoreControllerInterface {
    * @param plain
    *          Whether the ball move directly to the position.
    */
-  void translateABallTo(Ball ball, Point toPos, int steps, boolean plain);
+  void translateABallTo(Ball ball, MyPoint toPos, int steps, boolean plain);
 }

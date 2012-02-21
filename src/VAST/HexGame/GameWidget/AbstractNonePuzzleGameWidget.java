@@ -3,12 +3,12 @@
  */
 package VAST.HexGame.GameWidget;
 
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Vector;
 
 import AidPackage.FileProcessor;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
+import AidPackage.MyRectangle;
 import AidPackage.SoundController;
 import VAST.HexGame.Aid.SourceManagement;
 import VAST.HexGame.Effect.EffectPainter;
@@ -75,11 +75,11 @@ public abstract class AbstractNonePuzzleGameWidget extends
     static final int RotateTiming = 5;
 
     Ball[] balls = null;
-    int highestScore=0;
-    int currentLevel=1;
-    int levelMinScore=0;
-    int levelCurrentScore=0;
-    int levelMaxScore=30;
+    int highestScore = 0;
+    int currentLevel = 1;
+    int levelMinScore = 0;
+    int levelCurrentScore = 0;
+    int levelMaxScore = 30;
     int flame = 0;
     int star = 0;
 
@@ -144,10 +144,10 @@ public abstract class AbstractNonePuzzleGameWidget extends
     flameItem = new FlameBonusItem();
     starItem = new StarBonusItem();
 
-    flameItem.setLogicalPosition(new Point((int) (width() * 0.1),
+    flameItem.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.4)));
 
-    starItem.setLogicalPosition(new Point((int) (width() * 0.1),
+    starItem.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.55)));
 
     addItem(flameItem, AbstractSimpleWidget.ItemType.SimpleItem);
@@ -155,22 +155,22 @@ public abstract class AbstractNonePuzzleGameWidget extends
 
     hintButton = new StandardGameButtonItem();
     hintButton.setText("Hint");
-    hintButton.setLogicalPosition(new Point((int) (width() * 0.1),
+    hintButton.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.7)));
     addItem(hintButton, AbstractSimpleWidget.ItemType.ButtonItem);
 
     highestScoreItem = new IntegerItem(180);
     highestScoreItem.setDescription("Highest Score");
     highestScoreItem.setNumber(0);
-    highestScoreItem.setLogicalPosition(new Point((int) (width() * 0.1),
+    highestScoreItem.setLogicalPosition(new MyPoint((int) (width() * 0.1),
         (int) (height() * 0.1)));
     addItem(highestScoreItem, AbstractSimpleWidget.ItemType.SimpleItem);
 
     verticalBar = new VerticalProgressBarItem();
-    verticalBar.setLogicalPosition(new Point((int) (width() * 0.25),
+    verticalBar.setLogicalPosition(new MyPoint((int) (width() * 0.25),
         (int) (height() * 0.5)));
     addItem(verticalBar, AbstractSimpleWidget.ItemType.SimpleItem);
-    
+
     gameBoard = new ThirtySevenGameBoard();
     if (balls == null) {
       balls = new Ball[gameBoard.totalBallCount()];
@@ -210,10 +210,10 @@ public abstract class AbstractNonePuzzleGameWidget extends
     if (connectionCalculator == null)
       return;
     int hintIndex = connectionCalculator.hint(balls, gameBoard);
-    Point hintPos;
+    MyPoint hintPos;
     int hintType;
     if (hintIndex >= 0) {
-      hintPos = (Point) gameBoard.ballLogicalPositionOfIndex(hintIndex).clone();
+      hintPos = gameBoard.ballLogicalPositionOfIndex(hintIndex).clone();
       switch (gesture) {
       case Swap:
         hintPos.translate(0, -gameBoard.getBallRadius() * 2);
@@ -228,10 +228,10 @@ public abstract class AbstractNonePuzzleGameWidget extends
     } else {
       hintType = SourceManagement.ArrowHint;
       if (!flameItem.isEmpty()) {
-        hintPos = (Point) flameItem.getLogicalPosition().clone();
+        hintPos = flameItem.getLogicalPosition().clone();
         hintPos.translate(0, -flameItem.getRadius() * 2);
       } else if (!starItem.isEmpty()) {
-        hintPos = (Point) starItem.getLogicalPosition().clone();
+        hintPos = starItem.getLogicalPosition().clone();
         hintPos.translate(0, -starItem.getRadius() * 2);
       } else {
         // TODO -.-
@@ -243,7 +243,7 @@ public abstract class AbstractNonePuzzleGameWidget extends
   }
 
   @Override
-  public void dragTo(int indexOfTheDraggableItem, Point position) {
+  public void dragTo(int indexOfTheDraggableItem, MyPoint position) {
     if (gameEffectAdapter != null)
       gameEffectAdapter.clearBonusEliminationHints();
     int index = gameBoard.ballIndexAtLogicalPosition(position);
@@ -272,7 +272,7 @@ public abstract class AbstractNonePuzzleGameWidget extends
   }
 
   @Override
-  public void dragApplied(int indexOfTheDraggableItem, Point position) {
+  public void dragApplied(int indexOfTheDraggableItem, MyPoint position) {
     if (gameEffectAdapter != null)
       gameEffectAdapter.clearBonusEliminationHints();
     int index = gameBoard.ballIndexAtLogicalPosition(position);
@@ -284,7 +284,7 @@ public abstract class AbstractNonePuzzleGameWidget extends
         return;
       flameItem.minusOne();
       if (gameEffectAdapter != null)
-        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+        gameEffectAdapter.flash(new MyRectangle(0, 0, width(), height()));
       // Add sound effect
       SoundController.addSound(SoundController.UseFlame);
       // Connect to statistic
@@ -299,7 +299,7 @@ public abstract class AbstractNonePuzzleGameWidget extends
         return;
       starItem.minusOne();
       if (gameEffectAdapter != null)
-        gameEffectAdapter.flash(new Rectangle(0, 0, width(), height()));
+        gameEffectAdapter.flash(new MyRectangle(0, 0, width(), height()));
       // Add sound effect
       SoundController.addSound(SoundController.UseStar);
       // Connect to statistic
@@ -340,9 +340,9 @@ public abstract class AbstractNonePuzzleGameWidget extends
       break;
     }
   }
-  
+
   @Override
-  public void paint(Graphics g) {
+  public void paint(MyGraphics g) {
     BasicPainter.paintBackGround(BasicPainter.Game37, g, width(), height(), 0);
     super.paint(g);
   }

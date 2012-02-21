@@ -3,7 +3,7 @@
  */
 package VAST.HexGame.Widgets;
 
-import java.awt.Point;
+import AidPackage.MyPoint;
 
 /**
  * Class of a rectangle item with width and height.
@@ -56,11 +56,11 @@ public class RectItem extends AbstractItem {
    * @see VAST.HexGame.Widgets.ItemInterface#isIn(java.awt.Point)
    */
   @Override
-  public boolean isIn(Point logicalPosition) {
-    Point center = getLogicalPosition();
-    return (logicalPosition.getX() >= center.getX() - width / 2) &&
-           (logicalPosition.getX() <= center.getX() + width / 2) &&
-           (logicalPosition.getY() >= center.getY() - height / 2) &&
-           (logicalPosition.getY() <= center.getY() + height / 2);
+  public boolean isIn(MyPoint logicalPosition) {
+    MyPoint center = getLogicalPosition();
+    return (logicalPosition.x >= center.x - width / 2) &&
+           (logicalPosition.x <= center.x + width / 2) &&
+           (logicalPosition.y >= center.y - height / 2) &&
+           (logicalPosition.y <= center.y + height / 2);
   }
 }

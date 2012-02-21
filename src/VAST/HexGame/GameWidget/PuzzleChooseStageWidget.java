@@ -3,10 +3,9 @@
  */
 package VAST.HexGame.GameWidget;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-
+import AidPackage.MyColor;
+import AidPackage.MyGraphics;
+import AidPackage.MyPoint;
 import VAST.HexGame.Aid.PuzzleInfo;
 import VAST.HexGame.GameItem.PuzzleStageItem;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
@@ -44,12 +43,12 @@ public class PuzzleChooseStageWidget extends AbstractSimpleWidget {
     this.advanced = advanced;
 
     PuzzleStageItem exitItem = new PuzzleStageItem(-2, advanced, false);
-    exitItem.setLogicalPosition(new Point((int) (width() * xRates[type][0]),
+    exitItem.setLogicalPosition(new MyPoint((int) (width() * xRates[type][0]),
         (int) (height() * yRates[type][0])));
     addItem(exitItem, AbstractSimpleWidget.ItemType.ButtonItem);
 
     PuzzleStageItem advancedItem = new PuzzleStageItem(-1, !advanced, false);
-    advancedItem.setLogicalPosition(new Point(
+    advancedItem.setLogicalPosition(new MyPoint(
         (int) (width() * xRates[type][1]), (int) (height() * yRates[type][1])));
     addItem(advancedItem, AbstractSimpleWidget.ItemType.ButtonItem);
 
@@ -61,7 +60,8 @@ public class PuzzleChooseStageWidget extends AbstractSimpleWidget {
       if (!canTry)
         canTry = minSteps[i - 1] > 0;
       item = new PuzzleStageItem(i, advanced, !canTry);
-      item.setLogicalPosition(new Point((int) (width() * xRates[type][i + 2]),
+      item.setLogicalPosition(new MyPoint(
+          (int) (width() * xRates[type][i + 2]),
           (int) (height() * yRates[type][i + 2])));
       addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
     }
@@ -109,7 +109,7 @@ public class PuzzleChooseStageWidget extends AbstractSimpleWidget {
    * @see VAST.HexGame.Widgets.AbstractSimpleWidget#dragTo(int, java.awt.Point)
    */
   @Override
-  public void dragTo(int indexOfTheDraggableItem, Point position) {
+  public void dragTo(int indexOfTheDraggableItem, MyPoint position) {
   }
 
   /*
@@ -119,12 +119,12 @@ public class PuzzleChooseStageWidget extends AbstractSimpleWidget {
    * java.awt.Point)
    */
   @Override
-  public void dragApplied(int indexOfTheDraggableItem, Point position) {
+  public void dragApplied(int indexOfTheDraggableItem, MyPoint position) {
   }
 
   @Override
-  public void paint(Graphics g) {
-    g.setColor(Color.black);
+  public void paint(MyGraphics g) {
+    g.setColor(MyColor.black);
     g.fillRect(0, 0, width(), height());
     super.paint(g);
   }
