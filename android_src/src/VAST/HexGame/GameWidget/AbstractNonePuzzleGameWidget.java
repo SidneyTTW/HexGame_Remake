@@ -59,6 +59,9 @@ public abstract class AbstractNonePuzzleGameWidget extends
   protected boolean autoRotate;
   protected boolean endlessFill;
 
+  protected boolean preEnded = false;
+  protected boolean ended = false;
+
   /**
    * A class to load or save game records.
    * 
@@ -141,13 +144,16 @@ public abstract class AbstractNonePuzzleGameWidget extends
       testHighest(levelCurrentScore);
     }
 
-    public void testHighest(int currentScore) {
+    public boolean testHighest(int currentScore) {
       int type = getType();
       int lastHighest = Statistics.getStatistic(type
           + Statistics.SwapClassicPoint);
-      if (currentScore > lastHighest)
+      if (currentScore > lastHighest) {
         Statistics.changeStatistic(type + Statistics.SwapClassicPoint,
             currentScore);
+        return true;
+      }
+      return false;
     }
 
     public void clear() {
@@ -222,6 +228,8 @@ public abstract class AbstractNonePuzzleGameWidget extends
    * Give hint to the user.
    */
   protected void hint() {
+    if (preEnded)
+      return;
     if (connectionCalculator == null)
       return;
     int hintIndex = connectionCalculator.hint(balls, gameBoard);
@@ -258,6 +266,9 @@ public abstract class AbstractNonePuzzleGameWidget extends
 
   @Override
   public void dragTo(int indexOfTheDraggableItem, MyPoint position) {
+    if (preEnded)
+      return;
+    super.dragTo(indexOfTheDraggableItem, position);
     if (gameEffectAdapter != null)
       gameEffectAdapter.clearBonusEliminationHints();
     int index = gameBoard.ballIndexAtLogicalPosition(position);
@@ -287,6 +298,9 @@ public abstract class AbstractNonePuzzleGameWidget extends
 
   @Override
   public void dragApplied(int indexOfTheDraggableItem, MyPoint position) {
+    if (preEnded)
+      return;
+    super.dragApplied(indexOfTheDraggableItem, position);
     if (gameEffectAdapter != null)
       gameEffectAdapter.clearBonusEliminationHints();
     int index = gameBoard.ballIndexAtLogicalPosition(position);
@@ -347,6 +361,8 @@ public abstract class AbstractNonePuzzleGameWidget extends
 
   @Override
   public void buttonClicked(int indexOfTheButton) {
+    if (preEnded)
+      return;
     super.buttonClicked(indexOfTheButton);
     switch (indexOfTheButton) {
     case HintButton:

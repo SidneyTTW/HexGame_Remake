@@ -1,8 +1,12 @@
 package VAST.HexGame.GameWidget;
 
 import Aid.MyPoint;
+import VAST.HexGame.GameItem.IntegerItem;
+import VAST.HexGame.GameItem.StandardGameButtonItem;
 import VAST.HexGame.GameWidget.AbstractStandardGameWidget.StandardGesture;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
+import VAST.HexGame.Widgets.ItemInterface;
+import VAST.HexGame.Widgets.RectButtonItem;
 
 /**
  * Class of widget to show when a game is over.
@@ -11,10 +15,33 @@ import VAST.HexGame.Widgets.AbstractSimpleWidget;
  * 
  */
 public class GameOverWidget extends AbstractSimpleWidget {
+  ItemInterface newRecordItem;
+  IntegerItem integerItem;
+  StandardGesture gesture;
 
-  public GameOverWidget(String text, int score, boolean newRecord,
+  private static final int RestartButton = 0;
+  private static final int CancelButton = 1;
+
+  public GameOverWidget(String text, int number, boolean newRecord,
       StandardGesture gesture) {
+    integerItem = new IntegerItem(316);
+    integerItem.setLogicalPosition(new MyPoint((int) (width() * 0.5),
+        (int) (height() * 0.6)));
+    integerItem.setNumber(number);
+    integerItem.setDescription(text);
+    addItem(integerItem, AbstractSimpleWidget.ItemType.SimpleItem);
 
+    ItemInterface item = new StandardGameButtonItem();
+    item.setVisible(false);
+    item.setEnabled(false);
+    ((RectButtonItem) item).setText("Restart");
+    addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
+
+    item = new StandardGameButtonItem();
+    item.setVisible(false);
+    item.setEnabled(false);
+    ((RectButtonItem) item).setText("Cancel");
+    addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
   }
 
   @Override

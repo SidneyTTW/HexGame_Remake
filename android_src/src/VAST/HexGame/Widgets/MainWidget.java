@@ -14,7 +14,6 @@ import android.view.View;
 
 import Aid.MathAid;
 import Aid.MyGraphics;
-import Aid.MyImage;
 import Aid.MyPoint;
 
 /**
@@ -102,11 +101,9 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
   int animCount = 0;
 
   /**
-   * @brief The image of the last top widget.
+   * @brief The last top widget.
    */
-  //MyImage lastImage = null;
-  
-  WidgetInterface lastWidget=null;
+  WidgetInterface lastWidget = null;
 
   public MainWidget(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -160,32 +157,16 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
    */
   @Override
   public void changeControl(WidgetInterface target, boolean popMySelf) {
-    // Record the last image
-//    if (!widgets.isEmpty()) {
-//      WidgetInterface topWidget = widgets.elementAt(widgets.size() - 1);
-//      if (lastImage == null || lastImage.getHeight() != topWidget.height()
-//          || lastImage.getWidth() != topWidget.width()) {
-//        if (lastImage != null)
-//          lastImage.recycle();
-//        lastImage = new MyImage(topWidget.width(), topWidget.height(),
-//            MyImage.TYPE_4BYTE_ABGR);
-//      } else {
-//        MyGraphics g = lastImage.getGraphics();
-//        g.setColor(new MyColor(0, 0, 0));
-//        g.fillRect(0, 0, topWidget.width(), topWidget.height());
-//      }
-//      topWidget.paint(lastImage.getGraphics());
-//    } else {
-//      lastImage = null;
-//    }
-
-    if (!widgets.isEmpty())
+    // Record the last widget
+    if (!widgets.isEmpty()) {
+      if (lastWidget != null && lastWidget != widgets.peek())
+        lastWidget.recycle();
       lastWidget = widgets.peek();
-    else
+      lastWidget.loseFocus();
+    } else
       lastWidget = null;
     // Adjust the stack
     if (popMySelf) {
-      //widgets.peek().recycle();
       widgets.pop();
     }
     if (target != null) {
@@ -198,7 +179,7 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
     // Adjust the count of animation
     if (!widgets.isEmpty()) {
       WidgetInterface topWidget = widgets.elementAt(widgets.size() - 1);
-      animCount = (600 / topWidget.refreshInterval());
+      animCount = (400 / topWidget.refreshInterval());
 
       refreshInterval = topWidget.refreshInterval();
     } else {
@@ -226,8 +207,8 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
       --animCount;
       // Tell the widget to get focus if necessary
       if (animCount == 0) {
-//        if (lastWidget != null)
-//          lastWidget.recycle();
+        // if (lastWidget != null)
+        // lastWidget.recycle();
         topWidget.getFocus();
       }
     }
@@ -245,7 +226,7 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
         lastWidget.paint(graphics);
         graphics.scale((float) (1 / xScale2), (float) (1 / yScale2));
       }
-      int maxCD = (600 / topWidget.refreshInterval());
+      int maxCD = (400 / topWidget.refreshInterval());
       graphics.translate(0, -animCount * height / maxCD);
       graphics.scale((float) xScale, (float) yScale);
       topWidget.paint(graphics);

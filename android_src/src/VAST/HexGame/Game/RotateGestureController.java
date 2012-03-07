@@ -166,7 +166,7 @@ public class RotateGestureController implements GestureControllerInterface {
       for (int i = 0; i < n; ++i) {
         int index = indexes.elementAt(i);
         coreController.translateABallTo(balls[index],
-            gameBoard.ballLogicalPositionOfIndex(index), 7, true);
+            gameBoard.ballLogicalPositionOfIndex(index), 4, true);
       }
       // A good move
       if (game != null)

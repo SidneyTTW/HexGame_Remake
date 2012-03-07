@@ -204,9 +204,9 @@ public class SwapGestureController implements GestureControllerInterface {
         if (swapSuccessful) {
           // Move 2 balls to the new position
           coreController.translateABallTo(balls[index1],
-              gameBoard.ballLogicalPositionOfIndex(index1), 7, true);
+              gameBoard.ballLogicalPositionOfIndex(index1), 4, true);
           coreController.translateABallTo(balls[index2],
-              gameBoard.ballLogicalPositionOfIndex(index2), 7, true);
+              gameBoard.ballLogicalPositionOfIndex(index2), 4, true);
           // A good move
           if (game != null)
             game.goodMove();
@@ -219,7 +219,7 @@ public class SwapGestureController implements GestureControllerInterface {
           // Roll back the 2 balls
           // Some complex calculation to calculate the positions
           // the balls should be at
-          int halfSteps = 5;
+          int halfSteps = 3;
           MyPoint fromPos = gameBoard.ballLogicalPositionOfIndex(index1);
           double fromX = fromPos.x;
           double fromY = fromPos.y;

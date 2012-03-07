@@ -17,11 +17,16 @@ import Aid.MyPoint;
 public abstract class AbstractSimpleWidget implements WidgetInterface {
   public static final int SIMPLE_WIDGET_WIDTH = 1024;
   public static final int SIMPLE_WIDGET_HEIGHT = 600;
-  public static final int SIMPLE_WIDGET_INTERVAL = 60;
+  public static final int SIMPLE_WIDGET_INTERVAL = 30;
 
   public static enum ItemType {
     SimpleItem, ButtonItem
   }
+
+  /**
+   * Whether the widget has focus.
+   */
+  protected boolean hasFocus;
 
   /**
    * The items to paint and deal with simple press and release event.
@@ -261,6 +266,16 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
     return mainWidget;
   }
 
+  @Override
+  public void getFocus() {
+    hasFocus = true;
+  }
+
+  @Override
+  public void loseFocus() {
+    hasFocus = false;
+  }
+
   /**
    * Add an item.
    * 
@@ -331,21 +346,21 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
 
   @Override
   public void resume() {
-    for (int i = 0;i < items.size();++i) 
+    for (int i = 0; i < items.size(); ++i)
       items.elementAt(i).resume();
-    for (int i = 0;i < draggableItems.size();++i) 
+    for (int i = 0; i < draggableItems.size(); ++i)
       draggableItems.elementAt(i).resume();
-    for (int i = 0;i < buttons.size();++i) 
+    for (int i = 0; i < buttons.size(); ++i)
       buttons.elementAt(i).resume();
   }
-  
+
   @Override
   public void recycle() {
-    for (int i = 0;i < items.size();++i) 
+    for (int i = 0; i < items.size(); ++i)
       items.elementAt(i).recycle();
-    for (int i = 0;i < draggableItems.size();++i) 
+    for (int i = 0; i < draggableItems.size(); ++i)
       draggableItems.elementAt(i).recycle();
-    for (int i = 0;i < buttons.size();++i) 
+    for (int i = 0; i < buttons.size(); ++i)
       buttons.elementAt(i).recycle();
   }
 }

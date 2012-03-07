@@ -77,7 +77,8 @@ public class FileProcessor {
         newArray[i] = 0;
       newArray[pos] = data;
       originalData = newArray;
-    }
+    } else
+      originalData[pos] = data;
     writeDataArr(fileName, originalData);
     return true;
   }
@@ -104,7 +105,7 @@ public class FileProcessor {
           Context.MODE_PRIVATE);
       byte[] bytes = new byte[data.length * 4];
       for (int i = 0; i < data.length; ++i) {
-        for (int j = 0;j < 4;++j) {
+        for (int j = 0; j < 4; ++j) {
           bytes[i * 4 + j] = (byte) (data[i] >> ((3 - j) * 8));
         }
       }

@@ -35,8 +35,6 @@ import VAST.HexGame.Widgets.RectItem;
 public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
     implements GameInterface {
 
-  public static final int ADVANCE_INTERVAL = 60;
-
   public static enum StandardGesture {
     Swap, Rotate
   };
@@ -90,6 +88,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   protected ItemInterface resetBackgound = null;
   protected ItemInterface resetConfirmButton;
   protected ItemInterface resetCancelButton;
+
+  private boolean dragging = false;
 
   protected void standardInit() {
 
@@ -191,6 +191,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   @Override
   public void mousePressed(MyPoint logicalPos, int button, int mouseId) {
     super.mousePressed(logicalPos, button, mouseId);
+    if (dragging)
+      return;
     if (gestureController != null && !resetMask.isEnabled())
       gestureController.pressAt(logicalPos, button, mouseId);
   }
@@ -198,6 +200,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   @Override
   public void mouseDragged(MyPoint logicalPos, int button, int mouseId) {
     super.mouseDragged(logicalPos, button, mouseId);
+    if (dragging)
+      return;
     if (gestureController != null && !resetMask.isEnabled())
       gestureController.dragAt(logicalPos, button, mouseId);
   }
@@ -205,6 +209,8 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   @Override
   public void mouseReleased(MyPoint logicalPos, int button, int mouseId) {
     super.mouseReleased(logicalPos, button, mouseId);
+    if (dragging)
+      return;
     if (gestureController != null && !resetMask.isEnabled())
       gestureController.releaseAt(logicalPos, button, mouseId);
   }
@@ -248,10 +254,22 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
     }
   }
 
+  @Override
+  public void dragTo(int indexOfTheDraggableItem, MyPoint position) {
+    dragging = true;
+  }
+
+  @Override
+  public void dragApplied(int indexOfTheDraggableItem, MyPoint position) {
+    dragging = false;
+  }
+
   /**
    * Advance the game
    */
   public void advance() {
+    if (!hasFocus)
+      return;
     if (reseting > 0) {
       --reseting;
       resetResetItemPositions();
@@ -264,13 +282,6 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
       gameEffectAdapter.advance();
     if (coreController != null)
       coreController.advance();
-  }
-
-  /**
-   * @return The interval of the advance.
-   */
-  public int advanceInterval() {
-    return ADVANCE_INTERVAL;
   }
 
   /**
@@ -299,7 +310,4 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
   public abstract void reset();
 
   public abstract void exit();
-
-  @Override
-  public void getFocus() {}
 }

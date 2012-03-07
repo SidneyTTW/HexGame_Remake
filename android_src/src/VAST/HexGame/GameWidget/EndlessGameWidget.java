@@ -162,9 +162,12 @@ public class EndlessGameWidget extends AbstractNonePuzzleGameWidget implements
 
   @Override
   public void advance() {
+    if (ended)
+      return;
     super.advance();
     // Go to next stage if the score has been reached
     if (verticalBar.getCurrent() >= verticalBar.getMax()) {
+      preEnded = true;
       boolean allStable = true;
       for (int i = 0; i < gameBoard.totalBallCount(); ++i)
         if ((balls[i] == null) || balls[i].getState() != Ball.State.Stable) {
@@ -179,6 +182,8 @@ public class EndlessGameWidget extends AbstractNonePuzzleGameWidget implements
   }
 
   public void nextStage() {
+    ended = true;
+    
     // Add sound effect
     SoundController.addSound(SoundController.NextStage);
 

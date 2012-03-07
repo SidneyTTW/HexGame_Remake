@@ -16,6 +16,11 @@ public interface WidgetInterface {
    * Called by the main widget when the widget gets focus.
    */
   public void getFocus();
+  
+  /**
+   * Called by the main widget when the widget gets focus.
+   */
+  public void loseFocus();
 
   /**
    * Called by the main widget when paint is needed.

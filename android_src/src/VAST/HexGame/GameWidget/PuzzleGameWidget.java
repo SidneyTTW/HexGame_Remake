@@ -67,11 +67,6 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
     standardInit();
 
     gameBoard = new SixtyOneGameBoard();
-    // if (balls == null) {
-    // balls = new Ball[gameBoard.totalBallCount()];
-    // for (int i = 0; i < gameBoard.totalBallCount(); ++i)
-    // balls[i] = new Ball(1);
-    // }
 
     rule = new StandardGameRule();
     gameEffectAdapter = new GameEffectAdapter(new EffectPainter());
@@ -201,6 +196,16 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
         animDirection = Stay;
       }
       break;
+    }
+    int[] currentColorIndexes = Ball.ballsToInts(balls);
+    boolean finished = true;
+    for (int i = 0; i < currentColorIndexes.length; ++i) {
+      if (currentColorIndexes[i] != record.targetColorIndexes[i]) {
+        finished = false;
+        break;
+      }
+    }
+    if (finished) {
     }
   }
 

@@ -56,7 +56,7 @@ public class SourceManagement {
 
   public static final int StandardButtonWidth = 160;
   public static final int StandardButtonHeight = 60;
-  public static final int StandardBonusRadious = 25;
+  public static final int StandardBonusRadious = 40;
   public static final int StandardButtonNormalFile = R.drawable.buttonbackground;
   public static final int StandardButtonPressedFile = R.drawable.buttonbackground;
 
