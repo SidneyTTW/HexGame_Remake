@@ -91,7 +91,7 @@ public class FileProcessor {
       byte[] buffer = new byte[4];
       is.read(buffer);
       for (int i = 0; i < 4; ++i)
-        result += ((int) buffer[i]) << ((3 - i) * 8);
+        result |= (((int) buffer[i]) & 0xFFFFFFFF) << ((3 - i) * 8);
       return result;
     } catch (IOException e) {
       return 0;
