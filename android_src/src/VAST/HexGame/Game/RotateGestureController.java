@@ -88,8 +88,6 @@ public class RotateGestureController implements GestureControllerInterface {
    */
   @Override
   public void pressAt(MyPoint logicalPos, int button, int mouseId) {
-    // Clear
-    indexes.clear();
     GameEffectAdapter effectPainter = rule.getEffectPainter();
     if (effectPainter != null)
       effectPainter.clearSelectionHints();
@@ -204,10 +202,7 @@ public class RotateGestureController implements GestureControllerInterface {
     GameBoardInterface gameBoard = rule.getGameBoard();
     if (gestureState == GestureState.ChooseGesture) {
       int index = gameBoard.ballIndexAtLogicalPosition(logicalPos);
-      int lastIndex = -1;
-      if (!indexes.isEmpty())
-        lastIndex = indexes.lastElement();
-      if (index >= 0 && index != lastIndex) {
+      if (index >= 0 && !indexes.contains(index)) {
         indexes.add(index);
         GameEffectAdapter effectPainter = rule.getEffectPainter();
         if (effectPainter != null)
