@@ -2,6 +2,7 @@ package VAST.HexGame.main;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Window;
 import Aid.FileProcessor;
 import Aid.SourceManagement;
@@ -16,6 +17,7 @@ import VAST.HexGame.main.R;
  */
 public class main extends Activity {
   MainWidget mainWidget;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -30,4 +32,11 @@ public class main extends Activity {
     mainWidget.changeControl(test, false);
   }
 
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_BACK) {
+      System.exit(0);
+    }
+    return super.onKeyDown(keyCode, event);
+  }
 }

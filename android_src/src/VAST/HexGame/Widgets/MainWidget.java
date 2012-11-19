@@ -6,11 +6,10 @@ import java.util.Stack;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.View;
+import android.view.SurfaceView;
 
 import Aid.MathAid;
 import Aid.MyGraphics;
@@ -20,28 +19,13 @@ import Aid.MyPoint;
  * @author SidneyTTW
  * 
  */
-public class MainWidget extends View implements SurfaceHolder.Callback,
+public class MainWidget extends SurfaceView implements SurfaceHolder.Callback,
     MainWidgetInterface {
   public static final int ANIM_STEPS = 10;
 
   LinkedList<AnimItem> animItems = new LinkedList<AnimItem>();
 
   private int refreshInterval = 600;
-
-  private RefreshHandler mRedrawHandler = new RefreshHandler();
-
-  class RefreshHandler extends Handler {
-
-    @Override
-    public void handleMessage(Message msg) {
-      MainWidget.this.invalidate();
-    }
-
-    public void sleep(long delayMillis) {
-      this.removeMessages(0);
-      sendMessageDelayed(obtainMessage(0), delayMillis);
-    }
-  };
 
   private class AnimItem {
     ItemInterface item;
@@ -109,7 +93,23 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
     super(context, attrs);
     setFocusable(true);
     setFocusableInTouchMode(true);
-    mRedrawHandler.sleep(refreshInterval);
+
+    final Handler handler = new Handler();
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        // delay some minutes you desire.
+        try {
+          Thread.sleep(refreshInterval);
+        } catch (InterruptedException e) {
+        }
+        handler.post(new Runnable() {
+          public void run() {
+            paintGame();
+          }
+        });
+      }
+    }).start();
   }
 
   @Override
@@ -191,17 +191,12 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
     }
   }
 
-  @Override
-  public void onDraw(Canvas canvas) {
-    super.onDraw(canvas);
+  public void paintGame() {
+    Canvas canvas = getHolder().lockCanvas();
     MyGraphics graphics = new MyGraphics(canvas);
 
-    if (widgets.isEmpty()) {
-      mRedrawHandler.sleep(refreshInterval);
-      return;
-    }
-
     WidgetInterface topWidget = widgets.peek();
+    graphics.fillRect(0, 0, getWidth(), getHeight());
 
     if (animCount > 0) {
       --animCount;
@@ -239,22 +234,38 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
     }
 
     // Paint the anim item
-    if (animItems.isEmpty()) {
-      mRedrawHandler.sleep(refreshInterval);
-      return;
+    if (!animItems.isEmpty()) {
+      AnimItem item = animItems.getFirst();
+      if (item.advance()) {
+        MyPoint size = item.getScreenSize();
+        xScale = 1.0 * width / size.x;
+        yScale = 1.0 * height / size.y;
+        graphics.scale((float) xScale, (float) yScale);
+        item.paint(graphics);
+        graphics.scale((float) (1 / xScale), (float) (1 / yScale));
+      } else {
+        animItems.removeFirst();
+      }
     }
-    AnimItem item = animItems.getFirst();
-    if (item.advance()) {
-      MyPoint size = item.getScreenSize();
-      xScale = 1.0 * width / size.x;
-      yScale = 1.0 * height / size.y;
-      graphics.scale((float) xScale, (float) yScale);
-      item.paint(graphics);
-      graphics.scale((float) (1 / xScale), (float) (1 / yScale));
-    } else {
-      animItems.removeFirst();
-    }
-    mRedrawHandler.sleep(refreshInterval);
+
+    getHolder().unlockCanvasAndPost(canvas);
+
+    final Handler handler = new Handler();
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        // delay some minutes you desire.
+        try {
+          Thread.sleep(refreshInterval);
+        } catch (InterruptedException e) {
+        }
+        handler.post(new Runnable() {
+          public void run() {
+            paintGame();
+          }
+        });
+      }
+    }).start();
   }
 
   @Override
@@ -272,19 +283,13 @@ public class MainWidget extends View implements SurfaceHolder.Callback,
   @Override
   public void surfaceChanged(SurfaceHolder holder, int format, int width,
       int height) {
-    // TODO Auto-generated method stub
-
   }
 
   @Override
   public void surfaceCreated(SurfaceHolder holder) {
-    // TODO Auto-generated method stub
-
   }
 
   @Override
   public void surfaceDestroyed(SurfaceHolder holder) {
-    // TODO Auto-generated method stub
-
   }
 }
