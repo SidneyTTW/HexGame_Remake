@@ -5,13 +5,13 @@ package VAST.HexGame.Game;
 
 import java.util.Vector;
 
-import VAST.HexGame.Aid.PuzzleInfo;
 import Aid.SourceManagement;
 import VAST.HexGame.GameItem.AchievementItem;
 import VAST.HexGame.GameItem.RectWordItem;
 import VAST.HexGame.Widgets.MainWidgetInterface;
 import Aid.FileProcessor;
 import Aid.MyPoint;
+import Aid.PuzzleInfo;
 
 /**
  * Class to control the statistics.

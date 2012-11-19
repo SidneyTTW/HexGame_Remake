@@ -1,4 +1,4 @@
-package VAST.HexGame.Aid;
+package Aid;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-import Aid.FileProcessor;
-import Aid.SourceManagement;
 
 /**
  * Class to get the information of puzzle games.

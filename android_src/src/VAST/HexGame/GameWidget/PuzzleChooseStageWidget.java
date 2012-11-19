@@ -3,7 +3,7 @@ package VAST.HexGame.GameWidget;
 import Aid.MyColor;
 import Aid.MyGraphics;
 import Aid.MyPoint;
-import VAST.HexGame.Aid.PuzzleInfo;
+import Aid.PuzzleInfo;
 import VAST.HexGame.GameItem.PuzzleStageItem;
 import VAST.HexGame.Widgets.AbstractSimpleWidget;
 

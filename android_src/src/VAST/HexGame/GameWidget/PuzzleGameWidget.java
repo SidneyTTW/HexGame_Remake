@@ -2,7 +2,7 @@ package VAST.HexGame.GameWidget;
 
 import Aid.MyGraphics;
 import Aid.MyPoint;
-import VAST.HexGame.Aid.PuzzleInfo;
+import Aid.PuzzleInfo;
 import VAST.HexGame.Effect.EffectPainter;
 import VAST.HexGame.Game.*;
 import VAST.HexGame.GameItem.IntegerItem;
