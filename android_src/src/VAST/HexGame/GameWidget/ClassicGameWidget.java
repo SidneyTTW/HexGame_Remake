@@ -154,7 +154,7 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
 
   public void nextStage() {
     ended = true;
-    
+
     // Add sound effect
     SoundController.addSound(SoundController.NextStage);
 
@@ -223,7 +223,7 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
 
   private void preGameOver() {
     preEnded = true;
-    
+
     // Add sound effect
     SoundController.addSound(SoundController.GameOver);
 
@@ -263,9 +263,9 @@ public class ClassicGameWidget extends AbstractNonePuzzleGameWidget {
     boolean newRecord = record.testHighest(verticalBar.getCurrent());
 
     // // Create the game over widget and give control to it
-     GameOverWidget w = new GameOverWidget
-     ("Classic Game", verticalBar.getCurrent(), newRecord, gesture);
-     // Create another widget of endless game and give control to it
-     mainWidget.changeControl(w, true);
+    GameOverWidget w = new GameOverWidget(GameOverWidget.Classic, gesture,
+        verticalBar.getCurrent(), newRecord);
+    // Create another widget of endless game and give control to it
+    mainWidget.changeControl(w, true);
   }
 }

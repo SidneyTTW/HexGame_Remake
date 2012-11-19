@@ -210,14 +210,14 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
 
   private void gameOver() {
     hasFocus = false;
-    
+
     // Test the highest score
     NonPuzzleGameRecord record = new NonPuzzleGameRecord();
     boolean newRecord = record.testHighest(currentScoreItem.getNumber());
 
     // // Create the game over widget and give control to it
-    GameOverWidget w = new GameOverWidget("Timing Game",
-        currentScoreItem.getNumber(), newRecord, gesture);
+    GameOverWidget w = new GameOverWidget(GameOverWidget.Timing, gesture,
+        currentScoreItem.getNumber(), newRecord);
     // Create another widget of endless game and give control to it
     mainWidget.changeControl(w, true);
   }
