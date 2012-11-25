@@ -26,6 +26,7 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
 
   protected int hintAnimCount = 0;
   protected int animDirection = Stay;
+  protected boolean end = false;
 
   private static final int PuzzleHintButton = AbstractStandardGameWidget.BUILT_IN_BUTTON_COUNT + 0;
 
@@ -46,6 +47,7 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
       this.type = type;
       this.stage = stage;
       this.advanced = advanced;
+      this.minSteps = PuzzleInfo.minStep(type, stage, advanced);
 
       originalColorIndexes = new int[61];
       targetColorIndexes = new int[61];
@@ -100,7 +102,7 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
 
     leastMoveItem = new IntegerItem(280);
     leastMoveItem.setDescription(" Least moved steps: ");
-    leastMoveItem.setNumber(0);
+    leastMoveItem.setNumber(record.minSteps);
     leastMoveItem.setLogicalPosition(new MyPoint((int) (width() * 0.15),
         (int) (height() * 0.6)));
     addItem(leastMoveItem, AbstractSimpleWidget.ItemType.SimpleItem);
@@ -181,6 +183,8 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
 
   @Override
   public void advance() {
+    if (end)
+      return;
     super.advance();
     switch (animDirection) {
     case ShowHint:
@@ -206,6 +210,12 @@ public class PuzzleGameWidget extends AbstractStandardGameWidget {
       }
     }
     if (finished) {
+      end = true;
+      PuzzleInfo.testMinSteps(record.type, record.stage, record.advanced,
+          currentMoveItem.getNumber());
+      PuzzleNextStageWidget widget = new PuzzleNextStageWidget(record.type,
+          record.stage, record.advanced);
+      mainWidget.changeControl(widget, true);
     }
   }
 
