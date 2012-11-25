@@ -26,7 +26,9 @@ public class PuzzleChooseStageWidget extends AbstractSimpleWidget {
 
   protected boolean advanced;
 
-  int stages;
+  protected int stages;
+
+  protected PuzzleStageItem items[];
 
   protected static double[][] xRates = { { 0.8, 0.5, 0.35, 0.5, 0.5, 0.65 },
       { 0.8, 0.5, 0.35, 0.35, 0.5, 0.65, 0.65 },
@@ -49,18 +51,18 @@ public class PuzzleChooseStageWidget extends AbstractSimpleWidget {
         (int) (width() * xRates[type][1]), (int) (height() * yRates[type][1])));
     addItem(advancedItem, AbstractSimpleWidget.ItemType.ButtonItem);
 
-    PuzzleStageItem item;
     stages = PuzzleInfo.totalStages(type);
     int[] minSteps = PuzzleInfo.minSteps(type, advanced);
+    items = new PuzzleStageItem[stages];
     for (int i = 0; i < stages; ++i) {
       boolean canTry = i == 0;
       if (!canTry)
         canTry = minSteps[i - 1] > 0;
-      item = new PuzzleStageItem(i, advanced, !canTry);
-      item.setLogicalPosition(new MyPoint(
+      items[i] = new PuzzleStageItem(i, advanced, !canTry);
+      items[i].setLogicalPosition(new MyPoint(
           (int) (width() * xRates[type][i + 2]),
           (int) (height() * yRates[type][i + 2])));
-      addItem(item, AbstractSimpleWidget.ItemType.ButtonItem);
+      addItem(items[i], AbstractSimpleWidget.ItemType.ButtonItem);
     }
   }
 
@@ -71,6 +73,13 @@ public class PuzzleChooseStageWidget extends AbstractSimpleWidget {
    */
   @Override
   public void getFocus() {
+    int[] minSteps = PuzzleInfo.minSteps(type, advanced);
+    for (int i = 0; i < stages; ++i) {
+      boolean canTry = i == 0;
+      if (!canTry)
+        canTry = minSteps[i - 1] > 0;
+      items[i].setLocked(!canTry);
+    }
   }
 
   /*
