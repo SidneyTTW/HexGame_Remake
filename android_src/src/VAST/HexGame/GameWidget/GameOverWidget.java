@@ -1,5 +1,7 @@
 package VAST.HexGame.GameWidget;
 
+import Aid.MyColor;
+import Aid.MyGraphics;
 import Aid.MyPoint;
 import VAST.HexGame.GameItem.IntegerItem;
 import VAST.HexGame.GameItem.StandardGameButtonItem;
@@ -93,5 +95,11 @@ public class GameOverWidget extends AbstractSimpleWidget {
   @Override
   public void dragApplied(int indexOfTheDraggableItem, MyPoint position) {
   }
-
+  
+  @Override
+  public void paint(MyGraphics g) {
+    g.setColor(new MyColor(0, 0, 0));
+    g.fillRect(0, 0, width(), height());
+    super.paint(g);
+  }
 }
