@@ -224,9 +224,10 @@ public abstract class AbstractStandardGameWidget extends AbstractSimpleWidget
       resetBackgound.paint(g, frame);
       resetConfirmButton.paint(g, frame);
       resetCancelButton.paint(g, frame);
-    } else if (gameEffectAdapter != null)
+    } else if (gameEffectAdapter != null && hasFocus)
       gameEffectAdapter.paint(g);
-    advance();
+    if (hasFocus)
+      advance();
   }
 
   @Override
