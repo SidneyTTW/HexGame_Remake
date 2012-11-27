@@ -1,6 +1,7 @@
 package VAST.HexGame.GameWidget;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -10,9 +11,11 @@ import Aid.MyGraphics;
 import Aid.MyPoint;
 import Aid.MyRectangle;
 import Aid.SoundController;
+import VAST.HexGame.Game.Ball;
 import VAST.HexGame.Game.ConnectionInterface;
 import VAST.HexGame.Game.StandardBallFiller;
 import VAST.HexGame.Game.Statistics;
+import VAST.HexGame.GameItem.AbstractBonusItem;
 import VAST.HexGame.GameItem.IntegerItem;
 import VAST.HexGame.GameItem.StandardGameButtonItem;
 import VAST.HexGame.GameItem.TextItem;
@@ -32,8 +35,15 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
   private Timer timingTimer = null;
 
   private TextItem pauseItem = new TextItem(316);
-
   private boolean paused = false;
+
+  private boolean timeUp = false;
+  private LinkedList<Integer> endAnimCount = new LinkedList<Integer>();
+  private LinkedList<AbstractBonusItem> endAnimBonusKind = new LinkedList<AbstractBonusItem>();
+  private static final int END_ANIM_INTERVAL = 4;
+  private static final int END_ANIM_LAST_TIME = 9;
+  private static final int FLAME_SCORE = 7;
+  private static final int STAR_SCORE = 19;
 
   protected StandardGameButtonItem pauseButton;
 
@@ -187,8 +197,8 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
 
   @Override
   public void loseFocus() {
+    timingTimer.cancel();
     super.loseFocus();
-    // startPause();
   }
 
   @Override
@@ -196,6 +206,82 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
     super.paint(g);
     if (paused)
       pauseItem.paint(g, frame);
+
+    if (timeUp) {
+      for (int i = 0; i < endAnimCount.size(); ++i) {
+        Integer count = endAnimCount.get(i);
+        AbstractBonusItem item = endAnimBonusKind.get(i);
+
+        g.setAlpha(255 * (END_ANIM_LAST_TIME - count) / END_ANIM_LAST_TIME);
+        MyPoint pos = new MyPoint((currentScoreItem.getLogicalPosition().x
+            * count + item.getLogicalPosition().x
+            * (END_ANIM_LAST_TIME - count))
+            / END_ANIM_LAST_TIME, (currentScoreItem.getLogicalPosition().y
+            * count + item.getLogicalPosition().y
+            * (END_ANIM_LAST_TIME - count))
+            / END_ANIM_LAST_TIME);
+        item.paintShadow(pos, g, frame);
+        g.setAlpha(255);
+      }
+    }
+  }
+
+  @Override
+  public void advance() {
+    super.advance();
+    if (!hasFocus)
+      return;
+    if (timeUp) {
+      for (int i = 0; i < endAnimCount.size(); ++i) {
+        endAnimCount.set(i, endAnimCount.get(i) + 1);
+      }
+
+      if (!endAnimCount.isEmpty())
+        if (endAnimCount.getLast() >= END_ANIM_LAST_TIME) {
+          currentScoreItem.setNumber(currentScoreItem.getNumber()
+              + ((endAnimBonusKind.getLast() == flameItem) ? FLAME_SCORE
+                  : STAR_SCORE));
+          endAnimCount.pollFirst();
+          endAnimBonusKind.pollFirst();
+        }
+      if (endAnimCount.isEmpty()) {
+        if (flameItem.getCurrent() > 0) {
+          flameItem.minusOne();
+          endAnimCount.push(0);
+          endAnimBonusKind.push(flameItem);
+        } else if (starItem.getCurrent() > 0) {
+          starItem.minusOne();
+          endAnimCount.push(0);
+          endAnimBonusKind.push(starItem);
+        } else {
+
+          boolean allStable = true;
+          Ball balls[] = coreController.getBalls();
+          for (int i = 0; i < gameBoard.totalBallCount(); ++i)
+            if (balls[i] == null || balls[i].getState() != Ball.State.Stable) {
+              allStable = false;
+              break;
+            }
+
+          if (allStable) {
+            gameOver();
+            return;
+          }
+        }
+      } else {
+        if (endAnimCount.getFirst() == END_ANIM_INTERVAL) {
+          if (flameItem.getCurrent() > 0) {
+            flameItem.minusOne();
+            endAnimCount.push(0);
+            endAnimBonusKind.push(flameItem);
+          } else if (starItem.getCurrent() > 0) {
+            starItem.minusOne();
+            endAnimCount.push(0);
+            endAnimBonusKind.push(starItem);
+          }
+        }
+      }
+    }
   }
 
   public void oneSecond() {
@@ -204,8 +290,10 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
     int last = verticalBar.getCurrent();
     if (last > 0)
       verticalBar.setCurrent(last - 1);
-    else
-      gameOver();
+    else {
+      timingTimer.cancel();
+      timeUp = true;
+    }
   }
 
   private void gameOver() {
@@ -248,5 +336,23 @@ public class TimingGameWidget extends AbstractNonePuzzleGameWidget {
   @Override
   public int typeBase() {
     return AbstractNonePuzzleGameWidget.NonPuzzleGameRecord.SwapTiming;
+  }
+
+  @Override
+  public void mousePressed(MyPoint logicalPos, int button, int mouseId) {
+    if (!timeUp)
+      super.mousePressed(logicalPos, button, mouseId);
+  }
+
+  @Override
+  public void mouseDragged(MyPoint logicalPos, int button, int mouseId) {
+    if (!timeUp)
+      super.mouseDragged(logicalPos, button, mouseId);
+  }
+
+  @Override
+  public void mouseReleased(MyPoint logicalPos, int button, int mouseId) {
+    if (!timeUp)
+      super.mouseReleased(logicalPos, button, mouseId);
   }
 }
