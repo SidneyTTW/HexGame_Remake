@@ -363,4 +363,9 @@ public abstract class AbstractSimpleWidget implements WidgetInterface {
     for (int i = 0; i < buttons.size(); ++i)
       buttons.elementAt(i).recycle();
   }
+  
+  @Override
+  public void back() {
+    mainWidget.changeControl(null, true);
+  }
 }

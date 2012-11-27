@@ -185,13 +185,14 @@ public class MainWidget extends SurfaceView implements SurfaceHolder.Callback,
     } else {
       refreshInterval = 600;
     }
-
-    if (widgets.isEmpty()) {
-      System.exit(0);
-    }
   }
 
   public void paintGame() {
+    if (widgets.isEmpty()) {
+      System.exit(0);
+      return;
+    }
+    
     Canvas canvas = getHolder().lockCanvas();
     MyGraphics graphics = new MyGraphics(canvas);
 
@@ -291,5 +292,10 @@ public class MainWidget extends SurfaceView implements SurfaceHolder.Callback,
 
   @Override
   public void surfaceDestroyed(SurfaceHolder holder) {
+  }
+  
+  public void back() {
+    if (!widgets.isEmpty())
+      widgets.peek().back();
   }
 }

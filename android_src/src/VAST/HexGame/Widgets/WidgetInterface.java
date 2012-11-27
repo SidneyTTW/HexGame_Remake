@@ -153,4 +153,9 @@ public interface WidgetInterface {
    * Release the space of images.
    */
   public void recycle();
+  
+  /**
+   * Go back.
+   */
+  public void back();
 }

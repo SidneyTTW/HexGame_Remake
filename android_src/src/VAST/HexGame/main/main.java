@@ -35,7 +35,8 @@ public class main extends Activity {
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK) {
-      System.exit(0);
+      mainWidget.back();
+      return true;
     }
     return super.onKeyDown(keyCode, event);
   }
