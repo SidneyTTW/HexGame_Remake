@@ -91,7 +91,7 @@ public class FileProcessor {
       byte[] buffer = new byte[4];
       is.read(buffer);
       for (int i = 0; i < 4; ++i)
-        result |= (((int) buffer[i]) & 0xFFFFFFFF) << ((3 - i) * 8);
+        result |= (((int) buffer[i]) & 0xFF) << ((3 - i) * 8);
       return result;
     } catch (IOException e) {
       return 0;
@@ -104,11 +104,9 @@ public class FileProcessor {
       FileOutputStream os = activity.openFileOutput(fileName,
           Context.MODE_PRIVATE);
       byte[] bytes = new byte[data.length * 4];
-      for (int i = 0; i < data.length; ++i) {
-        for (int j = 0; j < 4; ++j) {
+      for (int i = 0; i < data.length; ++i)
+        for (int j = 0; j < 4; ++j)
           bytes[i * 4 + j] = (byte) (data[i] >> ((3 - j) * 8));
-        }
-      }
       os.write(bytes);
       os.close();
       return true;
@@ -124,9 +122,8 @@ public class FileProcessor {
       int[] result = new int[size];
       for (int i = 0; i < size; ++i) {
         result[i] = 0;
-        for (int j = 0; j < 4; ++j) {
-          result[i] += is.read() << ((3 - j) * 8);
-        }
+        for (int j = 0; j < 4; ++j)
+          result[i] |= (is.read() & 0xFF) << ((3 - j) * 8);
       }
       return result;
     } catch (IOException e) {
