@@ -47,8 +47,6 @@ public class EndlessGameWidget extends AbstractNonePuzzleGameWidget implements
     verticalBar.setCurrent(record.levelCurrentScore);
     flameItem.setCurrent(record.flame);
     starItem.setCurrent(record.star);
-    flameItem.setCurrent(50);
-    starItem.setCurrent(50);
   }
 
   @Override
